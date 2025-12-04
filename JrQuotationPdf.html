@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>{{company.name}} - Quotation</title>
+    <style>
+        @page { size: A4; margin: 12mm; }
+        html, body { margin: 0; padding: 0; }
+        body { background: #f7faf9; font-family: Verdana, Arial, sans-serif; }
+        .page-break { page-break-before: always; }
+        .pre.size-a4 { width: 55rem; margin: 0 auto; color: #fff; }
+
+        .coverpage {
+            width: 54.85rem;
+            height: 70rem;
+            background-image: url('https://www.shutterstock.com/image-vector/black-white-landscape-panorama-mountains-260nw-1981188578.jpg');
+            background-position: center bottom -90px;
+            background-repeat: no-repeat;
+            background-size: 167%;
+            position: relative;
+            color: #fff;
+        }
+
+        .page1 {
+            width: 54.85rem;
+            height: 78rem;
+            background-image: url('https://www.shutterstock.com/image-vector/black-white-landscape-panorama-mountains-260nw-1981188578.jpg');
+            background-position: center bottom -70px;
+            background-repeat: no-repeat;
+            background-size: 167%;
+            position: relative;
+            color: #fff;
+        }
+
+        .page-head {
+            background-color: #000;
+            color: white;
+            font-size: 1.6rem;
+            padding: 1rem 0;
+            text-align: center;
+        }
+
+        .package-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 20px;
+            margin-bottom: 50px;
+        }
+
+        .package-table th {
+            background: #f5f5f5;
+            padding: 20px 25px;
+            border: 1px solid #ddd;
+            font-weight: 600;
+            text-align: left;
+            width: 35%;
+        }
+
+        .package-table td {
+            padding: 20px 25px;
+            border: 1px solid #ddd;
+            background: #fff;
+        }
+
+        .price-container { display: flex; justify-content: center; margin: 40px 0; }
+
+        .price-box {
+            position: relative;
+            width: 27rem;
+            height: 10rem;
+            top: 5rem;
+            background: #333;
+            color: #fff;
+            font-size: 24px;
+            font-weight: 700;
+            padding: 25px 45px;
+            border-radius: 12px;
+            text-align: center;
+        }
+
+        .price-text { font-size: 47px; margin-top: 2rem; margin-bottom: 8px; }
+        .price-label { font-size: 41px; font-weight: 600; }
+
+        .price-decoration {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            width: 50px;
+            height: 50px;
+            background: #4a90e2;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .price-decoration::before { content: "💰"; font-size: 20px; }
+
+        .itinerary-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+        .itinerary-table td { padding: 12px 15px; border: 1px solid #ddd; background: #fff; }
+
+        .hotelUni { color: #ffffff; display: flex; margin-bottom: 1rem; }
+        .hotelUniRight { margin-left: 3rem; font-size: 1.4rem; color: #000; }
+
+        .itinearyDiv { font-size: 1.2rem; padding: 2rem; }
+        .itinearyDiv li { color: black; margin: 0.5rem 0; }
+
+        .page {
+            width: 54.85rem;
+            height: 78rem;
+            page-break-after: always;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .bottom-img { width: 100%; height: 380px; }
+        .content-area { padding: 2rem; flex: 1; }
+    </style>
+</head>
+<body>
+<div class="pre size-a4">
+
+    <!-- Cover Page -->
+    <div class="coverpage">
+        <div style="text-align: center;">
+            <div style="background-color: #000; padding: 2rem; margin: 10rem auto 3rem; font-size: 4.5rem; width: min-content;">
+                {{company.name}}
+            </div>
+
+            <div style="font-size: 1.5rem; color: #000;">
+                Designed For Dreamers<br>Built For Travellers
+            </div>
+
+            <div style="font-size: 1.2rem; color: #000; margin-top: 1rem;">
+                {{company.email}}
+            </div>
+
+            <div style="font-size: 1.2rem; color: #000; margin-top: 0.5rem;">
+                {{company.address}}
+            </div>
+        </div>
+    </div>
+
+    <!-- Package Details -->
+    <div class="page-break">
+        <div class="page1">
+            <div class="page-head">Package Details</div>
+
+            <table class="package-table" style="color:#000;">
+                <tr><th>Destination</th><td>{{trip.destination}}</td></tr>
+                <tr><th>Name</th><td>{{client.name}}</td></tr>
+                <tr><th>No of Pax</th><td>{{trip.adults}} Adults</td></tr>
+                <tr><th>Date</th><td>{{trip.travelDate}} - {{trip.travelEndDate}}</td></tr>
+                <tr><th>Duration</th><td>{{trip.days}} Days {{trip.nights}} Nights</td></tr>
+            </table>
+
+            <div class="price-container">
+                <div class="price-box">
+                    <div class="price-decoration"></div>
+                    <div class="price-text">{{company.currency}} {{costs.total}}/-</div>
+                    <div class="price-label">{{trip.priceType}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Day Wise Itinerary Table -->
+    <div class="page-break">
+        <div class="page1">
+            <div class="page-head">Day Wise Itinerary</div>
+            <table class="itinerary-table" style="color:#000; font-size:20px;">
+                {{#each dayWise}}
+                    <tr>
+                        <td>Day {{dayNumber}}</td>
+                        <td>{{title}}</td>
+                    </tr>
+                {{/each}}
+            </table>
+        </div>
+    </div>
+
+    <!-- Hotel Section -->
+    <div class="page-break">
+        <div class="page1" style="color:black;">
+            <div class="page-head">Accommodation</div>
+
+            {{#each hotels}}
+                <div class="hotelUni">
+                    <div style="width:23rem;height:19rem;border-radius:12px;border:2px solid;overflow:hidden;">
+                        <img src="{{imageUrl}}" style="width:100%;height:100%;object-fit:cover;" />
+                    </div>
+
+                    <div class="hotelUniRight">
+                        <h4 style="color:#4a90e2;">{{nights}} Night(s) Stay at {{city}}</h4>
+                        <span>Hotel - {{name}}</span><br>
+                        <span>Meal -
+                            {{#each meals}}
+                                {{this}}{{#unless @last}}, {{/unless}}
+                            {{/each}}
+                        </span><br>
+                        <span>Room - {{roomType}}</span><br>
+                        <span>Hotel Category - {{category}} Star</span><br><br>
+                        <span style="color:#ff6858;">Check In Date - {{checkInDate}}</span><br>
+                        <span style="color:#ff6858;">Check Out Date - {{checkOutDate}}</span>
+                    </div>
+                </div>
+            {{/each}}
+
+        </div>
+    </div>
+
+    <!-- Detailed Itinerary Page -->
+    <div class="page">
+        <div class="page-head">Detailed Itinerary</div>
+
+        <div class="content-area">
+
+            {{#each itineraries}}
+                <div style="display:flex; align-items:center; margin-bottom:2rem; gap:1.5rem;">
+                    <div style="flex:1;">
+                        <div style="font-size:1.4rem;font-weight:bold;color:#4a90e2;">
+                            Day {{dayNumber}} – {{title}}
+                        </div>
+                        <div style="font-size:1rem;color:#000;margin-top:0.5rem;">
+                            {{{descriptionHtml}}}
+                        </div>
+                    </div>
+                    <div>
+                        <img src="{{imageUrl}}" style="width:140px;height:140px;border-radius:50%;object-fit:cover;" />
+                    </div>
+                </div>
+            {{/each}}
+
+        </div>
+
+        <div class="bottom-img">
+            <img style="width:100%;height:100%;object-fit:cover;" src="https://www.shutterstock.com/image-vector/black-white-landscape-panorama-mountains-260nw-1981188578.jpg" />
+        </div>
+    </div>
+
+    <!-- Inclusions / Exclusions -->
+    <div class="page-break">
+        <div class="page1">
+
+            <div class="page-head">Inclusions</div>
+            <div class="itinearyDiv">
+                <ul>
+                    {{#each inclusions}}
+                        <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+
+            <div class="page-head">Exclusions</div>
+            <div class="itinearyDiv">
+                <ul>
+                    {{#each exclusions}}
+                        <li>{{this}}</li>
+                    {{/each}}
+                </ul>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+</body>
+</html>
