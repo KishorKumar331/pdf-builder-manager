@@ -1,0 +1,772 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Journey Routers - Trip PDF</title>
+
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        .pdf-page {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            background: #000;
+            color: #fff;
+        }
+
+        .itinerary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20mm;
+            break-inside: avoid;
+            left: 10mm;
+        }
+
+        .itinerary-group {
+            display: flex;
+            flex-direction: column;
+            gap: 20mm;
+        }
+
+        .pdf-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            font-size: 14px;
+            color: white;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 18mm;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .divider {
+            width: 2px;
+            height: 40px;
+            background: #fff;
+        }
+
+        .page-header {
+            width: 210mm;
+            height: 65mm;
+            padding-bottom: 20mm;
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: 100% auto;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ================= PAGE 1 : COVER ================= -->
+    <div class="pdf-page" style="
+      width: 210mm;
+      height: 297mm;
+        background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/Header.png');
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/Header.png'); --}}
+        background-size: cover;
+        background-position: center;
+        position: relative;
+      ">
+        <a href="https://wa.me/{{customer.phone}}">
+            <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png" style="
+            position: absolute;
+            top: 83%;
+            left: 47%;
+            width: 20mm;
+            transform: translate(-50%, -50%);
+          " />
+        </a>
+
+        <div class="footer">
+            <div style="display: flex; align-items: center">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/callinglogo.png"
+                    height="60" />
+                <div style="margin-left: 20px; font-size: 18px; font-weight: normal">
+                    Call for More Information<br />
+                    +91 {{customer.phone}}
+                </div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div style="display: flex; align-items: center">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/weblogo.png"
+                    height="50" />
+                <div style="margin-left: 0px; font-size: 18px">
+                    Visit Us At<br />
+                    www.journeyrouters.com
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2 : PACKAGE DETAILS ================= -->
+    <div class="pdf-page" style="
+        background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png'); 
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
+        background-size: cover;
+        background-position: top;
+      ">
+        <div style="
+          position: absolute;
+          top: 100mm;
+          left: 13mm;
+          color: #05e0e9;
+          font-size: 32px;
+          font-weight: normal;
+        ">
+            TRIP ID :- {{trip.tripId}}
+        </div>
+
+        <div style="position: absolute; top: 118mm; left: 57mm; font-size: 1.5rem">
+            Name<br />
+            Destination<br />
+            Date<br />
+            Duration<br />
+            Traveller
+        </div>
+
+        <div style="position: absolute; top: 118mm; left: 104mm; font-size: 1.5rem">
+            - {{customer.name}}<br />
+            - Dubai<br />
+            - {{trip.travelDate}}<br />
+            - {{trip.days}} Days, {{trip.nights}} Nights<br />
+            - {{trip.pax}} Adults
+        </div>
+
+        <div style="
+          position: absolute;
+          top: 205mm;
+          left: 79mm;
+          text-align: center;
+          color: #000;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-weight: 500;
+        ">
+            <div style="font-size: 28px">
+                {{trip.days}} Days, {{trip.nights}} Nights
+            </div>
+            <div style="font-size: 26px">at just</div>
+            <div style="font-size: 30px">
+                {{pricing.currency}} {{pricing.totalCost}} /-
+            </div>
+            <div style="font-size: 25px; font-weight: normal">
+                {{pricing.priceType}}
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 282mm;
+          gap: 18px;
+        ">
+            <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: black; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm" />
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3 : INCLUSION / EXCLUSION ================= -->
+    <div class="pdf-page">
+        <div style="
+          background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/InclusionExclusion.png'); 
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/InclusionExclusion.png'); --}}
+
+        " class="page-header"></div>
+
+        <div style="display: flex; justify-content: space-evenly">
+            <span style="font-size: 50px; font-weight: 200">Inclusion</span>
+            <span style="font-size: 50px; font-weight: 200">Exclusion</span>
+        </div>
+
+        <div style="
+          position: absolute;
+          left: 30mm;
+          margin-top: 20px;
+          width: 70mm;
+          border-right: 4px solid white;
+        ">
+            {{#each inclusions}}
+            <div style="font-size: 25px; display: flex; align-items: center">
+                - {{this}}
+            </div>
+            {{/each}}
+            
+        </div>
+
+        <div style="position: absolute; left: 120mm; margin-top: 20px; width: 70mm">
+            {{#each exclusions}}
+            <div style="font-size: 25px; display: flex; align-items: center">
+                - {{this}}
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Footer -->
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 260mm;
+          gap: 18px;
+        ">
+            <span style="color: white; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: white; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 4 : GOOGLE REVIEWS ================= -->
+    <div class="pdf-page" style="
+        width: 210mm;
+        height: 297mm;
+        object-fit: cover;
+        background-size: cover;
+        background-position: center;
+        background-image: url(&quot;https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/about.png&quot;); 
+        {{!-- background-image: url(&quot;./jrgoogleReview.png&quot;); --}}
+      ">
+        <!-- Footer -->
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          gap: 18px;
+          background: none;
+          margin-top: 283mm;
+        ">
+            <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: black; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 5 : DAY WISE ITINERARY ================= -->
+    <div class="pdf-page">
+        <div class="page-header" style="
+          width: 210mm;
+          {{!-- height: 297mm; --}}
+          object-fit: cover;
+          background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/DayWiseItineary.png');
+        "></div>
+
+        <div style="
+          position: absolute;
+          top: 77mm;
+          left: 10mm;
+          font-size: 16px;
+          display: flex;
+          flex-direction: column;
+          gap: 20px;
+        ">
+            <span style="font-size: 4rem; font-weight: bold">Day Wise Itinerary</span><br />
+            {{#each itinerary}}
+            <div style="display: flex; gap: 20px; font-size: 25px">
+                <p style="text-wrap: nowrap;">DAY {{day}}</p>
+                <p>-</p>
+                <p>{{title}}</p>
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Footer -->
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          gap: 18px;
+          background: none;
+          margin-top: 280mm;
+        ">
+            <span style="color: white; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: white; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= DETAIL ITINERARY ================= -->
+
+    {{!-- Start looping itinerary --}} {{#each itinerary}} {{!-- Open a new page
+    every 3 items --}} {{#if (eq (mod @index 2) 0)}}
+    <div class="pdf-page">
+        <!-- Header -->
+        <div class="page-header" style="
+           background-image:url('{{../assetsBaseUrl}}/destination/{{uppercase ../trip.destination}}/DetailItineary.png'); 
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/DetailItineary.png'); --}}
+
+            "></div>
+
+        <span style="
+          font-size: 3.4rem;
+          font-weight: bold;
+          position: relative;
+          bottom: 30px;
+          left: 40px;
+        ">Detail Itinerary</span>
+
+        <div class="itinerary-group">
+            {{/if}}
+
+            <!-- Itinerary item -->
+            <div class="itinerary-item">
+                {{#if image}}
+                <img src="{{image}}" style="
+              width: 50mm;
+              height: 50mm;
+              border-radius: 50%;
+              object-fit: cover;
+              flex-shrink: 0;
+              position: relative;
+              left: 11mm;
+            " />
+                {{/if}}
+
+                <div style="
+              display: flex;
+              flex-direction: column;
+              gap: 6mm;
+              width: 150mm;
+            ">
+                    <div style="color: yellow; font-weight: bold; font-size: 20px">
+                        DAY {{day}} - {{title}}
+                    </div>
+                    <p style="font-size: 18px; line-height: 1.4; margin: 0">
+                        {{description}}
+                    </p>
+                </div>
+            </div>
+
+            {{!-- Close page after 3rd item OR last item --}} {{#if (or (eq (mod
+            (add @index 1) 2) 0) @last)}}
+        </div>
+
+        <!-- Footer -->
+        {{!--
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          gap: 18px;
+          background: none;
+          margin-bottom: 0mm;
+        ">
+            <span style="color: white; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: white; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+            </a>
+        </div>
+        --}}
+    </div>
+    {{/if}} {{/each}}
+    <!-- ================= END DETAIL ITINERARY ================= -->
+
+    <!-- ================= HOTELS ================= -->
+
+    <div class="pdf-page">
+
+        <!-- Header -->
+        <div class="page-header"
+            style="background-image:url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/hotel_header.png');">
+        </div>
+
+        <span style="
+            color: white;
+            font-size: 4.2rem;
+            font-weight: bold;
+            margin-left: 40px;
+            margin-top: 10mm;
+            display: block;
+            ">
+            Accommodation
+        </span>
+
+        <!-- CONTENT AREA -->
+        <div style="
+      padding: 20mm 40mm;
+      display: flex;
+      flex-direction: column;
+      gap: 12mm;
+    ">
+            {{#if hotels}}
+            {{#each hotels}}
+
+            <div style="display: flex; flex-direction: column; gap: 4mm;">
+                <span style="color: yellow; font-size: 1.5rem;">
+                    Stay at {{city}}
+                </span>
+
+                <span style="font-size: 1.5rem;">Hotel - {{name}}</span>
+                <span style="font-size: 1.5rem;">Room - {{roomType}}</span>
+                <span style="font-size: 1.5rem;">
+                    Category - {{category}} Star
+                </span>
+
+                <span style="font-size: 1.5rem; color: rgb(88,255,227);">
+                    Check-in - {{checkInDate}}
+                </span>
+                <span style="font-size: 1.5rem; color: rgb(88,255,227);">
+                    Check-out - {{checkOutDate}}
+                </span>
+            </div>
+
+            {{/each}}
+            {{/if}}
+        </div>
+        <!-- Footer -->
+        {{!-- <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          gap: 18px;
+          background: none;
+          margin-top: 160mm;
+        ">
+            <span style="color: white; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: white; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+            </a>
+        </div> --}}
+    </div>
+
+    <!-- ================= END HOTELS ================= -->
+
+    <!-- ================= PAYMENT ================= -->
+    <div class="pdf-page" style="
+        width: 210mm;
+        height: 297mm;
+        object-fit: cover;
+        background-size: cover;
+        background-position: center;
+        background-image: url(https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/payment.png;);
+      ">
+        <!-- Footer -->
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          gap: 18px;
+          margin-top: 283mm;
+        ">
+            <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: #000; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= CANCELLATION ================= -->
+    <div class="pdf-page" style="
+       width: 210mm;
+        height: 297mm;
+        object-fit: cover;
+        background-size: cover;
+        background-position: center;
+        background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/Cancellation{{titlecase trip.destination}}.png');
+     
+      ">
+        <!-- Footer -->
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          gap: 18px;
+          margin-top: 283mm;
+        ">
+            <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: #000; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+            </a>
+        </div>
+    </div>
+
+    <!-- ================= ABOUT ================= -->
+    <div class="pdf-page" style="
+        width: 210mm;
+        height: 297mm;
+        object-fit: cover;
+        background-size: cover;
+        background-position: center;
+        background-image: url(&quot;https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/about.png&quot;);
+      ">
+        <!-- Footer -->
+        <div style="
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          gap: 18px;
+          margin-top: 284mm;
+        ">
+            <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
+                    alt="Instagram" width="35mm" />
+            </a>
+
+            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
+                    alt="Facebook" width="35mm" />
+            </a>
+
+            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
+                    alt="LinkedIn" width="35mm" />
+            </a>
+
+            <a href="https://twitter.com/JourneyRouters" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
+                    alt="Twitter" width="35mm" />
+            </a>
+
+            <span style="color: #000; font-size: 18px">@journeyrouters</span>
+
+            <a href="https://wa.me/{{customer.phone}}" target="_blank">
+                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+            </a>
+        </div>
+    </div>
+</body>
+
+</html>

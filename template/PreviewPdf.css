@@ -1,0 +1,511 @@
+/* Paste your CSS code here */
+.page1 {
+  width: 54.85rem;
+  height: 78rem;
+  border: 1px solid;
+  background-color: #ffffff;
+  /* background-image: url("/public/assets/destination/BALI.png"); */
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.page3 {
+  width: 55rem;
+  height: fit-content;
+  min-height: 78rem;
+  display: flex;
+  flex-direction: column;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.jrlogo {
+  width: 10rem;
+  height: 20rem;
+  background-color: #ffffff;
+  background-image: url('/public/assets/pdfDefaultImage/Header.svg');
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.footer {
+  margin-top: 3rem;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-family: Verdana;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+.page1whatsApp {
+  height: 4rem;
+  margin-left: 25rem;
+  margin-top: 63rem;
+}
+.footer_pdf_img {
+  width: 55rem;
+  height: 16.5rem;
+}
+.whatsapp {
+  height: 4rem;
+  margin-left: 7rem;
+  margin-top: -1rem;
+}
+
+.DividerLine {
+  width: 0.2rem;
+  height: 5rem;
+  background-color: #ffffff;
+  margin-right: -3rem;
+}
+.footer_call_for_more_info {
+  display: flex;
+  flex-direction: column;
+  margin-left: 1rem;
+}
+.footer_img_with_text {
+  display: flex;
+  /* margin-left: -4rem; */
+}
+.footer_web_info {
+  display: flex;
+  width: 29rem;
+  /* margin-left: -4rem; */
+}
+
+.web_info_text {
+  margin-left: -3rem;
+}
+.link {
+  display: flex;
+  flex-direction: column;
+  text-decoration: none;
+  color: #ffffff;
+  align-items: center;
+}
+.href {
+  margin-left: 0.3rem;
+  color: #ffffff;
+  text-decoration: none;
+  display: flex;
+}
+.page2 {
+  width: 55rem;
+  height: 78rem;
+  display: flex;
+  flex-direction: column;
+  /* justify-content: space-between; */
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.paymentsPage {
+  margin-top: 75rem;
+}
+.HotelPage {
+  word-break: break-word;
+  width: 55rem;
+  /* height: 78rem; */
+  display: flex;
+  justify-content: space-between;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.itinearypage {
+  width: 55rem;
+  display: flex;
+
+  /* height: 78rem; */
+  justify-content: space-between;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.inclusion {
+  width: 55rem;
+  /* height: 78rem; */
+  justify-content: space-between;
+  background-position: top;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.googleImg {
+  width: 20rem;
+  /* height: 11rem; */
+  margin-top: 48rem;
+  margin-left: 17.5rem;
+}
+.googleImg_ {
+  width: 18rem;
+  /* margin-left: -15rem; */
+}
+.google-review {
+  display: flex;
+  flex-direction: column;
+}
+.google-review-count {
+  margin-left: 20.5rem;
+  margin-top: 0rem;
+  color: #ffffff;
+}
+.whatsappOnGoogleReviewPage {
+  width: 5rem;
+  margin: 6.8rem;
+  margin-left: 50rem;
+}
+.whatsAppOnInclusionExclusionPage_ {
+  width: 5rem;
+  margin-left: 5rem;
+  margin-top: -1rem;
+  /* margin-top: 72rem; */
+}
+.whatsAppOnInclusionExclusionPage {
+  width: 5rem;
+  margin-left: 50rem;
+  margin-top: 72rem;
+}
+.bottom_media_details {
+  margin-bottom: -0.3rem;
+  display: flex;
+  width: 44rem;
+  height: 3rem;
+  align-items: center;
+  font-size: 1.7rem;
+  margin-left: 10rem;
+  font-size: 1.1rem;
+  justify-content: space-evenly;
+}
+.overviewpackage {
+}
+.google_review_bottom {
+  margin-top: 52rem;
+  display: flex;
+  height: 24rem;
+  /* background: green; */
+  justify-content: space-between;
+  /* color: red; */
+}
+.review_img {
+  width: 12rem;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+}
+.review_img1 {
+  margin-left: 5rem;
+  width: 12rem;
+  margin-bottom: 2.4rem;
+  margin-top: 1rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+}
+.review_img2 {
+  margin-left: 8rem;
+  width: 12rem;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+}
+.review_img3 {
+  margin-left: -4rem;
+  width: 12rem;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+}
+.review_img4 {
+  width: 12rem;
+  margin-bottom: 2rem;
+  margin-left: -6rem;
+  margin-top: 1.3rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+}
+.review_img5 {
+  margin-left: 1.2rem;
+  width: 12rem;
+  margin-bottom: 2rem;
+  margin-top: 1rem;
+  height: 3.5rem;
+  border-radius: 1rem;
+}
+
+.reiew_c1 {
+  width: 24%;
+}
+.reiew_c3 {
+  width: 24%;
+}
+.reiew_c2 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: -4rem;
+}
+.ratting {
+  width: 10rem;
+  margin-top: -5rem;
+}
+.package_details {
+  margin-top: 0.8rem;
+  margin-left: 13rem;
+  font-size: 1.9rem;
+  display: flex;
+  justify-content: space-between;
+  width: 33rem;
+  /* background-color: #FFFFFF; */
+  color: #ffffff;
+}
+.listDiv {
+  display: flex;
+  width: 23rem;
+  justify-content: space-between;
+  font-size: 2rem;
+}
+.yellow_details {
+  margin-top: 12rem;
+  color: black;
+  margin-left: 19rem;
+  font-size: 2rem;
+  font-family: verdana;
+  /* margin-bottom: 4.5rem; */
+  width: 24rem;
+}
+.yellow_details {
+  margin-top: 12rem;
+  color: black;
+  margin-left: 19rem;
+  font-size: 2rem;
+  font-family: verdana;
+  /* margin-bottom: 4.5rem; */
+  width: 24rem;
+}
+.setPara {
+  margin-left: 5rem;
+}
+.seth4 {
+  font-size: 2.3rem;
+  margin-left: 1rem;
+  margin-bottom: 3rem;
+}
+.page-break {
+  width: fit-content;
+}
+.setParas {
+  text-transform: capitalize;
+  margin-left: 5.4rem !important;
+  margin-top: -3rem;
+}
+.dayDetails {
+  /* margin: 1rem; */
+}
+.inclusionPage_blocks {
+  font-size: 4rem;
+  display: flex;
+  color: #ffffff;
+  text-transform: capitalize;
+  justify-content: space-around;
+  font-family: sans-serif;
+  font-weight: 900;
+}
+.inclusionPage_img {
+  width: 55rem;
+}
+.inclusionExclusionDetails {
+  font-family: Glacial Indifference;
+  text-transform: capitalize;
+  display: flex;
+  justify-content: space-evenly;
+  color: #ffffff;
+  margin-top: 1rem;
+  margin-bottom: 5rem;
+  /* height: 35rem; */
+}
+.sepratorLineForInclusionExclusion {
+  width: 0.2rem;
+  /* height: 27rem; */
+  background-color: #ffffff;
+}
+.aliner_ {
+  margin-bottom: 0.4rem;
+  display: flex;
+  align-items: center;
+  font-size: 1.6rem;
+  width: 18rem;
+  justify-content: space-between;
+  font-family: verdana;
+  margin-left: 4rem;
+}
+.setInsta {
+  width: 25rem;
+  margin-left: 15rem;
+  margin-top: 1.5rem;
+}
+.headLineDaywiseItineary {
+  font-family: sans-serif;
+  font-weight: 900;
+  text-transform: capitalize;
+  color: #ffffff;
+  font-size: 4rem;
+  margin-left: 1.5rem;
+}
+.mapitineary {
+  text-transform: uppercase;
+  color: #ffffff;
+  display: flex;
+  justify-content: space-between;
+  /* width: 100%; */
+  align-items: center;
+  font-family: Glacial Indifference;
+}
+.itinearyDiv {
+  word-break: break-word;
+  margin-left: 2rem;
+  margin-top: 2rem;
+  font-size: 1.2rem;
+  margin-bottom: 5rem;
+  img {
+    width: 40rem;
+    object-fit: contain;
+  }
+}
+.DaywiseItinearyDiv {
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff;
+  align-items: center;
+}
+.DaywiseItinearyDivReverse {
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff;
+  align-items: center;
+  flex-direction: row-reverse;
+}
+.DaywiseItinearyDivleft {
+  width: 80%;
+  display: flex;
+  flex-direction: column;
+}
+.DaywiseItinearyDivRight {
+  /* width: 20%; */
+}
+.dayheader {
+  color: yellow;
+  font-family: Glacial Indifference;
+  text-transform: uppercase;
+}
+.dayDetailsitineary {
+  color: #ffffff;
+  font-family: arial;
+  font-family: Glacial Indifference;
+  text-transform: capitalize;
+}
+.hotelUni {
+  margin-left: 1.5rem;
+  color: #ffffff;
+  display: flex;
+  /* justify-content: space-between; */
+}
+.hotelUniRight {
+  margin-left: 3rem;
+  font-size: 1.4rem;
+  font-family: Glacial Indifference;
+}
+.flightsImgcss {
+  width: 52rem;
+  margin: 1.5rem;
+}
+.otherInclusion {
+  margin-left: 3rem;
+  font-family: verdana;
+  font-size: 1.6rem;
+}
+.trip_summary {
+  /* display: flex; */
+  /* justify-content: space-between; */
+  /* width: 21rem; */
+  margin-top: 25.2rem;
+  color: #05e0e9;
+  font-size: 2rem;
+  margin-left: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.trip_summary_maldives {
+  margin-top: 0;
+  color: #05e0e9;
+  font-size: 2rem;
+  margin-left: 3.5rem;
+  margin-bottom: 0.5rem;
+}
+.DaywiseItinearyDiv,
+.DaywiseItinearyDivReverse {
+  display: flex;
+  justify-content: space-between;
+  color: #ffffff;
+  align-items: center;
+  width: 100%; /* Ensure full width */
+  padding: 1rem; /* Optional: Add consistent spacing */
+  box-sizing: border-box; /* Prevent content overflow */
+  img {
+    border-radius: 50%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.DaywiseItinearyDivReverse {
+  flex-direction: row-reverse;
+  column-gap: 20px;
+}
+
+.page-break {
+  background-color: #ccc;
+  clear: both; /* Ensure it doesn't interfere with flex layout */
+}
+
+.parent-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem; /* Consistent spacing between items */
+}
+
+table.package_details_table {
+  width: 600px;
+  border-collapse: collapse;
+  margin: 0 auto;
+  color: #fff;
+  th,
+  td {
+    border: 1px solid white;
+    padding: 10px;
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th {
+    width: 200px;
+    background-color: #000;
+  }
+
+  td[colspan='2'] {
+    text-align: center;
+  }
+}
+.pricing_mauritius {
+  padding-top: 7rem;
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-transform: capitalize;
+  padding-bottom: 7rem;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: top;
+}

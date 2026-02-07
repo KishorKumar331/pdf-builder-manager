@@ -1,21 +1,19 @@
 {
-  "name": "pdf-builder-node",
+  "name": "j_r_pdfbuilder",
   "version": "1.0.0",
-  "type": "module",
-  "main": "index.mjs",
-  "dependencies": {
-    "@sparticuz/chromium": "^123.0.1",
-    "aws-sdk": "^2.1612.0",
-    "handlebars": "^4.7.8",
-    "puppeteer": "^24.31.0",
-    "puppeteer-core": "^23.7.0"
-  },
+  "description": "",
+  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev":"node render.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "type": "commonjs",
+  "dependencies": {
+    "aws-sdk": "^2.1693.0",
+    "handlebars": "^4.7.8",
+    "@sparticuz/chromium": "123.0.1",
+    "puppeteer-core": "22.15.0"
+  }
 }
