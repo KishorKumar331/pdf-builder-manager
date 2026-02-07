@@ -99,7 +99,13 @@ const dummyData = {
   flags: {
     hasHotels: true
   },
-  assetsBaseUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads"
+  company: {
+    name: "Journey Routers",
+    email: "info@journeyrouters.com",
+    address: "123 Travel Street, Mumbai, India"
+  },
+  cancellation: "Cancellation Policy:\n\n• 30+ days before departure: 10% cancellation charge\n• 15-29 days before departure: 25% cancellation charge\n• 7-14 days before departure: 50% cancellation charge\n• Less than 7 days before departure: 100% cancellation charge\n• No-show: No refund\n\nAll cancellations must be made in writing. Refunds will be processed within 15 working days.",
+  assetsBaseUrl: "http://localhost:3000/public"
 };
 
 let cachedTemplate = null;
@@ -175,8 +181,9 @@ app.get("/json", (req, res) => {
   res.json(dummyData);
 });
 
-// Serve static files from template directory
+// Serve static files from template and public directories
 app.use("/template", express.static(path.join(__dirname, "template")));
+app.use("/public", express.static(path.join(__dirname, "public")));
 
 app.listen(PORT, () => {
   console.log(`🚀 Development server running at http://localhost:${PORT}`);

@@ -4,7 +4,11 @@
 <head>
     <meta charset="UTF-8" />
     <title>Journey Routers - Trip PDF</title>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Comic+Relief:wght@400;700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Sour+Gummy:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <style>
         @page {
             size: A4;
@@ -13,7 +17,8 @@
 
         body {
             margin: 0;
-            font-family: Arial, Helvetica, sans-serif;
+            font-family: "Sour Gummy", sans-serif;
+            font-optical-sizing: auto;
         }
 
         .pdf-page {
@@ -26,6 +31,28 @@
             color: #fff;
         }
 
+        .package-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 28px;
+            margin-bottom: 50px;
+        }
+
+        .package-table th {
+            background: #f5f5f5;
+            padding: 20px 25px;
+            border: 1px solid #ddd;
+            font-weight: 600;
+            text-align: left;
+            width: 35%;
+        }
+
+        .package-table td {
+            padding: 20px 25px;
+            border: 1px solid #ddd;
+            background: #fff;
+        }
+
         .itinerary-item {
             display: flex;
             align-items: flex-start;
@@ -36,6 +63,7 @@
 
         .itinerary-group {
             display: flex;
+            padding: 2rem;
             flex-direction: column;
             gap: 20mm;
         }
@@ -74,93 +102,175 @@
             background-position: top center;
             background-size: 100% auto;
         }
+        
+    /* Payment */
+    .payment-layout {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem;
+    }
+
+    .payment-left {
+      flex: 1;
+    }
+
+    .payment-table {
+      width: 100%;
+      color: black;
+      border-collapse: collapse;
+      font-size: 16px;
+    }
+
+    .payment-table th {
+      background: #f5f5f5;
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      text-align: left;
+      width: 40%;
+    }
+
+    .payment-table td {
+      padding: 12px 16px;
+      border: 1px solid #ddd;
+      background: #fff;
+    }
+
+    .qr-box {
+      width: 220px;
+      height: 220px;
+      border-radius: 16px;
+      border: 2px dashed #4a90e2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff;
+      margin-bottom: 1rem;
+      margin-top: 1rem;
+    }
+
+    .qr-box span {
+      text-align: center;
+      font-size: 0.95rem;
+      color: #555;
+    }
+
+    .paynow-btn {
+      display: inline-block;
+      margin-top: 1rem;
+      padding: 0.8rem 2.5rem;
+      background: #4a90e2;
+      color: #fff;
+      border-radius: 999px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+    }
+
+    .paynow-btn:hover {
+      background: #2f6bb0;
+    }
+
+    .payment-note {
+      margin-top: 1.5rem;
+      font-size: 0.95rem;
+      color: #444;
+    }
     </style>
 </head>
 
 <body>
     <!-- ================= PAGE 1 : COVER ================= -->
-    <div class="pdf-page" style="
+
+
+    <div style="    
       width: 210mm;
       height: 297mm;
-        background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/Header.png');
-        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/Header.png'); --}}
+      background-image:url('{{assetsBaseUrl}}/header.png');
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/Header.png'); --}}
         background-size: cover;
         background-position: center;
-        position: relative;
-      ">
-        <a href="https://wa.me/{{customer.phone}}">
-            <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png" style="
-            position: absolute;
-            top: 83%;
-            left: 47%;
-            width: 20mm;
-            transform: translate(-50%, -50%);
-          " />
-        </a>
-
-        <div class="footer">
-            <div style="display: flex; align-items: center">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/callinglogo.png"
-                    height="60" />
-                <div style="margin-left: 20px; font-size: 18px; font-weight: normal">
-                    Call for More Informationsss<br />
-                    +91 {{customer.phone}}
-                </div>
+        position: relative;" class="pdf-page">
+        <div style="text-align: center">
+            <div style="
+              background-color: #000;
+              padding: 2rem;
+              margin: 10rem auto 3rem;
+              font-size: 4.5rem;
+              width: min-content;
+            ">
+                {{company.name}}
             </div>
 
-            <div class="divider"></div>
+            <div style="font-size: 1.5rem; color: #000">
+                Designed For Dreamers<br />Built For Travellers
+            </div>
 
-            <div style="display: flex; align-items: center">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/weblogo.png"
-                    height="50" />
-                <div style="margin-left: 0px; font-size: 18px">
-                    Visit Us At<br />
-                    www.journeyrouters.com
-                </div>
+            <div style="font-size: 1.2rem; color: #000; margin-top: 1rem">
+                {{company.email}}
+            </div>
+
+            <div style="font-size: 1.2rem; color: #000; margin-top: 0.5rem">
+                {{company.address}}
             </div>
         </div>
     </div>
 
     <!-- ================= PAGE 2 : PACKAGE DETAILS ================= -->
     <div class="pdf-page" style="
-        background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png'); 
+          background-image:url('{{assetsBaseUrl}}/header.png');
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
         {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
         background-size: cover;
         background-position: top;
       ">
+
         <div style="
-          position: absolute;
-          top: 100mm;
-          left: 13mm;
-          color: #05e0e9;
-          font-size: 32px;
-          font-weight: normal;
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
         ">
-            TRIP ID :- {{trip.tripId}}
+            Package-Details
         </div>
 
-        <div style="position: absolute; top: 118mm; left: 57mm; font-size: 1.5rem">
-            Name<br />
-            Destination<br />
-            Date<br />
-            Duration<br />
-            Traveller
-        </div>
+        <div style="font-size: 1.5rem">
 
-        <div style="position: absolute; top: 118mm; left: 104mm; font-size: 1.5rem">
-            - {{customer.name}}<br />
-            - Dubais<br />
-            - {{trip.travelDate}}<br />
-            - {{trip.days}} Days, {{trip.nights}} Nights<br />
-            - {{trip.pax}} Adults
+            <table class="package-table" style="color: #000">
+                <tr>
+                    <th>Destination</th>
+                    <td>{{trip.destination}}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{customer.name}}</td>
+                </tr>
+                <tr>
+                    <th>No of Pax</th>
+                    <td>{{trip.pax}} Adults</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{trip.travelDate}}</td>
+                </tr>
+                <tr>
+                    <th>Duration</th>
+                    <td>{{trip.days}} Days {{trip.nights}} Nights</td>
+                </tr>
+            </table>
+
         </div>
 
         <div style="
           position: absolute;
-          top: 205mm;
+          top: 166mm;
           left: 79mm;
           text-align: center;
-          color: #000;
+          color: #fff;
+          z-index: 9;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -178,10 +288,53 @@
                 {{pricing.priceType}}
             </div>
         </div>
+        <svg style="position: absolute;
+             top: 159mm;
+        left: 59mm;
+          text-align: center;
+          z-index: 1;
+          color: #000;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-weight: 500;" width="420" height="260" viewBox="0 0 420 260" xmlns="http://www.w3.org/2000/svg">
+
+                <!-- Background shadow -->
+            <rect x="46" y="44" rx="22" ry="22" width="320" height="160" fill="#3F6FCB" opacity="0.95" />
+
+            <!-- Main card -->
+            <rect x="24" y="22" rx="22" ry="22" width="320" height="160" fill="#1F1F1F" />
+
+            <!-- Soft highlight gradient -->
+            <defs>
+                <linearGradient id="shine" x1="0" y1="0" x2="1" y2="1">
+                    <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0.08" />
+                    <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0" />
+                </linearGradient>
+            </defs>
+
+            <rect x="24" y="22" rx="22" ry="22" width="320" height="160" fill="url(#shine)" />
+
+            <!-- Floating accent shapes -->
+            <circle cx="295" cy="45" r="8" fill="#4E7FE3" />
+            <circle cx="310" cy="65" r="4" fill="#4E7FE3" />
+
+            <rect x="55" y="150" width="36" height="8" rx="4" fill="#4E7FE3" transform="rotate(-12 55 150)" />
+
+            <rect x="310" y="150" width="28" height="8" rx="4" fill="#4E7FE3" transform="rotate(18 310 150)" />
+
+            <!-- Corner notch effect -->
+            <path d="M24 44 Q24 22 46 22" fill="#4E7FE3" opacity="0.8" />
+
+        </svg>
+
 
         <!-- Footer -->
         <div style="
           display: flex;
+          position: absolute;
+        bottom:0;
           align-items: center;
           justify-content: center;
           font-size: 14px;
@@ -221,103 +374,70 @@
     </div>
 
     <!-- ================= PAGE 3 : INCLUSION / EXCLUSION ================= -->
-    <div class="pdf-page">
-        <div style="
-          background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/InclusionExclusion.png'); 
-        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/InclusionExclusion.png'); --}}
-
-        " class="page-header"></div>
-
-        <div style="display: flex; justify-content: space-evenly">
-            <span style="font-size: 50px; font-weight: 200">Inclusion</span>
-            <span style="font-size: 50px; font-weight: 200">Exclusion</span>
-        </div>
-
-        <div style="
-          position: absolute;
-          left: 30mm;
-          margin-top: 20px;
-          width: 70mm;
-          border-right: 4px solid white;
-        ">
-            {{#each inclusions}}
-            <div style="font-size: 25px; display: flex; align-items: center">
-                - {{this}}
-            </div>
-            {{/each}}
-            
-        </div>
-
-        <div style="position: absolute; left: 120mm; margin-top: 20px; width: 70mm">
-            {{#each exclusions}}
-            <div style="font-size: 25px; display: flex; align-items: center">
-                - {{this}}
-            </div>
-            {{/each}}
-        </div>
-
-        <!-- Footer -->
-        <div style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 14px;
-          color: #ffffff;
-          width: 210mm;
-          margin-top: 260mm;
-          gap: 18px;
-        ">
-            <span style="color: white; font-size: 18px; font-weight: normal">Follow Us At</span>
-            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
-                    alt="Instagram" width="35mm" />
-            </a>
-
-            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
-                    alt="Facebook" width="35mm" />
-            </a>
-
-            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
-                    alt="LinkedIn" width="35mm" />
-            </a>
-
-            <a href="https://twitter.com/JourneyRouters" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
-                    alt="Twitter" width="35mm" />
-            </a>
-
-            <span style="color: white; font-size: 18px">@journeyrouters</span>
-
-            <a href="https://wa.me/{{customer.phone}}" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
-                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
-            </a>
-        </div>
-    </div>
-
-    <!-- ================= PAGE 4 : GOOGLE REVIEWS ================= -->
     <div class="pdf-page" style="
-        width: 210mm;
-        height: 297mm;
-        object-fit: cover;
+          background-image:url('{{assetsBaseUrl}}/header.png');
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
         background-size: cover;
-        background-position: center;
-        background-image: url(&quot;https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/about.png&quot;); 
-        {{!-- background-image: url(&quot;./jrgoogleReview.png&quot;); --}}
+        background-position: top;
       ">
+
+
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Inclusions
+        </div>
+
+
+
+        <div style="padding: 2rem 4rem;">
+            {{#each inclusions}}
+            <div style="font-size: 25px; color:black;display: flex; align-items: center">
+                - {{this}}
+            </div>
+            {{/each}}
+
+        </div>
+
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Exclusions
+        </div>
+
+
+        <div style="padding: 2rem 4rem;">
+            {{#each exclusions}}
+            <div style="font-size: 25px;color:black; display: flex; align-items: center">
+                - {{this}}
+            </div>
+            {{/each}}
+        </div>
+
         <!-- Footer -->
         <div style="
           display: flex;
+          position: absolute;
+        bottom:0;
           align-items: center;
           justify-content: center;
           font-size: 14px;
           color: #ffffff;
           width: 210mm;
+          margin-top: 282mm;
           gap: 18px;
-          background: none;
-          margin-top: 283mm;
         ">
             <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
             <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
@@ -344,30 +464,36 @@
 
             <a href="https://wa.me/{{customer.phone}}" target="_blank">
                 <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
-                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm" />
             </a>
         </div>
     </div>
 
+
+
     <!-- ================= PAGE 5 : DAY WISE ITINERARY ================= -->
-    <div class="pdf-page">
-        <div class="page-header" style="
-          width: 210mm;
-          {{!-- height: 297mm; --}}
-          object-fit: cover;
-          background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/DayWiseItineary.png');
-        "></div>
+    <div class="pdf-page" style="
+          background-image:url('{{assetsBaseUrl}}/header.png');
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
+        background-size: cover;
+        background-position: top;
+      ">
+        <div
+            style="font-size: 32px;font-weight: normal;background: black;padding: 0.8rem;color: white;text-align: center; ">
+            Day Wise Itinerary
+        </div>
+
+
 
         <div style="
-          position: absolute;
-          top: 77mm;
-          left: 10mm;
+          padding: 2rem;
           font-size: 16px;
           display: flex;
           flex-direction: column;
-          gap: 20px;
+          color:black
         ">
-            <span style="font-size: 4rem; font-weight: bold">Day Wise Itinerary</span><br />
             {{#each itinerary}}
             <div style="display: flex; gap: 20px; font-size: 25px">
                 <p style="text-wrap: nowrap;">DAY {{day}}</p>
@@ -380,16 +506,17 @@
         <!-- Footer -->
         <div style="
           display: flex;
+          position: absolute;
+        bottom:0;
           align-items: center;
           justify-content: center;
           font-size: 14px;
           color: #ffffff;
           width: 210mm;
+          margin-top: 282mm;
           gap: 18px;
-          background: none;
-          margin-top: 280mm;
         ">
-            <span style="color: white; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
             <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
                 <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
                     alt="Instagram" width="35mm" />
@@ -410,11 +537,11 @@
                     alt="Twitter" width="35mm" />
             </a>
 
-            <span style="color: white; font-size: 18px">@journeyrouters</span>
+            <span style="color: black; font-size: 18px">@journeyrouters</span>
 
             <a href="https://wa.me/{{customer.phone}}" target="_blank">
                 <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
-                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm" />
             </a>
         </div>
     </div>
@@ -423,21 +550,19 @@
 
     {{!-- Start looping itinerary --}} {{#each itinerary}} {{!-- Open a new page
     every 3 items --}} {{#if (eq (mod @index 2) 0)}}
-    <div class="pdf-page">
+   <div class="pdf-page" style="
+          background-image:url('{{../assetsBaseUrl}}/header.png');
+        background-size: cover;
+        background-position: top;
+      ">
         <!-- Header -->
-        <div class="page-header" style="
-           background-image:url('{{../assetsBaseUrl}}/destination/{{uppercase ../trip.destination}}/DetailItineary.png'); 
-        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/DetailItineary.png'); --}}
+      
 
-            "></div>
+         <div
+            style="font-size: 32px;font-weight: normal;background: black;padding: 0.8rem;color: white;text-align: center; ">
+            Detailed Itinerary
+        </div>
 
-        <span style="
-          font-size: 3.4rem;
-          font-weight: bold;
-          position: relative;
-          bottom: 30px;
-          left: 40px;
-        ">Detail Itinerary</span>
 
         <div class="itinerary-group">
             {{/if}}
@@ -462,10 +587,10 @@
               gap: 6mm;
               width: 150mm;
             ">
-                    <div style="color: yellow; font-weight: bold; font-size: 20px">
+                    <div style="color: #1a1a18; font-weight: bold; font-size: 20px">
                         DAY {{day}} - {{title}}
                     </div>
-                    <p style="font-size: 18px; line-height: 1.4; margin: 0">
+                    <p style="font-size: 18px;color: #1a1a18; line-height: 1.4; margin: 0">
                         {{description}}
                     </p>
                 </div>
@@ -475,71 +600,48 @@
             (add @index 1) 2) 0) @last)}}
         </div>
 
-        <!-- Footer -->
-        {{!--
-        <div style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 14px;
-          color: #ffffff;
-          width: 210mm;
-          gap: 18px;
-          background: none;
-          margin-bottom: 0mm;
-        ">
-            <span style="color: white; font-size: 18px; font-weight: normal">Follow Us At</span>
-            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
-                    alt="Instagram" width="35mm" />
-            </a>
+        <svg style="display: flex;margin:0 auto" width="600" height="40" viewBox="0 0 600 40" xmlns="http://www.w3.org/2000/svg">
 
-            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
-                    alt="Facebook" width="35mm" />
-            </a>
+            <!-- Left line -->
+            <line x1="0" y1="20" x2="260" y2="20" stroke="#1F1F1F" stroke-width="1" />
 
-            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
-                    alt="LinkedIn" width="35mm" />
-            </a>
+            <!-- Right line -->
+            <line x1="340" y1="20" x2="600" y2="20" stroke="#1F1F1F" stroke-width="1" />
 
-            <a href="https://twitter.com/JourneyRouters" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
-                    alt="Twitter" width="35mm" />
-            </a>
+            <!-- Center diamond -->
+            <rect x="292" y="12" width="16" height="16" fill="#1F1F1F" transform="rotate(45 300 20)" />
 
-            <span style="color: white; font-size: 18px">@journeyrouters</span>
+            <!-- Small side dots -->
+            <circle cx="280" cy="20" r="2.5" fill="#1F1F1F" />
+            <circle cx="320" cy="20" r="2.5" fill="#1F1F1F" />
 
-            <a href="https://wa.me/{{customer.phone}}" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
-                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
-            </a>
-        </div>
-        --}}
+        </svg>
     </div>
     {{/if}} {{/each}}
     <!-- ================= END DETAIL ITINERARY ================= -->
 
     <!-- ================= HOTELS ================= -->
 
-    <div class="pdf-page">
+    <div class="pdf-page" style="
+          background-image:url('{{assetsBaseUrl}}/header.png');
 
-        <!-- Header -->
-        <div class="page-header"
-            style="background-image:url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/hotel_header.png');">
-        </div>
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
+        background-size: cover;
+        background-position: top;
+      ">
 
-        <span style="
-            color: white;
-            font-size: 4.2rem;
-            font-weight: bold;
-            margin-left: 40px;
-            margin-top: 10mm;
-            display: block;
-            ">
+
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
             Accommodation
-        </span>
+        </div>
 
         <!-- CONTENT AREA -->
         <div style="
@@ -552,40 +654,57 @@
             {{#each hotels}}
 
             <div style="display: flex; flex-direction: column; gap: 4mm;">
-                <span style="color: yellow; font-size: 1.5rem;">
+                <span style="color: black; font-size: 1.5rem;">
                     Stay at {{city}}
                 </span>
 
-                <span style="font-size: 1.5rem;">Hotel - {{name}}</span>
-                <span style="font-size: 1.5rem;">Room - {{roomType}}</span>
-                <span style="font-size: 1.5rem;">
+                <span style="font-size: 1.5rem;color:black">Hotel - {{name}}</span>
+                <span style="font-size: 1.5rem;color:black">Room - {{roomType}}</span>
+                <span style="font-size: 1.5rem;color:black">
                     Category - {{category}} Star
                 </span>
 
-                <span style="font-size: 1.5rem; color: rgb(88,255,227);">
+                <span style="font-size: 1.5rem; color: rgb(42, 43, 43);">
                     Check-in - {{checkInDate}}
                 </span>
-                <span style="font-size: 1.5rem; color: rgb(88,255,227);">
+                <span style="font-size: 1.5rem; color: rgb(31, 31, 31);">
                     Check-out - {{checkOutDate}}
                 </span>
             </div>
+            <svg width="600" height="40" viewBox="0 0 600 40" xmlns="http://www.w3.org/2000/svg">
+
+                <!-- Left line -->
+                <line x1="0" y1="20" x2="260" y2="20" stroke="#1F1F1F" stroke-width="1" />
+
+                <!-- Right line -->
+                <line x1="340" y1="20" x2="600" y2="20" stroke="#1F1F1F" stroke-width="1" />
+
+                <!-- Center diamond -->
+                <rect x="292" y="12" width="16" height="16" fill="#1F1F1F" transform="rotate(45 300 20)" />
+
+                <!-- Small side dots -->
+                <circle cx="280" cy="20" r="2.5" fill="#1F1F1F" />
+                <circle cx="320" cy="20" r="2.5" fill="#1F1F1F" />
+
+            </svg>
 
             {{/each}}
             {{/if}}
         </div>
         <!-- Footer -->
-        {{!-- <div style="
+        <div style="
           display: flex;
+          position: absolute;
+        bottom:0;
           align-items: center;
           justify-content: center;
           font-size: 14px;
           color: #ffffff;
           width: 210mm;
+          margin-top: 282mm;
           gap: 18px;
-          background: none;
-          margin-top: 160mm;
         ">
-            <span style="color: white; font-size: 18px; font-weight: normal">Follow Us At</span>
+            <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
             <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
                 <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
                     alt="Instagram" width="35mm" />
@@ -606,13 +725,13 @@
                     alt="Twitter" width="35mm" />
             </a>
 
-            <span style="color: white; font-size: 18px">@journeyrouters</span>
+            <span style="color: black; font-size: 18px">@journeyrouters</span>
 
             <a href="https://wa.me/{{customer.phone}}" target="_blank">
                 <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
-                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm" />
             </a>
-        </div> --}}
+        </div>
     </div>
 
     <!-- ================= END HOTELS ================= -->
@@ -624,8 +743,72 @@
         object-fit: cover;
         background-size: cover;
         background-position: center;
-        background-image: url(https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/payment.png;);
+          background-image:url('{{assetsBaseUrl}}/header.png');
+
+        {{!-- background-image: url(https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/payment.png;); --}}
       ">
+       <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Payment-Details
+        </div>
+
+       <div class="payment-layout">
+      <div class="payment-left">
+        <h3 style="margin-top: 0; color: #333">Bank Transfer Details</h3>
+        <table class="payment-table">
+          <tr>
+            <th>Account Name</th>
+            <td>{{company.name}}</td>
+          </tr>
+          <tr>
+            <th>Bank Name</th>
+            <td>{{company.bankName}}</td>
+          </tr>
+          <tr>
+            <th>Branch</th>
+            <td>{{company.branchName}}</td>
+          </tr>
+          <tr>
+            <th>Account Number</th>
+            <td>{{company.accountNumber}}</td>
+          </tr>
+          <tr>
+            <th>IFSC Code</th>
+            <td>{{company.ifsc}}</td>
+          </tr>
+          <tr>
+            <th>Currency</th>
+            <td>{{company.currency}}</td>
+          </tr>
+        </table>
+
+        <div class="payment-note">
+          Please share payment proof (screenshot/UTR) with your travel
+          consultant after completing the payment.
+        </div>
+      </div>
+
+      <div class="payment-right">
+        <h3 style="margin-top: 0; color: #333">UPI / QR Payment</h3>
+
+        <div class="qr-box">
+          <span>
+            QR Code Placeholder<br />
+            (Map your {{company.upi}} UPI QR here)
+          </span>
+        </div>
+
+        <div>UPI ID: <strong>{{company.upi}}</strong></div>
+
+        <a class="paynow-btn">Pay Now</a>
+      </div>
+    </div>
         <!-- Footer -->
         <div style="
           display: flex;
@@ -669,24 +852,38 @@
 
     <!-- ================= CANCELLATION ================= -->
     <div class="pdf-page" style="
-       width: 210mm;
-        height: 297mm;
-        object-fit: cover;
+          background-image:url('{{assetsBaseUrl}}/header.png');
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
         background-size: cover;
-        background-position: center;
-        background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/Cancellation{{titlecase trip.destination}}.png');
-     
+        background-position: top;
       ">
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Cancellation Policy
+        </div>
+        <div style="padding: 2rem 4rem; color: black; font-size: 18px; line-height: 1.6; white-space: pre-line;">
+            {{cancellation}}
+        </div>
         <!-- Footer -->
         <div style="
           display: flex;
+          position: absolute;
+        bottom:0;
           align-items: center;
           justify-content: center;
           font-size: 14px;
           color: #ffffff;
           width: 210mm;
+          margin-top: 282mm;
           gap: 18px;
-          margin-top: 283mm;
         ">
             <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
             <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
@@ -709,64 +906,16 @@
                     alt="Twitter" width="35mm" />
             </a>
 
-            <span style="color: #000; font-size: 18px">@journeyrouters</span>
+            <span style="color: black; font-size: 18px">@journeyrouters</span>
 
             <a href="https://wa.me/{{customer.phone}}" target="_blank">
                 <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
-                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
+                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm" />
             </a>
         </div>
     </div>
 
-    <!-- ================= ABOUT ================= -->
-    <div class="pdf-page" style="
-        width: 210mm;
-        height: 297mm;
-        object-fit: cover;
-        background-size: cover;
-        background-position: center;
-        background-image: url(&quot;https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/about.png&quot;);
-      ">
-        <!-- Footer -->
-        <div style="
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          font-size: 14px;
-          color: #ffffff;
-          width: 210mm;
-          gap: 18px;
-          margin-top: 284mm;
-        ">
-            <span style="color: #000; font-size: 18px; font-weight: normal">Follow Us At</span>
-            <a href="https://www.instagram.com/journeyrouters/?hl=en" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/instagram.png"
-                    alt="Instagram" width="35mm" />
-            </a>
 
-            <a href="https://www.facebook.com/JourneyRouters/" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/facebook.png"
-                    alt="Facebook" width="35mm" />
-            </a>
-
-            <a href="https://in.linkedin.com/company/journeyrouters" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/linkedin.png"
-                    alt="LinkedIn" width="35mm" />
-            </a>
-
-            <a href="https://twitter.com/JourneyRouters" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/twiter.png"
-                    alt="Twitter" width="35mm" />
-            </a>
-
-            <span style="color: #000; font-size: 18px">@journeyrouters</span>
-
-            <a href="https://wa.me/{{customer.phone}}" target="_blank">
-                <img src="https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/whatApp.png"
-                    alt="WhatsApp" style="width: 18mm; margin-left: 5mm; z-index: 999" />
-            </a>
-        </div>
-    </div>
 </body>
 
 </html>
