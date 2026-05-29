@@ -144,6 +144,64 @@ function buildInvoiceContext(data) {
   };
 }
 
+// Build quotation context function (matching index.js structure + fallback data)
+function buildQuotationContext(data) {
+  const user = data.user || {
+    Email: "info@winterfellholidays.com",
+    Phone: "+919799794008",
+    fullname: "tezal negi",
+    CompanyName: "Winterfell Holidays",
+    BankName: "Indusind bank",
+    BranchName: "Indirapuram, Ghaziabad",
+    AccountNumber: "259899060977",
+    IfscCode: "INDB0000383",
+    organization: {
+      details: {
+        brandname: "Winterfell Holidays",
+        logourl: "https://d2w6ooepk5o1m0.cloudfront.net/winterfell_holidays/profile/WH_web.png",
+        website: "https://winterfellholidays.com/",
+      },
+      financials: {
+        qrurl: "https://d2w6ooepk5o1m0.cloudfront.net/winterfell_holidays/profile/WhatsApp_Image_2026-04-03_at_5.00.31_PM.jpeg"
+      }
+    }
+  };
+
+  const company = {
+    name: "Winterfell Holidays",
+    upi: "pay@winterfell"
+  };
+
+  return {
+    trip: {
+      id: data.TripId,
+      tripId: data.TripId,
+      destination: data.DestinationName,
+      days: data.Days,
+      nights: data.Nights,
+      travelDate: data.TravelDate,
+      pax: data.NoOfPax,
+    },
+    customer: {
+      name: data["Client-Name"],
+      phone: data["Client-Contact"],
+      email: data["Client-Email"],
+    },
+    pricing: {
+      totalCost: data.Costs?.TotalCost || 0,
+      currency: data.Currency || "INR",
+      priceType: data.PriceType || "Total",
+    },
+    inclusions: (data.Inclusions || []).map(i => i.item),
+    exclusions: (data.Exclusions || []).map(e => e.item),
+    itinerary: data.Itinearies || [],
+    hotels: data.Hotels || [],
+    user: user,
+    company: company,
+    assetsBaseUrl: "http://localhost:3000/public",
+  };
+}
+
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -202,190 +260,373 @@ const companydatas = {
   sk: "METADATA"
 }
 const pdfDummyData = {
-  trip: {
-    tripId: "JRP-12345",
-    destination: "DUBAI",
-    days: 5,
-    nights: 4,
-    travelDate: "15 Feb 2026",
-    pax: 2
+  "LeadId": "L-20260526-000003",
+  "TripId": "K2J3FZG",
+  "Client-Name": "krishna",
+  "Client-Contact": "78787876567",
+  "Client-Email": "krishna@gmail.com",
+  "TravelDate": "2026-09-30",
+  "TravelDateKey": 20260930,
+  "AssignDate": "2026-05-29T07:19:21.388Z",
+  "NoOfPax": 4,
+  "Child": "0",
+  "Infant": "0",
+  "Budget": 299999,
+  "DepartureCity": "mumbai",
+  "DestinationName": "Maldives",
+  "IsMultiDestination": false,
+  "Destinations": [
+    "Maldives"
+  ],
+  "Days": 4,
+  "Nights": 3,
+  "PriceType": "Total",
+  "Currency": "INR",
+  "Costs": {
+    "TotalCost": 450000,
+    "LandPackageCost": 100000,
+    "FlightCost": 0,
+    "TotalTax": 0,
+    "GSTAmount": 0,
+    "VisaCost": 350000,
+    "TCSAmount": 0
   },
-  customer: {
-    name: "John Doe",
-    phone: "9876543210",
-    email: "john.doe@example.com"
+  "GST": {
+    "WaivedOffOtps": [],
+    "Enabled": true,
+    "WaivedOffAmount": 0
   },
-  pricing: {
-    totalCost: 45000,
-    priceType: "Per Person",
-    currency: "INR"
+  "TCS": {
+    "WaivedOffOtps": [],
+    "Enabled": true,
+    "WaivedOffAmount": 0
   },
-  inclusions: [
-    "Airport Transfers",
-    "Hotel Accommodation",
-    "Daily Breakfast",
-    "City Tour",
-    "Desert Safari",
-    "Dhow Cruise"
-  ],
-  exclusions: [
-    "Airfare",
-    "Lunch & Dinner",
-    "Travel Insurance",
-    "Personal Expenses",
-    "Visa Fees"
-  ],
-  otherInclusions: [
-    "Welcome Drink",
-    "Guide Services",
-    "Entrance Fees"
-  ],
-  otherExclusions: [
-    "Tips & Gratuities",
-    "Optional Tours"
-  ],
-  itinerary: [
+  "Images": {
+    "Inclusions": [],
+    "Flights": []
+  },
+  "Hotels": [
     {
-      Day: 1,
-      Date: 1,
-      Title: "Arrival & City Tour",
-      Description: "Arrive at Dubai International Airport, transfer to hotel. Afternoon city tour including Dubai Museum, Gold Souk, and Spice Souk.",
-      ImageUrl: "https://products.journeyrouters.com/product_assets/maldives/f858133702138c559cc112fc7bffd759d001e77c.jpg"
+      "CheckInDateKey": 20260526,
+      "CheckOutDateKey": 20260527,
+      "RoomType": "suit",
+      "Category": 0,
+      "CheckInDate": "2026-05-26",
+      "Comments": "",
+      "Nights": 1,
+      "City": "mumbai",
+      "Meals": [
+        "Dinner"
+      ],
+      "Name": "Vilas Das Hotel",
+      "CheckOutDate": "2026-05-27",
+      "propertyName": "adaaran_club_rannalhi",
+      "transferType": "SpeedBoat",
+      "mealPlan": 1,
+      "noOfRoom": "suit",
+      "roomCategory": [
+        {
+          "roomtype": "standard_room",
+          "nights": [
+            "1N"
+          ],
+          "checkInDate": "2026-05-29",
+          "checkOutDate": "2026-05-30",
+          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/standard_room.png",
+          "RoomId": "standard_room"
+        },
+        {
+          "roomtype": "water_bungalow",
+          "nights": [
+            "1N"
+          ],
+          "checkInDate": "2026-05-29",
+          "checkOutDate": "2026-05-30",
+          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/water_bungalow.png",
+          "RoomId": "water_bungalow"
+        },
+        {
+          "roomtype": "standard_room",
+          "nights": [
+            "1N"
+          ],
+          "checkInDate": "2026-05-29",
+          "checkOutDate": "2026-05-30",
+          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/standard_room.png",
+          "RoomId": "standard_room"
+        },
+        {
+          "roomtype": "water_bungalow",
+          "nights": [
+            "1N"
+          ],
+          "checkInDate": "2026-05-29",
+          "checkOutDate": "2026-05-30",
+          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/water_bungalow.png",
+          "RoomId": "water_bungalow"
+        }
+      ],
+      "HotelImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/standard_room.png",
+      "PropertyId": "adaaran_club_rannalhi"
     },
     {
-      Day: 2,
-      Date: 2,
-      Title: "Desert Safari",
-      Description: "Morning at leisure. Evening desert safari with dune bashing, camel ride, and BBQ dinner under the stars.",
-      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day2.jpg"
+      "Nights": 1,
+      "Name": "hotel island",
+      "City": "dubai",
+      "RoomType": "delux",
+      "Category": "5",
+      "Meals": [
+        "Breakfast",
+        "Lunch",
+        "Dinner"
+      ],
+      "CheckInDate": "2026-05-29",
+      "CheckOutDate": "2026-05-30",
+      "Comments": "",
+      "HotelImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_prestige_vadoo/honeymoon_villa.png",
+      "PropertyId": "adaaran_prestige_vadoo",
+      "RoomImage": "",
+      "RoomId": "",
+      "propertyName": "adaaran_prestige_vadoo",
+      "transferType": "Seaplane",
+      "mealPlan": "HalfBoard",
+      "noOfRoom": "01",
+      "roomCategory": [
+        {
+          "roomtype": "sunrise_water_villa",
+          "nights": [
+            "1N"
+          ],
+          "checkInDate": "2026-05-29",
+          "checkOutDate": "2026-05-30",
+          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_prestige_vadoo/sunrise_water_villa.png",
+          "RoomId": "sunrise_water_villa"
+        },
+        {
+          "roomtype": "sunrise_water_villa",
+          "nights": [
+            "1N"
+          ],
+          "checkInDate": "2026-05-29",
+          "checkOutDate": "2026-05-30",
+          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_prestige_vadoo/sunrise_water_villa.png",
+          "RoomId": "sunrise_water_villa"
+        }
+      ]
     },
     {
-      Day: 3,
-      Date: 3,
-      Title: "Burj Khalifa & Dubai Mall",
-      Description: "Visit the world's tallest building - Burj Khalifa. Shopping at Dubai Mall and watch the Dubai Fountain show.",
-      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day3.jpg"
+      "Nights": 1,
+      "Name": "3red hotel",
+      "City": "mumbai",
+      "RoomType": "delux",
+      "Category": "4",
+      "Meals": [
+        "Breakfast",
+        "Lunch",
+        "Dinner"
+      ],
+      "CheckInDate": "2026-05-29",
+      "CheckOutDate": "2026-05-30",
+      "Comments": "",
+      "HotelImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_select_hudhuranfushi/beach_villa.png",
+      "PropertyId": "adaaran_select_hudhuranfushi",
+      "RoomImage": "",
+      "RoomId": "",
+      "propertyName": "adaaran_select_hudhuranfushi",
+      "transferType": "DomesticFlight",
+      "mealPlan": "HalfBoard",
+      "noOfRoom": "01",
+      "roomCategory": [
+        {
+          "roomtype": "family_beach_villa",
+          "nights": [
+            "1N"
+          ],
+          "checkInDate": "2026-05-29",
+          "checkOutDate": "2026-05-30",
+          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_select_hudhuranfushi/family_beach_villa.png",
+          "RoomId": "family_beach_villa"
+        }
+      ]
     },
     {
-      Day: 4,
-      Date: 4,
-      Title: "Abu Dhabi Tour",
-      Description: "Full day tour to Abu Dhabi. Visit Sheikh Zayed Grand Mosque, Emirates Palace, and Yas Island.",
-      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day4.jpg"
-    },
-    {
-      Day: 5,
-      Date: 5,
-      Title: "Dhow Cruise & Departure",
-      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
-      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
-    },
-    {
-      Day: 6,
-      Date: 6,
-      Title: "Dhow Cruise & Departurse",
-      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
-      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
+      "Nights": 1,
+      "Name": "4th hotel",
+      "City": "mumbai",
+      "RoomType": "test",
+      "Category": "5star",
+      "Meals": [
+        "Breakfast",
+        "Lunch",
+        "Dinner"
+      ],
+      "CheckInDate": "2026-05-29",
+      "CheckOutDate": "2026-05-30",
+      "Comments": "",
+      "HotelImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/atmosphere_kanifushi/kanifushi_grand_pool_villa.png",
+      "PropertyId": "atmosphere_kanifushi",
+      "RoomImage": "",
+      "RoomId": "",
+      "propertyName": "atmosphere_kanifushi",
+      "transferType": "DomesticFlight",
+      "mealPlan": "FullBoard",
+      "noOfRoom": "01",
+      "roomCategory": [
+        {
+          "roomtype": "sunset_beach_villa",
+          "nights": [
+            "1N"
+          ],
+          "checkInDate": "2026-05-29",
+          "checkOutDate": "2026-05-30",
+          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/atmosphere_kanifushi/sunset_beach_villa.png",
+          "RoomId": "sunset_beach_villa"
+        }
+      ]
     }
   ],
-  hotels: [
+  "Inclusions": [
     {
-      City: "Dubai",
-      Name: "Burj Al Arab",
-      RoomType: "Deluxe Suite",
-      Category: 5,
-      CheckInDate: "15 Feb 2026",
-      CheckOutDate: "17 Feb 2026",
-      Meals: ["Breakfast"]
+      "item": "Daily Breakfast"
     },
     {
-      City: "Dubai",
-      Name: "Atlantis The Palm",
-      RoomType: "Ocean View Room",
-      Category: 5,
-      CheckInDate: "17 Feb 2026",
-      CheckOutDate: "19 Feb 2026",
-      Meals: ["Breakfast", "Dinner"]
+      "item": "Airport Transfers"
+    },
+    {
+      "item": "Entrance Fees"
+    },
+    {
+      "item": "All GST & Taxes"
+    },
+    {
+      "item": "Sightseeing"
+    },
+    {
+      "item": "Tour Guide"
+    },
+    {
+      "item": "Accommodation"
+    },
+    {
+      "item": "Entrance Fees"
+    },
+    {
+      "item": "Tour Guide"
+    },
+    {
+      "item": "Travel Insurance"
+    },
+    {
+      "item": "Entrance Fees"
     }
   ],
-  flags: {
-    hasHotels: true
+  "Exclusions": [
+    {
+      "item": "Emergency Costs"
+    },
+    {
+      "item": "Early Check-in"
+    },
+    {
+      "item": "Tips & Gratuities"
+    },
+    {
+      "item": "Extra Meals"
+    },
+    {
+      "item": "Visa Fees"
+    },
+    {
+      "item": "Emergency Costs"
+    },
+    {
+      "item": "International Flights"
+    },
+    {
+      "item": "Emergency Costs"
+    },
+    {
+      "item": "Optional Tours"
+    },
+    {
+      "item": "Extra Meals"
+    },
+    {
+      "item": "Visa Fees"
+    },
+    {
+      "item": "International Flights"
+    }
+  ],
+  "Itinearies": [
+    {
+      "Activities": "",
+      "Description": "Perched high above emerald rice paddies and lush jungles, the Bali Swing offers an exclusive, breathtaking panorama. Feel the exhilarating rush of wind as you soar gracefully, suspended between sky and earth. This isn't just a swing; it's a moment of profound freedom, a luxurious embrace of Bali's unparalleled natural beauty. Capture iconic photographs and memories, enveloped in an atmosphere of serene adventure and sophisticated wonder. An unforgettable ascent into paradise awaits your discerning spirit.\n\nIndulge in an exquisite, private candlelit dinner at Sadara, where the gentle ocean breeze caresses your senses under a canopy of stars. Savour a gourmet feast, impeccably served, as the rhythmic lull of the waves provides a symphony for your intimate evening. This bespoke experience, set against Bali's stunning coastline, promises unparalleled romance and cherished memories, crafted exclusively for you.",
+      "OtherActivityImages": [
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/sadara_candle_light_dinner1772221869648f1064e.jpg"
+      ],
+      "Title": "Soar Above Bali's Jungle: An Elevated Escape, Bali Sadara: Infinite Love, Candlelit Ocean Whispers",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
+      "Activity": "Bali Swing, Sadara Candle Light Dinner",
+      "Date": "2026-09-30",
+      "DateKey": 20260930
+    },
+    {
+      "Description": "Perched high above emerald rice paddies and lush jungles, the Bali Swing offers an exclusive, breathtaking panorama. Feel the exhilarating rush of wind as you soar gracefully, suspended between sky and earth. This isn't just a swing; it's a moment of profound freedom, a luxurious embrace of Bali's unparalleled natural beauty. Capture iconic photographs and memories, enveloped in an atmosphere of serene adventure and sophisticated wonder. An unforgettable ascent into paradise awaits your discerning spirit.",
+      "OtherActivityImages": [
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg"
+      ],
+      "Title": "Soar Above Bali's Jungle: An Elevated Escape",
+      "Activity": "Bali Swing",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
+      "day": 2,
+      "Date": "2026-10-01",
+      "DateKey": 20261001
+    },
+    {
+      "Description": "Indulge in an exclusive journey through Bali's lush, emerald coffee plantations. Awaken your senses to the rich, earthy aromas as you discover the intricate craftsmanship behind the island's renowned beans. Experience unparalleled serenity amidst verdant landscapes, sipping freshly brewed artisanal coffee. This private immersion offers a sophisticated blend of natural beauty and premium indulgence, revealing the unique legacy of Balinese coffee culture in a truly captivating atmosphere, tailored for discerning connoisseurs.\n\nIndulge in an exquisite, private candlelit dinner at Sadara, where the gentle ocean breeze caresses your senses under a canopy of stars. Savour a gourmet feast, impeccably served, as the rhythmic lull of the waves provides a symphony for your intimate evening. This bespoke experience, set against Bali's stunning coastline, promises unparalleled romance and cherished memories, crafted exclusively for you.\n\nPerched high above emerald rice paddies and lush jungles, the Bali Swing offers an exclusive, breathtaking panorama. Feel the exhilarating rush of wind as you soar gracefully, suspended between sky and earth. This isn't just a swing; it's a moment of profound freedom, a luxurious embrace of Bali's unparalleled natural beauty. Capture iconic photographs and memories, enveloped in an atmosphere of serene adventure and sophisticated wonder. An unforgettable ascent into paradise awaits your discerning spirit.\n\nStep into Ubud's ancient Monkey Forest, a sanctuary where emerald canopies filter the sun, revealing playful, revered inhabitants. Experience a unique immersion into Bali's spiritual heart, far from the ordinary. Wander through lush, moss-covered temples and towering banyan trees, listening to the jungle's symphony. This exclusive encounter offers an unparalleled connection with nature's wild elegance, a truly bespoke journey for the discerning traveler.",
+      "OtherActivityImages": [
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/coffee_plantation1772220377243bf0700.jpg",
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/sadara_candle_light_dinner1772221869648f1064e.jpg",
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/monkey_forest1772221852093efcfda.jpg"
+      ],
+      "Title": "Sip Bali's Essence: A Luxury Coffee Plantation Escape, Bali Sadara: Infinite Love, Candlelit Ocean Whispers, Soar Above Bali's Jungle: An Elevated Escape, Enchanting Ubud: Sacred Monkeys, Timeless Jungle Beauty",
+      "Activity": "Coffee Plantation, Sadara Candle Light Dinner, Bali Swing, Monkey Forest",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/bali/coffee_plantation1772220377243bf0700.jpg",
+      "day": 3,
+      "Date": "2026-10-02",
+      "DateKey": 20261002
+    },
+    {
+      "Description": "Indulge in an exquisite, private candlelit dinner at Sadara, where the gentle ocean breeze caresses your senses under a canopy of stars. Savour a gourmet feast, impeccably served, as the rhythmic lull of the waves provides a symphony for your intimate evening. This bespoke experience, set against Bali's stunning coastline, promises unparalleled romance and cherished memories, crafted exclusively for you.\n\nPerched high above emerald rice paddies and lush jungles, the Bali Swing offers an exclusive, breathtaking panorama. Feel the exhilarating rush of wind as you soar gracefully, suspended between sky and earth. This isn't just a swing; it's a moment of profound freedom, a luxurious embrace of Bali's unparalleled natural beauty. Capture iconic photographs and memories, enveloped in an atmosphere of serene adventure and sophisticated wonder. An unforgettable ascent into paradise awaits your discerning spirit.\n\nEmbark on an extraordinary photographic journey at Toya Devasya, where Bali's dramatic volcanic landscape meets serene hot springs. Witness mist-kissed mornings unfold into golden hour splendor, providing a breathtaking canvas for your love story. Our exclusive session captures your cherished moments amidst this primeval beauty, offering an intimate, sophisticated experience. Feel the earth's ancient warmth as professional artistry immortalizes your bond, creating timeless memories framed by nature's grandeur and unparalleled tranquility.\n\nStep into an unparalleled world at Bali's premier wildlife sanctuary. Meander through lush, meticulously designed landscapes, discovering a curated collection of exotic animals thriving in pristine, spacious habitats. Experience intimate, personalized encounters and exclusive behind-the-scenes access, transforming your visit into a journey of discovery. Embrace the serene, harmonious atmosphere, a perfect fusion of wild grandeur and refined comfort, ensuring unforgettable memories of Bali’s captivating natural heritage.",
+      "OtherActivityImages": [
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/sadara_candle_light_dinner1772221869648f1064e.jpg",
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/toya_devasya_couple_photo177222191534430f89d.jpg",
+        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_zoo17722215905504c698d.jpg"
+      ],
+      "Title": "Bali Sadara: Infinite Love, Candlelit Ocean Whispers, Soar Above Bali's Jungle: An Elevated Escape, Toya Devasya: Bali's Fiery Heart, Your Love Illuminated., Exclusive Wildlife Immersion: Bali's Pristine Sanctuary",
+      "Activity": "Sadara Candle Light Dinner, Bali Swing, Toya Devasya Couple Photo, Bali Zoo",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/bali/sadara_candle_light_dinner1772221869648f1064e.jpg",
+      "day": 4,
+      "Date": "2026-10-03",
+      "DateKey": 20261003
+    }
+  ],
+  "CreatedAt": "2026-05-29T07:05:48.741Z",
+  "LastUpdateStatus": {
+    "UpdatedBy": "Draft",
+    "UpdatedTime": "2026-05-29T07:05:48.741Z"
   },
-  company: {
-    name: "Journey 5g",
-    email: "devesh@journeyrouters.com",
-    address: "Saket ,45Building ",
-    phone: "78u878787897987",
-    bankName: "Indian Banks",
-    branchName: "Faridabad Branch",
-    accountNumber: "78785366333",
-    ifsc: "blb09787888",
-    gst: "27AAAAA0000A1Z5",
-    currency: "INR",
-    upi: "devesh@journeyrouters@paytm"
-  },
-  user: {
-    organization: companydatas,
-    Email: "info@winterfellholidays.com",
-    company: "WH",
-    createdate: "2026-03-26T08:00:54.666278+00:00",
-    fullname: "tezal negi",
-    plan_id: "premium",
-    role: "admin",
-    stripe_customer_id: "",
-    subscription_end_date: "2026-05-02T18:34:48.676172+00:00",
-    subscription_status: "active",
-    Phone: "+919799794008"
-  },
-  organization: {
-    updatedate: "2026-03-26T08:00:54.666278+00:00",
-    settings: {
-      language: "en",
-      plan: "premium",
-      timezone: "asia/kolkata",
-      status: "active"
-    },
-    createdate: "2026-03-26T08:00:54.666278+00:00",
-    company: "WH",
-    contact: {
-      officephone: "+919799794008",
-      address: "H-213, D Block, Sector 63, Noida, Uttar Pradesh 201309",
-      billingemail: "info@winterfellholidays.com",
-      supportemail: "info@winterfellholidays.com"
-    },
-    financials: {
-      accountnumber: "259899060977",
-      qrurl: "https://d2w6ooepk5o1m0.cloudfront.net/winterfell_holidays/profile/WhatsApp_Image_2026-04-03_at_5.00.31_PM.jpeg",
-      currency: "INR",
-      bankname: "Indusind bank",
-      ifsc: "INDB0000383",
-      upiid: "",
-      branch: "Indirapuram, Ghaziabad"
-    },
-    preferences: {
-      invoicepdf: "a9c5a119555821f83e3f7b22b75e6ea850dc624f7a8877084a4dda7629770ffd.hbs",
-      quotationpdf: "39f3872c101bdcfbc003d05b09e92adfada423a0f86f5c1432a4c643647bd624.hbs"
-    },
-    details: {
-      tagline: "",
-      website: "https://winterfellholidays.com/",
-      brandname: "Winterfell Holidays",
-      companyname: "winterfell holidays",
-      logourl: "https://d2w6ooepk5o1m0.cloudfront.net/winterfell_holidays/profile/WH_web.png"
-    },
-    compliance: {
-      gstnumber: "07aadfw9948a1zy",
-      pan: "",
-      registrationnumber: "",
-      taxregion: "Delhi, India"
-    },
-    companygstnumber: "07AADFW9948A1ZY",
-    sk: "METADATA"
-  },
-  access_restricted: false,
-  cancellation: "Cancellation Policy:\n\n• 30+ days before departure: 10% cancellation charge\n• 15-29 days before departure: 25% cancellation charge\n• 7-14 days before departure: 50% cancellation charge\n• Less than 7 days before departure: 100% cancellation charge\n• No-show: No refund\n\nAll cancellations must be made in writing. Refunds will be processed within 15 working days.",
-  assetsBaseUrl: "http://localhost:3000/public"
-};
+  "TravelEndDate": "2026-10-03",
+  "TravelEndDateKey": 20261003,
+  "OutboundFlight": {},
+  "AssignDateKey": 20260529,
+  "company": "WH",
+  "adminemailid": "info@winterfellholidays.com"
+}
 
 
 // Dummy data for Invoice template (matching the actual API data structure)
@@ -638,51 +879,85 @@ function loadTemplate() {
   }
 }
 
-function renderTemplate() {
-  if (!cachedTemplate) {
-    if (!loadTemplate()) {
-      return "<html><body><h1>Error loading template</h1></body></html>";
-    }
-  }
-
+function renderTemplate(targetTemplateFile, isInv) {
   try {
-    const rawData = isInvoice ? invoiceDummyData : pdfDummyData;
-    const processedData = isInvoice ? buildInvoiceContext(rawData) : rawData;
-    return cachedTemplate(processedData);
+    let templateHtml = fs.readFileSync(targetTemplateFile, "utf8");
+
+    // Load CSS if exists
+    let cssContent = "";
+    const targetCssPath = isInv
+      ? path.join(__dirname, "template", "invoice.css")
+      : path.join(__dirname, "template", "PreviewPdf.css");
+    try {
+      cssContent = fs.readFileSync(targetCssPath, "utf8");
+    } catch (err) {
+      // Ignored
+    }
+
+    // Inline CSS or use external link
+    if (cssContent) {
+      templateHtml = templateHtml.replace(
+        '<link rel="stylesheet" href="{{assetsBaseUrl}}/PreviewPdf.css" />',
+        `<style>${cssContent}</style>`
+      );
+    }
+
+    const compiled = Handlebars.compile(templateHtml);
+    const rawData = isInv ? invoiceDummyData : pdfDummyData;
+    const processedData = isInv ? buildInvoiceContext(rawData) : buildQuotationContext(rawData);
+    return compiled(processedData);
   } catch (err) {
     console.error("❌ Error rendering template:", err.message);
     return `<html><body><h1>Template rendering error: ${err.message}</h1></body></html>`;
   }
 }
 
-// Initialize template and CSS paths
+// Initialize template and CSS paths for primary watcher
 if (isInvoice) {
   templateFile = path.join(__dirname, "template", "invoiceip.hbs");
   cssPath = path.join(__dirname, "template", "invoice.css");
 } else {
-  templateFile = path.join(__dirname, "template", "pdf.hbs");
+  templateFile = path.join(__dirname, "template", "airlinepdf.hbs");
   cssPath = path.join(__dirname, "template", "PreviewPdf.css");
 }
 
 // Watch for template changes
 fs.watchFile(templateFile, { interval: 1000 }, (curr, prev) => {
-  console.log("🔄 Template file changed, reloading...");
-  loadTemplate();
+  console.log("🔄 Primary template file changed, reloading...");
 });
 
 // Watch for CSS changes
 fs.watchFile(cssPath, { interval: 1000 }, (curr, prev) => {
   console.log("🔄 CSS file changed, reloading...");
-  loadTemplate();
 });
-
-// Initial template load
-loadTemplate();
 
 // Routes
 app.get("/", (req, res) => {
-  const html = renderTemplate();
-  res.send(html);
+  res.send(renderTemplate(templateFile, isInvoice));
+});
+
+app.get("/airline", (req, res) => {
+  res.send(renderTemplate(path.join(__dirname, "template", "airlinepdf.hbs"), false));
+});
+
+app.get("/minimal", (req, res) => {
+  res.send(renderTemplate(path.join(__dirname, "template", "minimalpdf.hbs"), false));
+});
+
+app.get("/nature", (req, res) => {
+  res.send(renderTemplate(path.join(__dirname, "template", "naturepdf.hbs"), false));
+});
+
+app.get("/pdf", (req, res) => {
+  res.send(renderTemplate(path.join(__dirname, "template", "pdf.hbs"), false));
+});
+
+app.get("/pdf2", (req, res) => {
+  res.send(renderTemplate(path.join(__dirname, "template", "pdf2.hbs"), false));
+});
+
+app.get("/invoice", (req, res) => {
+  res.send(renderTemplate(path.join(__dirname, "template", "invoiceip.hbs"), true));
 });
 
 app.get("/json", (req, res) => {

@@ -1,0 +1,1163 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <title>Journey Routers - Elite Flight Class</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      @page {
+        size: A4;
+        margin: 0;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Plus Jakarta Sans", sans-serif;
+        background: #0f172a;
+        color: #1e293b;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+        .pdf-page {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            overflow: hidden;
+            background: #ffffff;
+            box-sizing: border-box;
+            padding: 25mm 20mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .pdf-page:not(:first-child), .pdf-page-dynamic:not(:first-child) {
+            break-before: page;
+        }
+
+        @page innerPage {
+            size: A4;
+            margin-top: 25mm;
+            margin-bottom: 20mm;
+            margin-left: 0;
+            margin-right: 0;
+            background-color: #ffffff;
+            
+            @top-center {
+                content: element(runningHeader);
+            }
+            @bottom-center {
+                content: element(runningFooter);
+            }
+        }
+
+        .pdf-page-dynamic {
+            page: innerPage;
+            width: 210mm;
+            position: relative;
+            background: #ffffff;
+            overflow: visible;
+            box-sizing: border-box;
+            padding: 0 20mm;
+            min-height: auto;
+            height: auto;
+            display: block;
+        }
+
+        .pdf-page-dynamic .fids-header {
+            position: running(runningHeader);
+        }
+
+        .airline-footer-dynamic {
+            position: running(runningFooter);
+        }
+
+        /* Ensure running elements are styled correctly in their margin boxes */
+        .pdf-page-dynamic .fids-header,
+        .pagedjs_margin-top-center .fids-header,
+        .airline-footer-dynamic,
+        .pagedjs_margin-bottom-center .airline-footer-dynamic {
+            width: 100%;
+            box-sizing: border-box;
+            padding-left: 20mm;
+            padding-right: 20mm;
+        }
+
+        /* Premium On-Screen Preview Layout */
+        @media screen {
+            body {
+                background: #0f172a !important;
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                overflow-y: auto !important;
+                padding: 30px 0 !important;
+            }
+
+            /* Center and style the pagedjs pages */
+            .pagedjs_pages {
+                display: flex !important;
+                flex-direction: column !important;
+                align-items: center !important;
+                width: 100% !important;
+                gap: 30px !important;
+            }
+
+            .pagedjs_page {
+                background: #ffffff !important;
+                box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6) !important;
+                border-radius: 8px !important;
+                border: none !important;
+                margin: 0 !important;
+            }
+
+            /* Ensure first page (cover) is dark background */
+            .pagedjs_page:first-child,
+            .pagedjs_page:first-child .pagedjs_sheet {
+                background-color: #0b0f19 !important;
+            }
+        }
+
+      /* Typography */
+      .font-mono {
+        font-family: "JetBrains Mono", monospace;
+      }
+      .text-orange {
+        color: #ff5a1f;
+      }
+      .text-blue {
+        color: #0284c7;
+      }
+      .text-dim {
+        color: #64748b;
+      }
+
+      .heading-xl {
+        font-size: 56px;
+        font-weight: 800;
+        letter-spacing: -2px;
+        line-height: 1;
+        margin: 0;
+        color: #0f172a;
+      }
+      .heading-l {
+        font-size: 28px;
+        font-weight: 800;
+        letter-spacing: -0.5px;
+        margin: 0;
+        color: #0f172a;
+        text-transform: uppercase;
+      }
+      .heading-m {
+        font-size: 18px;
+        font-weight: 700;
+        color: #0f172a;
+        margin: 0;
+      }
+
+      /* FIDS Page Header (Flight Information Display System) */
+      .fids-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 2px solid #0f172a;
+        padding-bottom: 12px;
+        margin-bottom: 20px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        color: #64748b;
+      }
+
+      .fids-header strong {
+        color: #0f172a;
+      }
+
+      .fids-badge {
+        background: #ff5a1f;
+        color: white;
+        padding: 2px 8px;
+        border-radius: 4px;
+        font-weight: 700;
+      }
+
+      /* Flight-Style Boarding Pass Ticket */
+      .boarding-pass-card {
+        background: #f8fafc;
+        border: 2px dashed #cbd5e1;
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 30px;
+        position: relative;
+      }
+
+      .boarding-pass-card::before,
+      .boarding-pass-card::after {
+        content: "";
+        position: absolute;
+        width: 20px;
+        height: 20px;
+        background: white;
+        border-radius: 50%;
+        top: 50%;
+        transform: translateY(-50%);
+      }
+      .boarding-pass-card::before {
+        left: -11px;
+        border-right: 2px dashed #cbd5e1;
+      }
+      .boarding-pass-card::after {
+        right: -11px;
+        border-left: 2px dashed #cbd5e1;
+      }
+
+      .bp-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 15px;
+      }
+
+      .bp-item {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .bp-label {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #94a3b8;
+        margin-bottom: 4px;
+      }
+
+      .bp-value {
+        font-size: 14px;
+        font-weight: 700;
+        color: #0f172a;
+        text-transform: uppercase;
+      }
+
+      /* Flight Path Connectors */
+      .flight-path {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        color: #ff5a1f;
+      }
+
+      .flight-path span {
+        color: #0f172a;
+      }
+
+      /* Luxury Cards */
+      .airline-card {
+        background: white;
+        border: 1px solid #e2e8f0;
+        padding: 24px;
+        border-radius: 12px;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.03);
+        margin-bottom: 24px;
+      }
+
+      /* Inclusions / Exclusions Boarding Layout */
+      .inc-exc-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        height: 100%;
+      }
+
+      .access-block {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .access-title {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 1.5px;
+        padding: 10px 16px;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .access-block.inclusions .access-title {
+        background: #f0fdf4;
+        color: #166534;
+        border: 1px solid #bbf7d0;
+      }
+
+      .access-block.exclusions .access-title {
+        background: #fef2f2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+      }
+
+      .access-list-item {
+        padding: 12px 16px;
+        border-bottom: 1px solid #f1f5f9;
+        font-size: 12px;
+        font-weight: 500;
+        color: #334155;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+
+      .access-list-item::before {
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 800;
+      }
+      .inclusions .access-list-item::before {
+        content: "✓";
+        color: #16a34a;
+      }
+      .exclusions .access-list-item::before {
+        content: "✕";
+        color: #dc2626;
+      }
+
+      /* Timeline path styling */
+      .runway-timeline {
+        position: relative;
+        padding-left: 40px;
+        margin-top: 20px;
+      }
+
+      .runway-timeline::before {
+        content: "";
+        position: absolute;
+        left: 15px;
+        top: 5px;
+        bottom: 5px;
+        width: 2px;
+        background: repeating-linear-gradient(
+          to bottom,
+          #0f172a,
+          #0f172a 10px,
+          transparent 10px,
+          transparent 20px
+        );
+      }
+
+      .timeline-stop {
+        position: relative;
+        padding-bottom: 30px;
+      }
+
+      .timeline-stop::before {
+        content: "✈";
+        position: absolute;
+        left: -33px;
+        top: 0px;
+        width: 18px;
+        height: 18px;
+        background: #ffffff;
+        color: #ff5a1f;
+        font-size: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: rotate(90deg);
+        z-index: 10;
+      }
+
+      .stop-gate {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 9px;
+        font-weight: 700;
+        color: #ff5a1f;
+        margin-bottom: 2px;
+      }
+
+      .stop-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: #0f172a;
+      }
+
+      /* Plane window image mask */
+      .plane-window-wrapper {
+        width: 100%;
+        height: 100%;
+        padding: 10px;
+        box-sizing: border-box;
+      }
+
+      .plane-window-frame {
+        width: 100%;
+        height: 520px;
+        border-radius: 120px 120px 20px 20px;
+        overflow: hidden;
+        border: 8px solid #f1f5f9;
+        box-shadow:
+          0 20px 25px -5px rgba(0, 0, 0, 0.1),
+          0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        position: relative;
+      }
+
+      .plane-window-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .plane-window-overlay {
+        position: absolute;
+        inset: 0;
+        box-shadow: inset 0 0 40px rgba(0, 0, 0, 0.3);
+        pointer-events: none;
+      }
+
+      /* Footer styling */
+      .airline-footer {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-top: 1px solid #f1f5f9;
+        padding-top: 15px;
+        font-family: "JetBrains Mono", monospace;
+        font-size: 8px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #94a3b8;
+      }
+
+      .airline-footer strong {
+        color: #475569;
+      }
+
+      /* QR Scanner Framing */
+      .qr-scanner-frame {
+        position: relative;
+        width: 180px;
+        height: 180px;
+        background: white;
+        padding: 15px;
+        border-radius: 12px;
+        box-sizing: border-box;
+      }
+
+      .qr-scanner-frame::before,
+      .qr-scanner-frame::after,
+      .qr-scanner-frame span::before,
+      .qr-scanner-frame span::after {
+        content: "";
+        position: absolute;
+        width: 16px;
+        height: 16px;
+        border-color: #ff5a1f;
+        border-style: solid;
+      }
+
+      .qr-scanner-frame::before {
+        top: 0;
+        left: 0;
+        border-width: 3px 0 0 3px;
+        border-top-left-radius: 12px;
+      }
+      .qr-scanner-frame::after {
+        top: 0;
+        right: 0;
+        border-width: 3px 3px 0 0;
+        border-top-right-radius: 12px;
+      }
+      .qr-scanner-frame span::before {
+        bottom: 0;
+        left: 0;
+        border-width: 0 0 3px 3px;
+        border-bottom-left-radius: 12px;
+      }
+      .qr-scanner-frame span::after {
+        bottom: 0;
+        right: 0;
+        border-width: 0 3px 3px 0;
+        border-bottom-right-radius: 12px;
+      }
+    </style>
+    <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
+  </head>
+
+  <body>
+    <!-- ================= PAGE 1 : COVER ================= -->
+    <div
+      class="pdf-page"
+      style="background: #0b0f19; color: white; padding: 30mm 20mm 20mm 20mm;"
+    >
+      <!-- Background Grid Graphic -->
+      <div
+        style="position: absolute; inset: 0; background-image: radial-gradient(rgba(255, 90, 31, 0.15) 1px, transparent 1px); background-size: 24px 24px; opacity: 0.7; z-index: 1;"
+      ></div>
+
+      <!-- Elegant Aviation Lines -->
+      <div
+        style="position: absolute; top: 15%; left: 0; right: 0; height: 1px; background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2) 20%, rgba(255, 255, 255, 0.2) 80%, transparent); z-index: 1;"
+      ></div>
+      <div
+        style="position: absolute; top: 15%; right: 20%; transform: translate(50%, -50%) rotate(45deg); font-size: 14px; color: #ff5a1f; z-index: 2;"
+      >✈</div>
+
+      <div
+        style="position: relative; z-index: 5; display: flex; flex-direction: column; justify-content: space-between; height: 100%;"
+      >
+        <!-- Header operator info -->
+        <div
+          style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid rgba(255, 255, 255, 0.1); padding-bottom: 20px;"
+        >
+          <div
+            class="font-mono"
+            style="font-size: 10px; letter-spacing: 2px; text-transform: uppercase;"
+          >OPERATOR // <strong>{{user.CompanyName}}</strong></div>
+          <div
+            class="font-mono"
+            style="font-size: 9px; letter-spacing: 1px; color: #ff5a1f; border: 1px solid #ff5a1f; padding: 2px 10px; border-radius: 4px;"
+          >FIRST CLASS PORTFOLIO</div>
+        </div>
+
+        <!-- Destination focus area -->
+        <div style="margin-top: 40px;">
+          <div
+            class="font-mono"
+            style="font-size: 11px; text-transform: uppercase; letter-spacing: 6px; color: #ff5a1f; margin-bottom: 15px;"
+          >DESTINATION SECTOR</div>
+          <h1
+            class="heading-xl"
+            style="color: white; font-size: 72px; line-height: 0.9; text-transform: uppercase; letter-spacing: -2px;"
+          >{{trip.destination}}</h1>
+          <div
+            style="width: 80px; height: 4px; background: #ff5a1f; margin-top: 25px;"
+          ></div>
+        </div>
+
+        <!-- Boarding Details jacket -->
+        <div
+          style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; padding: 30px; margin-top: 40px; backdrop-filter: blur(10px);"
+        >
+          <div
+            class="font-mono"
+            style="font-size: 10px; text-transform: uppercase; color: #ff5a1f; letter-spacing: 2px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 10px; margin-bottom: 20px;"
+          >PASSENGER BOARDING MANIFEST</div>
+          <div
+            style="display: grid; grid-template-columns: 2fr 1fr; gap: 20px;"
+          >
+            <div>
+              <div
+                class="font-mono"
+                style="font-size: 8px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;"
+              >Passenger Name</div>
+              <div
+                style="font-size: 20px; font-weight: 700; color: white;"
+              >{{customer.name}}</div>
+            </div>
+            <div>
+              <div
+                class="font-mono"
+                style="font-size: 8px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 4px;"
+              >Service ID</div>
+              <div
+                class="font-mono"
+                style="font-size: 16px; font-weight: 700; color: white;"
+              >JRP-{{trip.id}}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Footer block -->
+        <div
+          style="display: flex; justify-content: space-between; align-items: flex-end; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 20px; margin-top: 40px;"
+        >
+          <div
+            class="font-mono"
+            style="font-size: 8px; color: rgba(255,255,255,0.4); line-height: 1.6;"
+          >
+            SYSTEM GATE: CORE_ELITE_V4<br />
+            ISSUED ON: 2026_RUNWAY
+          </div>
+          <div
+            class="font-mono"
+            style="font-size: 9px; text-align: right; color: rgba(255,255,255,0.6);"
+          >
+            {{user.Email}}<br />
+            <strong>CONTACT@OPERATOR</strong>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================= PAGE 2 : OVERVIEW ================= -->
+    <div class="pdf-page">
+      <!-- FIDS Header -->
+      <div class="fids-header">
+        <div>operator: <strong>{{user.CompanyName}}</strong></div>
+        <div class="flight-path">DEP <span>➔</span> {{trip.destination}}</div>
+        <div>flight class: <span class="fids-badge">elite</span></div>
+      </div>
+
+      <!-- Main Title -->
+      <div>
+        <div
+          class="font-mono text-orange"
+          style="font-size: 10px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px;"
+        >FLIGHT MANIFEST</div>
+        <h2 class="heading-l">Expedition Overview</h2>
+        <div
+          style="width: 40px; height: 3px; background: #0f172a; margin-top: 15px; margin-bottom: 25px;"
+        ></div>
+      </div>
+
+      <!-- Boarding Pass Metric Card -->
+      <div class="boarding-pass-card">
+        <div class="bp-grid">
+          <div class="bp-item">
+            <span class="bp-label">Duration</span>
+            <span class="bp-value">{{trip.days}}D / {{trip.nights}}N</span>
+          </div>
+          <div class="bp-item">
+            <span class="bp-label">Cabin Class</span>
+            <span class="bp-value">{{#if
+                trip.hotelCategory
+              }}{{trip.hotelCategory}} Star{{else}}Luxury{{/if}}</span>
+          </div>
+          <div class="bp-item">
+            <span class="bp-label">Passengers</span>
+            <span class="bp-value">{{trip.pax}} Travelers</span>
+          </div>
+          <div class="bp-item">
+            <span class="bp-label">Sector</span>
+            <span
+              class="bp-value"
+              style="color: #ff5a1f;"
+            >{{trip.destination}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Two Column Content Grid -->
+      <div
+        style="display: grid; grid-template-columns: 1.6fr 1.1fr; gap: 30px; align-items: start; flex: 1;"
+      >
+        <!-- Left: Highlights -->
+        <div class="airline-card" style="margin-bottom: 0; min-height: 240px;">
+          <div
+            class="font-mono text-orange"
+            style="font-size: 10px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 15px; text-transform: uppercase;"
+          >Flight Log Highlights</div>
+          <ul style="padding: 0; margin: 0; list-style: none;">
+            {{#each highlights}}
+              <li
+                style="padding: 10px 0; border-bottom: 1px solid #f1f5f9; font-size: 12px; font-weight: 500; color: #334155; display: flex; align-items: center; gap: 12px;"
+              >
+                <span
+                  class="text-orange"
+                  style="font-size: 10px; transform: rotate(90deg);"
+                >✈</span>
+                {{this}}
+              </li>
+            {{/each}}
+          </ul>
+        </div>
+
+        <!-- Right: Premium Cost ticket stub -->
+        <div
+          style="background: #0f172a; color: white; border-radius: 12px; padding: 24px; text-align: center; border-left: 4px solid #ff5a1f; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);"
+        >
+          <div
+            class="font-mono"
+            style="font-size: 9px; color: rgba(255,255,255,0.4); letter-spacing: 2px; text-transform: uppercase;"
+          >TOTAL AIRFARE & SERVICES</div>
+          <div
+            class="font-mono"
+            style="font-size: 36px; font-weight: 800; color: white; margin: 15px 0;"
+          >₹{{pricing.totalCost}}</div>
+          <div
+            style="width: 100%; height: 1px; background: rgba(255,255,255,0.1); margin: 15px 0;"
+          ></div>
+          <div
+            class="font-mono"
+            style="font-size: 9px; color: #ff5a1f; letter-spacing: 1px;"
+          >ALL INCLUSIVE EXPEDITION PACKAGE</div>
+          <div
+            style="font-size: 10px; color: rgba(255,255,255,0.5); margin-top: 10px; line-height: 1.4;"
+          >Valued for land-only services in connection with sector
+            {{trip.destination}}.</div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="airline-footer">
+        <div>flight record: <strong>JRP-{{trip.id}}</strong></div>
+        <div>page 02</div>
+        <div>support: <strong>{{user.Email}}</strong></div>
+      </div>
+    </div>
+
+    <!-- ================= PAGE 3 : INCLUSIONS ================= -->
+    <div class="pdf-page">
+      <!-- FIDS Header -->
+      <div class="fids-header">
+        <div>operator: <strong>{{user.CompanyName}}</strong></div>
+        <div class="flight-path">SECTOR
+          <span>➔</span>
+          {{trip.destination}}</div>
+        <div>flight class: <span class="fids-badge">elite</span></div>
+      </div>
+
+      <!-- Main Title -->
+      <div>
+        <div
+          class="font-mono text-orange"
+          style="font-size: 10px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px;"
+        >BOARDING ACCESS & RULES</div>
+        <h2 class="heading-l">Access & Baggage Policies</h2>
+        <div
+          style="width: 40px; height: 3px; background: #0f172a; margin-top: 15px; margin-bottom: 25px;"
+        ></div>
+      </div>
+
+      <!-- Content columns -->
+      <div class="inc-exc-container" style="flex: 1;">
+        <!-- Inclusions -->
+        <div class="access-block inclusions">
+          <div class="access-title">
+            <span>✔</span>
+            APPROVED SECTOR SERVICES
+          </div>
+          <div class="airline-card" style="padding: 10px; flex: 1;">
+            {{#each inclusions}}
+              <div class="access-list-item">
+                {{this}}
+              </div>
+            {{/each}}
+          </div>
+        </div>
+
+        <!-- Exclusions -->
+        <div class="access-block exclusions">
+          <div class="access-title">
+            <span>✕</span>
+            RESTRICTED / DECLARED ITEMS
+          </div>
+          <div class="airline-card" style="padding: 10px; flex: 1;">
+            {{#each exclusions}}
+              <div class="access-list-item" style="color: #64748b;">
+                {{this}}
+              </div>
+            {{/each}}
+          </div>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="airline-footer">
+        <div>flight record: <strong>JRP-{{trip.id}}</strong></div>
+        <div>page 03</div>
+        <div>support: <strong>{{user.Email}}</strong></div>
+      </div>
+    </div>
+
+    <!-- ================= PAGE 4 : TIMELINE ================= -->
+    <div class="pdf-page">
+      <!-- FIDS Header -->
+      <div class="fids-header">
+        <div>operator: <strong>{{user.CompanyName}}</strong></div>
+        <div class="flight-path">SECTOR
+          <span>➔</span>
+          {{trip.destination}}</div>
+        <div>flight class: <span class="fids-badge">elite</span></div>
+      </div>
+
+      <!-- Main Title -->
+      <div>
+        <div
+          class="font-mono text-orange"
+          style="font-size: 10px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px;"
+        >ROUTE ROUTER DIARY</div>
+        <h2 class="heading-l">Expedition Flight Plan</h2>
+        <div
+          style="width: 40px; height: 3px; background: #0f172a; margin-top: 15px; margin-bottom: 25px;"
+        ></div>
+      </div>
+
+      <!-- Timeline -->
+      <div
+        style="flex: 1; display: flex; flex-direction: column; justify-content: center;"
+      >
+        <div class="runway-timeline">
+          {{#each itinerary}}
+            <div class="timeline-stop">
+              <div class="stop-gate">TERMINAL NODE GATE 0{{Day}}</div>
+              <div class="stop-title">{{Title}}</div>
+            </div>
+          {{/each}}
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="airline-footer">
+        <div>flight record: <strong>JRP-{{trip.id}}</strong></div>
+        <div>page 04</div>
+        <div>support: <strong>{{user.Email}}</strong></div>
+      </div>
+    </div>
+
+    <!-- ================= DETAIL ITINERARY ================= -->
+    <div class="pdf-page-dynamic">
+      <!-- FIDS Header -->
+      <div class="fids-header">
+        <div>operator: <strong>{{user.CompanyName}}</strong></div>
+        <div class="flight-path">SECTOR MANIFEST
+          <span>➔</span>
+          {{trip.destination}}</div>
+        <div>flight class: <span class="fids-badge">elite</span></div>
+      </div>
+
+      {{#each itinerary}}
+      <div
+        style="display: grid; grid-template-columns: 1.3fr 1fr; gap: 30px; align-items: stretch; margin-bottom: 40px; page-break-inside: avoid;"
+      >
+        <!-- Left Side Details -->
+        <div
+          style="display: flex; flex-direction: column; justify-content: space-between;"
+        >
+          <div>
+            <!-- Big Flight Index -->
+            <div style="margin-bottom: 10px;">
+              <span
+                class="font-mono text-orange"
+                style="font-size: 48px; font-weight: 800; opacity: 0.2; letter-spacing: -2px;"
+              >SECTOR 0{{Day}}</span>
+            </div>
+            <!-- Day Title -->
+            <h3
+              class="heading-l"
+              style="font-size: 24px; line-height: 1.2; margin-bottom: 20px; color: #0f172a;"
+            >{{Title}}</h3>
+            <!-- Day Description -->
+            <div
+              style="font-size: 13px; line-height: 1.8; color: #475569; font-weight: 500;"
+            >
+              {{Description}}
+            </div>
+          </div>
+
+          <div
+            style="border-top: 1px dashed #e2e8f0; padding-top: 15px; margin-top: 20px;"
+          >
+            <div
+              class="font-mono text-orange"
+              style="font-size: 8px; letter-spacing: 1.5px; text-transform: uppercase;"
+            >Day Manifest Clear</div>
+            <div
+              style="font-size: 10px; color: #94a3b8; font-weight: 600;"
+            >LOGGED ENTRY OK — AUTO APPROVED</div>
+          </div>
+        </div>
+
+        <!-- Right Side Image with luxury plane window frame -->
+        <div class="plane-window-wrapper">
+          {{#if ImageUrl}}
+            <div class="plane-window-frame">
+              <img src="{{ImageUrl}}" alt="{{Title}} image" />
+              <div class="plane-window-overlay"></div>
+            </div>
+          {{else}}
+            <div
+              class="plane-window-frame"
+              style="background: #f1f5f9; display: flex; align-items: center; justify-content: center; color: #94a3b8; font-size: 11px;"
+            >
+              <div class="font-mono">NO SECTOR ARTWORK</div>
+            </div>
+          {{/if}}
+        </div>
+      </div>
+      {{/each}}
+
+      <!-- Footer -->
+      <div class="airline-footer airline-footer-dynamic">
+          <div>flight record: <strong>JRP-{{trip.id}}</strong></div>
+          <div>SECTORS MANIFEST OF {{trip.days}} DAYS</div>
+          <div>support: <strong>{{user.Email}}</strong></div>
+      </div>
+    </div>
+
+    <!-- ================= ACCOMMODATION ================= -->
+    <div class="pdf-page-dynamic">
+      <!-- FIDS Header -->
+      <div class="fids-header">
+        <div>operator: <strong>{{user.CompanyName}}</strong></div>
+        <div class="flight-path">TRANSIT STAYS
+          <span>➔</span>
+          {{trip.destination}}</div>
+        <div>flight class: <span class="fids-badge">elite</span></div>
+      </div>
+
+      <!-- Main Title -->
+      <div>
+        <div
+          class="font-mono text-orange"
+          style="font-size: 10px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px;"
+        >ACCOMMODATION CLEARANCE</div>
+        <h2 class="heading-l">Luxury Layover Lodgings</h2>
+        <div
+          style="width: 40px; height: 3px; background: #0f172a; margin-top: 15px; margin-bottom: 25px;"
+        ></div>
+      </div>
+
+      <!-- Stays list -->
+      <div
+        style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; align-content: start; flex: 1;"
+      >
+        {{#each hotels}}
+          <div
+            class="airline-card"
+            style="display: flex; flex-direction: column; justify-content: space-between; border-top: 4px solid #0284c7; min-height: 220px; margin-bottom: 0;"
+          >
+            <div>
+              <div
+                style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 12px;"
+              >
+                <span
+                  class="font-mono text-blue"
+                  style="font-size: 9px; font-weight: 700; text-transform: uppercase; letter-spacing: 1px;"
+                >TRANSIT CITY: {{City}}</span>
+                <span
+                  class="font-mono"
+                  style="font-size: 9px; background: #f0fdfa; color: #0d9488; padding: 2px 8px; border-radius: 4px; font-weight: 700;"
+                >{{Category}}★ STAR</span>
+              </div>
+              <h3 class="heading-m" style="margin-bottom: 6px;">{{Name}}</h3>
+              <div
+                class="font-mono"
+                style="font-size: 10px; color: #64748b;"
+              >{{RoomType}}</div>
+            </div>
+
+            <div
+              style="border-top: 1px solid #f1f5f9; padding-top: 12px; margin-top: 15px; display: flex; justify-content: space-between; font-size: 11px;"
+            >
+              <div>
+                <div class="font-mono text-dim" style="font-size: 8px;">CHECK-IN
+                  (DEP)</div>
+                <strong>{{CheckInDate}}</strong>
+              </div>
+              <div style="text-align: right;">
+                <div
+                  class="font-mono text-dim"
+                  style="font-size: 8px;"
+                >CHECK-OUT (ARR)</div>
+                <strong>{{CheckOutDate}}</strong>
+              </div>
+            </div>
+          </div>
+        {{/each}}
+      </div>
+
+        <!-- Footer -->
+        <div class="airline-footer airline-footer-dynamic">
+            <div>flight record: <strong>JRP-{{trip.id}}</strong></div>
+            <div>page stay</div>
+            <div>support: <strong>{{user.Email}}</strong></div>
+        </div>
+    </div>
+
+    <!-- ================= PAYMENT ================= -->
+    <div class="pdf-page">
+      <!-- FIDS Header -->
+      <div class="fids-header">
+        <div>operator: <strong>{{user.CompanyName}}</strong></div>
+        <div class="flight-path">FINANCIAL CLEARANCE
+          <span>➔</span>
+          {{trip.destination}}</div>
+        <div>flight class: <span class="fids-badge">elite</span></div>
+      </div>
+
+      <!-- Main Title -->
+      <div>
+        <div
+          class="font-mono text-orange"
+          style="font-size: 10px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px;"
+        >TICKET CONVERSION & DEPOSIT</div>
+        <h2 class="heading-l">Secure Settlement Gate</h2>
+        <div
+          style="width: 40px; height: 3px; background: #0f172a; margin-top: 15px; margin-bottom: 25px;"
+        ></div>
+      </div>
+
+      <!-- Content -->
+      <div
+        style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 30px; align-items: start; flex: 1;"
+      >
+        <!-- Bank account card -->
+        <div class="airline-card" style="border-left: 4px solid #ff5a1f;">
+          <div
+            class="font-mono text-orange"
+            style="font-size: 11px; font-weight: 700; letter-spacing: 1.5px; margin-bottom: 20px; text-transform: uppercase;"
+          >Corporate Bank Details</div>
+
+          <div style="display: flex; flex-direction: column; gap: 15px;">
+            <div>
+              <div
+                class="font-mono text-dim"
+                style="font-size: 8px;"
+              >BENEFICIARY ACCOUNT</div>
+              <div
+                style="font-size: 14px; font-weight: 700; color: #0f172a;"
+              >{{user.CompanyName}}</div>
+            </div>
+            <div>
+              <div class="font-mono text-dim" style="font-size: 8px;">BANK /
+                INSTITUTION</div>
+              <div
+                style="font-size: 14px; font-weight: 700; color: #0f172a;"
+              >{{user.BankName}}</div>
+            </div>
+            <div
+              style="display: grid; grid-template-columns: 1.2fr 1fr; gap: 10px; border-top: 1px solid #f1f5f9; padding-top: 15px;"
+            >
+              <div>
+                <div class="font-mono text-dim" style="font-size: 8px;">ACCOUNT
+                  NUMBER</div>
+                <div
+                  class="font-mono text-orange"
+                  style="font-size: 16px; font-weight: 800;"
+                >{{user.AccountNumber}}</div>
+              </div>
+              <div>
+                <div class="font-mono text-dim" style="font-size: 8px;">IFSC
+                  ROUTING</div>
+                <div
+                  class="font-mono"
+                  style="font-size: 14px; font-weight: 700; color: #0f172a;"
+                >{{user.IfscCode}}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- QR code card -->
+        <div
+          class="airline-card"
+          style="display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; background: #f8fafc; border: 2px dashed #cbd5e1;"
+        >
+          <div
+            class="font-mono text-dim"
+            style="font-size: 9px; letter-spacing: 1px; margin-bottom: 15px; text-transform: uppercase;"
+          >Digital Wallet Ticket QR</div>
+
+          <div class="qr-scanner-frame">
+            {{#if user.qrCode}}
+              <img
+                src="{{user.qrCode}}"
+                style="width: 100%; height: 100%; object-fit: contain;"
+                alt="UPI QR Code"
+              />
+            {{else}}
+              <div
+                style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; font-size: 10px; color: #cbd5e1; font-weight: 700; text-transform: uppercase;"
+                class="font-mono"
+              >
+                QR Pending
+              </div>
+            {{/if}}
+            <span></span>
+          </div>
+
+          <div
+            class="font-mono text-orange"
+            style="margin-top: 20px; font-size: 12px; font-weight: 700;"
+          >SCAN GATE TO INITIATE</div>
+          <div
+            class="font-mono"
+            style="font-size: 10px; color: #64748b; margin-top: 4px;"
+          >{{#if
+              company.upi
+            }}{{company.upi}}{{else}}pay@journeyrouters{{/if}}</div>
+        </div>
+      </div>
+
+      <!-- Alert note -->
+      <div
+        style="padding: 16px 20px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 8px; font-size: 11px; color: #b45309; line-height: 1.5; font-weight: 500;"
+      >
+        <strong>FLIGHT REGISTRATION REQUIREMENT:</strong>
+        A copy of the electronic payment receipt / screenshot showing UTR code
+        must be reported to the issuing operator agent immediately for ticketing
+        authorization.
+      </div>
+
+      <!-- Footer -->
+      <div class="airline-footer">
+        <div>flight record: <strong>JRP-{{trip.id}}</strong></div>
+        <div>page payment</div>
+        <div>support: <strong>{{user.Email}}</strong></div>
+      </div>
+    </div>
+
+    <!-- ================= TERMS ================= -->
+    <div class="pdf-page-dynamic">
+      <!-- FIDS Header -->
+      <div class="fids-header">
+        <div>operator: <strong>{{user.CompanyName}}</strong></div>
+        <div class="flight-path">REGULATORY TERMS
+          <span>➔</span>
+          {{trip.destination}}</div>
+        <div>flight class: <span class="fids-badge">elite</span></div>
+      </div>
+
+      <!-- Main Title -->
+      <div>
+        <div
+          class="font-mono text-orange"
+          style="font-size: 10px; font-weight: 700; letter-spacing: 3px; margin-bottom: 5px;"
+        >CARRIAGE AGREEMENT</div>
+        <h2 class="heading-l">Terms & Flight Policies</h2>
+        <div
+          style="width: 40px; height: 3px; background: #0f172a; margin-top: 15px; margin-bottom: 25px;"
+        ></div>
+      </div>
+
+        <!-- Policies content container -->
+        <div style="font-size: 11px; line-height: 1.8; color: #475569; white-space: pre-line; background: #f8fafc; padding: 24px; border: 1px solid #e2e8f0; border-radius: 12px; min-height: 500px; height: auto; overflow: visible; flex: 1; font-weight: 500;">
+            {{cancellation}}
+        </div>
+
+      <!-- Signature stamp -->
+      <div
+        style="margin-top: 20px; text-align: right; display: flex; flex-direction: column; align-items: flex-end;"
+      >
+        <div
+          class="font-mono text-orange"
+          style="font-size: 14px; font-weight: 800; letter-spacing: 1px; text-transform: uppercase;"
+        >{{user.CompanyName}}</div>
+        <div
+          class="font-mono"
+          style="font-size: 8px; color: #94a3b8; margin-top: 4px;"
+        >SECURE DIGITAL VALIDATION © 2026 // ALL RIGHTS RESERVED</div>
+      </div>
+
+        <!-- Footer -->
+        <div class="airline-footer airline-footer-dynamic">
+            <div>flight record: <strong>JRP-{{trip.id}}</strong></div>
+            <div>page terms</div>
+            <div>support: <strong>{{user.Email}}</strong></div>
+        </div>
+    </div>
+
+  </body>
+
+</html>

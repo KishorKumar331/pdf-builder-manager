@@ -43,6 +43,19 @@ exports.handler = async (event) => {
       const page = await browser.newPage();
       await page.setContent(body.html, { waitUntil: "networkidle0" });
 
+      // Wait for Paged.js to finish rendering if it is present on the page
+      await page.evaluate(() => {
+        return new Promise((resolve) => {
+          if (typeof window.PagedPolyfill !== 'undefined' && document.querySelector('.pagedjs_pages')) {
+            resolve();
+          } else if (typeof window.PagedPolyfill !== 'undefined') {
+            window.addEventListener('pagedjs:ready', resolve);
+          } else {
+            resolve();
+          }
+        });
+      });
+
       const pdfBuffer = await page.pdf({
         format: "A4",
         printBackground: true,
@@ -183,6 +196,7 @@ function fetchFromUrl(url) {
 function buildQuotationContext(data) {
   return {
     trip: {
+      id: data.TripId,
       tripId: data.TripId,
       destination: data.DestinationName,
       days: data.Days,
@@ -204,6 +218,10 @@ function buildQuotationContext(data) {
     itinerary: data.Itinearies || [],
     hotels: data.Hotels || [],
     user:data.user,
+    company: {
+      name: data.user?.organization?.details?.brandname || data.company || "Journey Routers",
+      upi: data.user?.organization?.financials?.upiid || "",
+    },
     assetsBaseUrl:
       "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads",
   };

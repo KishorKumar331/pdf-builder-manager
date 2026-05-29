@@ -253,6 +253,19 @@ exports.handler = async (event) => {
     await page.emulateMediaType("screen");
     await page.setContent(finalHtml, { waitUntil: "networkidle0" });
 
+    // Wait for Paged.js to finish rendering if it is present on the page
+    await page.evaluate(() => {
+      return new Promise((resolve) => {
+        if (typeof window.PagedPolyfill !== 'undefined' && document.querySelector('.pagedjs_pages')) {
+          resolve();
+        } else if (typeof window.PagedPolyfill !== 'undefined') {
+          window.addEventListener('pagedjs:ready', resolve);
+        } else {
+          resolve();
+        }
+      });
+    });
+
     const pdfBuffer = await page.pdf({
       format: "A4",
       printBackground: true,
