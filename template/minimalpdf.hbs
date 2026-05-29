@@ -1,0 +1,409 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Journey Routers - Corporate Elite</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;600;800&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Inter", sans-serif;
+            background: #ffffff;
+            color: #0f172a;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .pdf-page {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            background: #ffffff;
+        }
+
+        /* Typography */
+        .font-space { font-family: 'Space Grotesk', sans-serif; }
+        .text-blue { color: #2563eb; }
+        .text-dim { color: #64748b; }
+        
+        .heading-xl { font-size: 84px; font-weight: 700; letter-spacing: -4px; line-height: 0.8; margin: 0; }
+        .heading-l { font-size: 32px; font-weight: 700; letter-spacing: -1px; margin: 0; }
+
+        /* Patterns */
+        .dot-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(#e2e8f0 1px, transparent 1px);
+            background-size: 20px 20px;
+            z-index: -1;
+            opacity: 0.4;
+        }
+
+        /* Cover Design */
+        .cover-accent {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60%;
+            height: 100%;
+            background: #0f172a;
+            z-index: -1;
+            clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
+        }
+
+        .cover-img {
+            position: absolute;
+            top: 10%;
+            right: 5%;
+            width: 50%;
+            height: 80%;
+            object-fit: cover;
+            border-radius: 20px;
+            box-shadow: -20px 20px 0px rgba(37, 99, 235, 0.2);
+        }
+
+        /* Information Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            background: #f8fafc;
+            padding: 25px 40px;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 40px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            font-weight: 700;
+            color: #94a3b8;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+
+        .stat-value {
+            font-size: 16px;
+            font-weight: 600;
+            color: #1e293b;
+        }
+
+        /* Card Styles */
+        .elite-card {
+            background: white;
+            border: 1px solid #f1f5f9;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+            margin-bottom: 30px;
+        }
+
+        /* Itinerary Timeline */
+        .elite-timeline {
+            padding-left: 30px;
+            border-left: 2px solid #2563eb;
+        }
+
+        .timeline-node {
+            position: relative;
+            padding-bottom: 40px;
+            padding-left: 30px;
+        }
+
+        .timeline-node::before {
+            content: "";
+            position: absolute;
+            left: -37px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            background: white;
+            border: 3px solid #2563eb;
+            border-radius: 50%;
+        }
+
+        /* Footer */
+        .elite-footer {
+            position: absolute;
+            bottom: 40px;
+            left: 50mm;
+            right: 15mm;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 10px;
+            color: #94a3b8;
+            font-weight: 600;
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- ================= PAGE 1 : COVER ================= -->
+    <div class="pdf-page">
+        <div class="dot-pattern"></div>
+        <div class="cover-accent"></div>
+        <img src="{{assetsBaseUrl}}/header.png" class="cover-img" alt="Hero">
+
+        <div style="padding: 60mm 15mm;">
+            <div style="margin-bottom: 30px;">
+                <div style="width: 40px; height: 4px; background: #2563eb; margin-bottom: 20px;"></div>
+                <div class="font-space" style="font-size: 14px; font-weight: 700; text-transform: uppercase; letter-spacing: 4px; color: #2563eb;">Itinerary</div>
+            </div>
+
+            <h1 class="heading-xl font-space">{{user.CompanyName}}</h1>
+            
+            <div style="margin-top: 60px;">
+                <div class="text-dim" style="font-size: 12px; text-transform: uppercase; letter-spacing: 2px; font-weight: 700;">Curated Expedition to</div>
+                <div class="font-space" style="font-size: 48px; font-weight: 700; margin-top: 10px;">{{trip.destination}}</div>
+            </div>
+
+            <div style="margin-top: 100px;">
+                <div class="text-dim" style="font-size: 11px; font-weight: 600;">PREPARED FOR</div>
+                <div style="font-size: 24px; font-weight: 800; margin-top: 5px;">{{customer.name}}</div>
+            </div>
+        </div>
+
+        <div class="elite-footer" style="left: 15mm;">
+            <div>{{user.Email}}</div>
+            <div>D-{{trip.id}}</div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2 : OVERVIEW ================= -->
+    <div class="pdf-page">
+        <div style="padding: 30mm 15mm;">
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 50px; border-bottom: 2px solid #f1f5f9; padding-bottom: 20px;">
+                <h2 class="heading-l font-space">Package Overview</h2>
+                <div class="text-blue" style="font-weight: 700; font-size: 12px;">ID: #{{trip.id}}</div>
+            </div>
+
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <div class="stat-label">Duration</div>
+                    <div class="stat-value">{{trip.days}}D / {{trip.nights}}N</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Category</div>
+                    <div class="stat-value">{{#if trip.hotelCategory}}{{trip.hotelCategory}} Star{{else}}Luxury{{/if}}</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Travellers</div>
+                    <div class="stat-value">{{trip.pax}} Pax</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-label">Destination</div>
+                    <div class="stat-value">{{trip.destination}}</div>
+                </div>
+            </div>
+
+            <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 30px;">
+                <div class="elite-card">
+                    <h3 class="font-space" style="font-size: 18px; margin-bottom: 20px; color: #2563eb;">Trip Highlights</h3>
+                    <ul style="padding: 0; list-style: none;">
+                        {{#each highlights}}
+                        <li style="padding: 12px 0; border-bottom: 1px solid #f8fafc; font-size: 14px; display: flex; align-items: center; gap: 15px;">
+                            <span style="color: #2563eb; font-weight: 900;">/</span> {{this}}
+                        </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div>
+                    <div class="elite-card" style="background: #0f172a; color: white;">
+                        <div class="stat-label" style="color: #64748b;">Total Package</div>
+                        <div class="font-space" style="font-size: 32px; font-weight: 700; margin: 10px 0;">₹{{pricing.totalCost}}</div>
+                        <div style="font-size: 10px; opacity: 0.6;">Per traveler, land services only.</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3 : INCLUSIONS ================= -->
+    <div class="pdf-page">
+        <div style="padding: 30mm 15mm;">
+            <h2 class="heading-l font-space" style="margin-bottom: 50px;">Inclusions & Exclusions</h2>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div>
+                    <div style="font-weight: 800; font-size: 14px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 20px; height: 2px; background: #2563eb;"></div> INCLUSIONS
+                    </div>
+                    {{#each inclusions}}
+                    <div style="padding: 15px; background: #f8fafc; border-radius: 8px; margin-bottom: 10px; font-size: 13px; font-weight: 500;">
+                        {{this}}
+                    </div>
+                    {{/each}}
+                </div>
+                <div>
+                    <div style="font-weight: 800; font-size: 14px; margin-bottom: 25px; display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 20px; height: 2px; background: #ef4444;"></div> EXCLUSIONS
+                    </div>
+                    {{#each exclusions}}
+                    <div style="padding: 15px; border: 1px solid #f1f5f9; border-radius: 8px; margin-bottom: 10px; font-size: 13px; color: #94a3b8;">
+                        {{this}}
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 4 : ITINERARY ================= -->
+    <div class="pdf-page">
+        <div style="padding: 30mm 15mm;">
+            <h2 class="heading-l font-space" style="margin-bottom: 50px;">Detailed Timeline</h2>
+            
+            <div class="elite-timeline">
+                {{#each itinerary}}
+                <div class="timeline-node">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 5px;">
+                        <div class="text-blue" style="font-weight: 800; font-size: 12px; opacity: 0.5;">DAY 0{{Day}}</div>
+                        <div style="flex: 1; height: 1px; background: #f1f5f9;"></div>
+                    </div>
+                    <div class="font-space" style="font-size: 20px; font-weight: 700;">{{Title}}</div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= DETAIL ITINERARY ================= -->
+    {{#each itinerary}}
+    <div class="pdf-page">
+        <div style="display: flex; height: 100%;">
+            <div style="flex: 1; padding: 30mm 15mm;">
+                <div style="margin-bottom: 30px;">
+                    <span class="text-blue font-space" style="font-size: 48px; font-weight: 800; opacity: 0.1;">0{{Day}}</span>
+                </div>
+                <h2 class="font-space" style="font-size: 36px; font-weight: 700; margin-bottom: 30px;">{{Title}}</h2>
+                <div style="font-size: 15px; line-height: 1.8; color: #334155;">
+                    {{Description}}
+                </div>
+            </div>
+            {{#if ImageUrl}}
+            <div style="width: 40%;">
+                <img src="{{ImageUrl}}" style="width: 100%; height: 100%; object-fit: cover;">
+            </div>
+            {{/if}}
+        </div>
+    </div>
+    {{/each}}
+
+    <!-- ================= ACCOMMODATION ================= -->
+    <div class="pdf-page">
+        <div style="padding: 30mm 15mm;">
+            <h2 class="heading-l font-space" style="margin-bottom: 50px;">Stays & Properties</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                {{#each hotels}}
+                <div class="elite-card">
+                    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px;">
+                        <div class="text-blue" style="font-weight: 800; font-size: 10px;">{{City}}</div>
+                        <div style="font-size: 10px;">{{Category}}★</div>
+                    </div>
+                    <h3 class="font-space" style="font-size: 18px; margin: 0 0 10px 0;">{{Name}}</h3>
+                    <div style="font-size: 12px; color: #64748b; margin-bottom: 15px;">{{RoomType}}</div>
+                    
+                    <div style="display: flex; justify-content: space-between; border-top: 1px solid #f8fafc; padding-top: 15px; font-size: 11px;">
+                        <div>
+                            <span class="text-dim">CHECKIN</span><br>
+                            <strong>{{CheckInDate}}</strong>
+                        </div>
+                        <div>
+                            <span class="text-dim">CHECKOUT</span><br>
+                            <strong>{{CheckOutDate}}</strong>
+                        </div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAYMENT ================= -->
+    <div class="pdf-page">
+        <div style="padding: 30mm 15mm;">
+            <h2 class="heading-l font-space" style="margin-bottom: 50px;">Secure Transaction Details</h2>
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+                <div class="elite-card" style="margin: 0;">
+                    <h3 class="font-space" style="font-size: 18px; margin-bottom: 25px;">Bank Accounts</h3>
+                    
+                    <div style="display: flex; flex-direction: column; gap: 20px;">
+                        <div>
+                            <div class="stat-label">Beneficiary</div>
+                            <div style="font-weight: 600;">{{user.CompanyName}}</div>
+                        </div>
+                        <div>
+                            <div class="stat-label">Bank</div>
+                            <div style="font-weight: 600;">{{user.BankName}}</div>
+                        </div>
+                        <div style="display: flex; justify-content: space-between;">
+                            <div>
+                                <div class="stat-label">Account No</div>
+                                <div style="font-size: 16px; font-weight: 700; color: #2563eb;">{{user.AccountNumber}}</div>
+                            </div>
+                            <div>
+                                <div class="stat-label">IFSC</div>
+                                <div style="font-size: 16px; font-weight: 700; color: #2563eb;">{{user.IfscCode}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: center; background: #f8fafc; border-radius: 16px; padding: 40px;">
+                    <div style="width: 180px; height: 180px; background: white; padding: 20px; border-radius: 12px; border: 1px solid #e2e8f0;">
+                         {{#if user.qrCode}}
+                         <img src="{{user.qrCode}}" style="width: 100%; height: 100%; object-fit: contain;">
+                         {{else}}
+                         <div style="font-size: 10px; color: #cbd5e1;">QR CODE<br>PENDING</div>
+                         {{/if}}
+                    </div>
+                    <div class="font-space" style="margin-top: 25px; font-size: 14px; font-weight: 700; color: #2563eb;">Scan to Pay via UPI</div>
+                    <div style="font-size: 12px; margin-top: 5px; color: #64748b;">{{#if company.upi}}{{company.upi}}{{else}}pay@journeyrouters{{/if}}</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 40px; padding: 25px; background: #fffbeb; border: 1px solid #fef3c7; border-radius: 12px; font-size: 13px; color: #92400e; line-height: 1.6;">
+                <strong>Booking Note:</strong> Please ensure to share a copy of the transaction receipt (UTR / Screenshot) with your agent to initiate fast-track confirmation.
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TERMS ================= -->
+    <div class="pdf-page">
+        <div style="padding: 30mm 15mm;">
+            <h2 class="heading-l font-space" style="margin-bottom: 30px;">Policies & General Terms</h2>
+            <div style="font-size: 13px; line-height: 1.8; color: #475569; white-space: pre-line; background: #f8fafc; padding: 40px; border-radius: 16px; height: 600px; overflow: hidden; border: 1px solid #e2e8f0;">
+                {{cancellation}}
+            </div>
+            
+            <div style="margin-top: 40px; text-align: right;">
+                <div class="text-blue font-space" style="font-size: 24px; font-weight: 800;">{{user.CompanyName}}</div>
+                <div class="text-dim" style="font-size: 10px; margin-top: 5px;">ALL RIGHTS RESERVED © 2024</div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+</html>

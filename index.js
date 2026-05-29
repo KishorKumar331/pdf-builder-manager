@@ -1,285 +1,300 @@
 const fs = require("fs");
 const path = require("path");
 const AWS = require("aws-sdk");
+const https = require("https");
+
 const chromium = require("@sparticuz/chromium");
 const puppeteer = require("puppeteer-core");
-
-// IMPORTANT: helpers must be loaded BEFORE compiling templates
 const Handlebars = require("./helpers");
 
-const s3 = new AWS.S3({ region: "ap-south-1" });
-const dynamo = new AWS.DynamoDB.DocumentClient({ region: "ap-south-1" });
+const REGION = process.env.AWS_REGION || "ap-south-1";
+const TEMP_BUCKET = process.env.TEMP_PDF_BUCKET;
 
-// ✅ GLOBAL BROWSER (REUSED)
-let browser;
-
-// 🔹 CACHE COMPANY CONFIG (S3)
-let cachedCompanyConfig = null;
-
-/* -----------------------------
-   🔹 UTILS
--------------------------------- */
-
-function detectCompanyType(tripId) {
-  if (/^JRP-\d+$/.test(tripId)) return "proprietor";
-  if (/^\d+$/.test(tripId)) return "private_limited";
-  throw new Error("Invalid TripId format");
-}
-
-async function loadCompanyConfig() {
-  if (cachedCompanyConfig) return cachedCompanyConfig;
-
-  const res = await s3.getObject({
-    Bucket: "jr-configs",
-    Key: "company-config.json",
-  }).promise();
-
-  cachedCompanyConfig = JSON.parse(res.Body.toString("utf-8"));
-  return cachedCompanyConfig;
-}
-
-function formatDate(date) {
-  if (!date) return "";
-  return new Date(date).toLocaleDateString("en-IN", {
-    day: "2-digit",
-    month: "short",
-    year: "numeric",
-  });
-}
-
-/* -----------------------------
-   🔹 INVOICE MAPPER
--------------------------------- */
-
-async function mapInvoiceToContext(invoiceData) {
-  const companyType = detectCompanyType(invoiceData.TripId);
-  const config = await loadCompanyConfig();
-  const companyCfg = config[companyType];
-
-  return {
-    customer: {
-      name: invoiceData.CustomerDetails?.Name || "",
-      phone: invoiceData.CustomerDetails?.Contact || "",
-      email: invoiceData.CustomerDetails?.Email || "",
-    },
-
-    invoice: {
-      tripId: invoiceData.TripId,
-      invoiceId: invoiceData.InvoiceID,
-      date: formatDate(invoiceData.InvoiceDetails?.Date),
-    },
-
-    payments: (invoiceData.Installments || []).map(i => ({
-      date: formatDate(i.InstallmentDate),
-      amount: Number(i.InstallmentAmount),
-      status: i.Status,
-      utr: i.UTR_Number,
-    })),
-
-    pricing: {
-      base: invoiceData.InvoiceDetails?.LandPackage || 0,
-      gst: companyCfg.showGST ? invoiceData.InvoiceDetails?.GST || 0 : 0,
-      tcs: invoiceData.InvoiceDetails?.TCS || 0,
-      total: invoiceData.InvoiceDetails?.FinalAmount || 0,
-    },
-
-    company: companyCfg.company,
-    bank: companyCfg.bank,
-    assets: companyCfg.assets,
-
-    flags: {
-      showGST: companyCfg.showGST,
-    },
-
-    cancellation: invoiceData.CancellationPolicy?.CancellationDetails || "",
-    deliverables: invoiceData.Deliverables || "",
-  };
-}
-
-/* -----------------------------
-   🔹 LAMBDA HANDLER
--------------------------------- */
+const dynamo = new AWS.DynamoDB.DocumentClient({ region: REGION });
+const s3 = new AWS.S3({ region: REGION });
 
 exports.handler = async (event) => {
-  let page;
-
   try {
-    // -------------------------
-    // 1️⃣ Parse input
-    // -------------------------
     const body =
       typeof event === "string"
         ? JSON.parse(event)
-        : event.body
+        : event?.body
         ? JSON.parse(event.body)
-        : event;
+        : event || {};
 
-    const { tripId, quoteId, type = "package" } = body;
-    // type = package | invoice
-
-    if (!tripId) {
-      throw new Error("tripId is required");
-    }
-
-    // -------------------------
-    // 2️⃣ FETCH DATA
-    // -------------------------
-
-    let context;
-    let templateFile;
-    let outputKey;
-
-    /* ===== PACKAGE PDF (AS-IS) ===== */
-    if (type === "package") {
-      if (!quoteId) {
-        throw new Error("quoteId is required for package PDF");
+    /* =====================================================
+       CASE 3 — HTML ➜ PDF
+       ===================================================== */
+    if (body.mode === "pdf") {
+      if (!body.html) {
+        throw new Error("html is required when mode=pdf");
+      }
+      if (!TEMP_BUCKET) {
+        throw new Error("TEMP_PDF_BUCKET env var not set");
       }
 
-      const dbRes = await dynamo.get({
-        TableName: "AllQuotes",
-        Key: { TripId: tripId, quoteId },
-      }).promise();
-
-      if (!dbRes.Item) {
-        throw new Error("Quote not found");
-      }
-
-      const data = dbRes.Item;
-
-      context = {
-        trip: {
-          tripId: data.TripId,
-          destination: data.DestinationName,
-          days: data.Days,
-          nights: data.Nights,
-          travelDate: data.TravelDate,
-          pax: data.NoOfPax,
-        },
-
-        customer: {
-          name: data.FullName,
-          phone: data.Contact,
-        },
-
-        pricing: {
-          totalCost: data.TotalCost,
-          priceType: data.PriceType,
-          currency: "INR",
-        },
-
-        inclusions: data.Inclusions || [],
-        exclusions: data.Exclusions || [],
-
-        otherInclusions: data.OtherInclusions?.split("\n") || [],
-        otherExclusions: data.OtherExclusions?.split("\n") || [],
-
-        itinerary: (data.Itinearies || []).map((i, idx) => ({
-          day: idx + 1,
-          title: i.title,
-          description: i.description,
-          image: i.activityImg,
-        })),
-
-        hotels: data.Hotels || [],
-
-        flags: {
-          hasHotels: (data.Hotels || []).length > 0,
-        },
-
-        assetsBaseUrl:
-          "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads",
-      };
-
-      templateFile = "pdf.hbs";
-      outputKey = `pdf/${tripId}/${quoteId}.pdf`;
-    }
-
-    /* ===== INVOICE PDF ===== */
-    else if (type === "invoice") {
-      const invoiceRes = await dynamo.get({
-        TableName: "PackageInvoice",
-        Key: { TripId: tripId },
-      }).promise();
-
-      if (!invoiceRes.Item) {
-        throw new Error("Invoice not found");
-      }
-
-      context = await mapInvoiceToContext(invoiceRes.Item);
-      templateFile = "invoice.hbs";
-      outputKey = `pdf/${tripId}/invoice.pdf`;
-    }
-
-    else {
-      throw new Error("Invalid type");
-    }
-
-    // -------------------------
-    // 3️⃣ LOAD TEMPLATE + CSS
-    // -------------------------
-    const cssPath = path.join(process.cwd(), "template", "PreviewPdf.css");
-    let cssContent = "";
-
-    try {
-      cssContent = fs.readFileSync(cssPath, "utf8");
-    } catch {}
-
-    const templatePath = path.join(process.cwd(), "template", templateFile);
-    let templateHtml = fs.readFileSync(templatePath, "utf8");
-
-    if (cssContent) {
-      templateHtml = templateHtml.replace(
-        '<link rel="stylesheet" href="{{assetsBaseUrl}}/PreviewPdf.css" />',
-        `<style>${cssContent}</style>`
-      );
-    }
-
-    const template = Handlebars.compile(templateHtml);
-    const finalHtml = template(context);
-
-    // -------------------------
-    // 4️⃣ CHROMIUM (REUSED)
-    // -------------------------
-    if (!browser) {
-      browser = await puppeteer.launch({
+      const browser = await puppeteer.launch({
         args: chromium.args,
         executablePath: await chromium.executablePath(),
         headless: chromium.headless,
-        defaultViewport: { width: 794, height: 1123 },
+        defaultViewport: chromium.defaultViewport,
       });
+
+      const page = await browser.newPage();
+      await page.setContent(body.html, { waitUntil: "networkidle0" });
+
+      const pdfBuffer = await page.pdf({
+        format: "A4",
+        printBackground: true,
+        preferCSSPageSize: true,
+      });
+
+      await browser.close();
+
+      const fileName = `pdf-${Date.now()}.pdf`;
+      const s3Key = `temp-pdfs/${fileName}`;
+
+      await s3.putObject({
+        Bucket: TEMP_BUCKET,
+        Key: s3Key,
+        Body: pdfBuffer,
+        ContentType: "application/pdf",
+        // ContentDisposition: "inline; filename=" + fileName ,
+      }).promise();
+
+      const signedUrl = s3.getSignedUrl("getObject", {
+        Bucket: TEMP_BUCKET,
+        Key: s3Key,
+        Expires: 300,
+      });
+
+      return {
+        statusCode: 200,
+        body: JSON.stringify({
+          url: signedUrl,
+          expiresIn: 300,
+        }),
+      };
     }
 
-    page = await browser.newPage();
-    await page.emulateMediaType("screen");
-    await page.setContent(finalHtml, { waitUntil: "networkidle0" });
+    /* =====================================================
+       CASE 1 & 2 — DATA ➜ HTML
+       ===================================================== */
+    if (body.mode === "html") {
+      const { type, templateName } = body;
 
-    const pdfBuffer = await page.pdf({
-      format: "A4",
-      printBackground: true,
-      preferCSSPageSize: true,
-    });
+      if (!templateName) {
+        throw new Error("templateName is required for mode=html");
+      }
+      if (!["quotation", "invoice"].includes(type)) {
+        throw new Error("type must be quotation or invoice");
+      }
 
-    await page.close();
+      let data;
 
-    // -------------------------
-    // 5️⃣ UPLOAD TO S3
-    // -------------------------
-    await s3.putObject({
-      Bucket: "kishorlearningbucket",
-      Key: outputKey,
-      Body: pdfBuffer,
-      ContentType: "application/pdf",
-    }).promise();
+      // CASE 1 — Data passed directly
+      if (body.data) {
+        data = body.data;
+      }
+      // CASE 2 — Fetch from DynamoDB
+      else {
+        if (type === "quotation") {
+          if (!body.tripId || !body.quoteId) {
+            throw new Error("tripId and quoteId required");
+          }
 
-    return {
-      statusCode: 200,
-      body: JSON.stringify({
-        url: `https://kishorlearningbucket.s3.ap-south-1.amazonaws.com/${outputKey}`,
-      }),
-    };
+          const res = await dynamo.get({
+            TableName: "Quotations",
+            Key: {
+              TripId: body.tripId,
+              QuoteId: body.quoteId,
+            },
+          }).promise();
+
+          if (!res.Item) throw new Error("Quotation not found");
+          data = res.Item;
+        }
+
+        if (type === "invoice") {
+          if (!body.tripId || !body.invoiceId) {
+            throw new Error("tripId and invoiceId required");
+          }
+
+          const res = await dynamo.get({
+            TableName: "Invoices",
+            Key: {
+              TripId: body.tripId,
+              InvoiceId: body.invoiceId,
+            },
+          }).promise();
+
+          if (!res.Item) throw new Error("Invoice not found");
+          data = res.Item;
+        }
+      }
+
+      const context =
+        type === "quotation"
+          ? buildQuotationContext(data)
+          : buildInvoiceContext(data);
+
+      const templateHtml = await fetchFromUrl(
+        `https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/pdfcollection/${templateName}`
+      );
+
+      const compiledHtml = Handlebars.compile(templateHtml)(context);
+
+      return {
+        statusCode: 200,
+        headers: {
+          "Content-Type": "text/html; charset=utf-8",
+        },
+        body: compiledHtml,
+      };
+    }
+
+    throw new Error("Invalid request");
+
   } catch (err) {
-    console.error("PDF generation error:", err);
-    if (page) try { await page.close(); } catch {}
-    return { statusCode: 500, body: JSON.stringify({ error: err.message }) };
+    console.error("Lambda error:", err);
+    return {
+      statusCode: 500,
+      body: JSON.stringify({ error: err.message }),
+    };
   }
 };
+
+/* ================= HELPERS ================= */
+
+function fetchFromUrl(url) {
+  return new Promise((resolve, reject) => {
+    https
+      .get(url, (res) => {
+        let data = "";
+        res.on("data", (c) => (data += c));
+        res.on("end", () => resolve(data));
+      })
+      .on("error", reject);
+  });
+}
+
+/* ================= CONTEXT BUILDERS ================= */
+
+function buildQuotationContext(data) {
+  return {
+    trip: {
+      tripId: data.TripId,
+      destination: data.DestinationName,
+      days: data.Days,
+      nights: data.Nights,
+      travelDate: data.TravelDate,
+      pax: data.NoOfPax,
+    },
+    customer: {
+      name: data["Client-Name"],
+      phone: data["Client-Contact"],
+      email: data["Client-Email"],
+    },
+    pricing: {
+      totalCost: data.Costs?.TotalCost || 0,
+      currency: data.Currency || "INR",
+    },
+    inclusions: (data.Inclusions || []).map(i => i.item),
+    exclusions: (data.Exclusions || []).map(e => e.item),
+    itinerary: data.Itinearies || [],
+    hotels: data.Hotels || [],
+    user:data.user,
+    assetsBaseUrl:
+      "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads",
+  };
+}
+
+function buildInvoiceContext(data) {
+  return {
+    invoice: {
+      date: data.invoiceDate,
+      bookingId: data.invoiceId,
+      tripId: data.tripId,
+      destination: data.destination,
+      travelDate: data.travelDate,
+      startDate: data.startDate,
+      endDate: data.endDate,
+      invoiceId: data.invoiceId,
+      invoiceNumber: data.invoiceNumber,
+      notes: data.notes,
+      travelerSummary: data.travelerSummary,
+      pricing: data.pricing,
+      payment: data.payment,
+      cancellationPolicy: data.cancellationPolicy,
+      deliverables: data.deliverables,
+      meta: data.meta,
+      auditTrail: data.auditTrail,
+      createdAt: data.createdAt,
+      updatedAt: data.updatedAt
+    },
+    customer: data.customer,
+    payments: data.payment?.installments || [],
+    company: {
+      name: data.meta?.companyName || "Journey Routers",
+      phone: "+91 9876543210",
+      email: "info@journeyrouters.com",
+      address: "123 Travel Street, Mumbai, India - 400001",
+      gst: "27AAAPJ1234C1ZV"
+    },
+    bank: data.meta?.bankDetails || {
+      name: "Journey Routers Travel Pvt Ltd",
+      number: "123456789012",
+      type: "Current Account",
+      branch: "State Bank of India, Andheri Branch",
+      ifsc: "SBIN0001234"
+    },
+    cancellation: data.cancellationPolicy ? formatCancellationPolicy(data.cancellationPolicy) : null,
+    deliverables: data.deliverables || [],
+    assets: {
+      logo: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/logo.png",
+      headerImage: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/headerImg.png",
+      stamp: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/jrstamp.jpg",
+      qr: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/JR_QR.png"
+    },
+    assetsBaseUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads"
+  };
+}
+
+function formatCancellationPolicy(policy) {
+  if (!policy) return null;
+
+  let policyText = "Cancellation Policy:\n\n";
+
+  if (policy.land && Array.isArray(policy.land)) {
+    policy.land.forEach(item => {
+      if (item.chargeType === "PERCENT") {
+        if (item.fromDaysBeforeTravel === 20) {
+          policyText += `• 20+ days before departure: ${item.value}% cancellation charge\n`;
+        } else if (item.fromDaysBeforeTravel === 0) {
+          policyText += `• 0-${item.toDaysBeforeTravel} days before departure: ${item.value}% cancellation charge\n`;
+        }
+      }
+    });
+  }
+
+  policyText += "• No-show: No refund\n\n";
+  policyText += "All cancellations must be made in writing. Refunds will be processed within 15 working days.\n\n";
+
+  if (policy.nonRefundableComponents && Array.isArray(policy.nonRefundableComponents)) {
+    policyText += "Non-refundable components: " + policy.nonRefundableComponents.join(", ") + "\n\n";
+  }
+
+  if (policy.hotel) {
+    policyText += `Hotel policy: ${policy.hotel}\n\n`;
+  }
+
+  if (policy.flights) {
+    policyText += `Airline policy: ${policy.flights}\n\n`;
+  }
+
+  if (policy.rescheduleChargePerPax) {
+    policyText += `Reschedule charges: ₹${policy.rescheduleChargePerPax.amount} per person + fare difference`;
+  }
+
+  return policyText;
+}

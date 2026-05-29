@@ -80,6 +80,13 @@ const dummyData = {
       title: "Dhow Cruise & Departure",
       description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
       image: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
+    },
+    {
+      Day: 6,
+      Date: 6,
+      Title: "Dhow Cruise & Departurse",
+      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
+      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
     }
   ],
   hotels: [
@@ -115,7 +122,7 @@ let cssPath = path.join(__dirname, "template", "PreviewPdf.css");
 function loadTemplate() {
   try {
     let templateHtml = fs.readFileSync(templatePath, "utf8");
-    
+
     // Load CSS if exists
     let cssContent = "";
     try {
@@ -147,7 +154,7 @@ function renderPDF() {
       return "<html><body><h1>Error loading template</h1></body></html>";
     }
   }
-  
+
   try {
     return cachedTemplate(dummyData);
   } catch (err) {

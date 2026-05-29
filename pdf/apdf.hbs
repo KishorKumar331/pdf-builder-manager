@@ -1,0 +1,386 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Journey Routers - Travel Catalogue</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,700;1,400&family=Montserrat:wght@300;400;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Montserrat", sans-serif;
+            background: #ffffff;
+            color: #1a1a1a;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .pdf-page {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            background: #ffffff;
+        }
+
+        /* Typography */
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-editorial { font-family: 'Cormorant Garamond', serif; }
+        
+        .title-huge { font-size: 90px; font-weight: 900; line-height: 0.8; margin: 0; letter-spacing: -2px; }
+        .title-section { font-size: 42px; font-family: 'Playfair Display'; font-weight: 700; margin-bottom: 20px; color: #000; }
+
+        /* Cover Design */
+        .catalogue-hero {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 70%;
+            background: #f8fafc;
+        }
+
+        .catalogue-hero img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .cover-text {
+            position: absolute;
+            bottom: 5%;
+            left: 10%;
+            right: 10%;
+        }
+
+        /* Full Page Highlights */
+        .highlights-page {
+            background: #000;
+            color: #fff;
+            padding: 40mm 20mm;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .highlight-item {
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            gap: 30px;
+            align-items: center;
+        }
+
+        .highlight-num {
+            font-family: 'Playfair Display';
+            font-size: 32px;
+            font-style: italic;
+            opacity: 0.3;
+        }
+
+        /* Information Grid */
+        .info-strip {
+            display: flex;
+            border-top: 1px solid #000;
+            border-bottom: 1px solid #000;
+            margin: 40px 0;
+        }
+
+        .info-cell {
+            flex: 1;
+            padding: 20px;
+            border-right: 1px solid #eee;
+        }
+
+        .info-cell:last-child { border-right: none; }
+
+        .label-cap {
+            font-size: 10px;
+            text-transform: uppercase;
+            font-weight: 700;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        /* Daily Itinerary Card */
+        .day-feature {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: 100%;
+        }
+
+        .day-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Footer */
+        .catalogue-footer {
+            position: absolute;
+            bottom: 30px;
+            left: 60px;
+            right: 60px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            opacity: 0.5;
+        }
+
+        /* Page Number Badge */
+        .page-num {
+            width: 40px;
+            height: 40px;
+            border: 1px solid #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display';
+        }
+
+    </style>
+</head>
+
+<body>
+    <!-- ================= PAGE 1 : COVER ================= -->
+    <div class="pdf-page">
+        <div class="catalogue-hero">
+            <img src="{{assetsBaseUrl}}/header.png" alt="Cover Image">
+        </div>
+        <div class="cover-text">
+            <div class="font-editorial" style="font-size: 24px; font-style: italic; margin-bottom: 10px;">A Curated Journey through</div>
+            <h1 class="title-huge font-serif">{{trip.destination}}</h1>
+            <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-top: 40px; border-top: 1px solid #eee; padding-top: 20px;">
+                <div>
+                   <div class="label-cap">Prepared For</div>
+                   <div style="font-size: 20px; font-weight: 700;">{{customer.name}}</div>
+                </div>
+                <div style="text-align: right;">
+                    <div class="font-serif" style="font-size: 24px; font-weight: 700; text-transform: uppercase;">{{user.CompanyName}}</div>
+                    <div class="label-cap" style="margin: 0;">Vol. 2024 / Edition {{trip.id}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2 : OVERVIEW ================= -->
+    <div class="pdf-page">
+        <div style="padding: 40mm 20mm 20mm;">
+            <div class="label-cap" style="color: #000; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 5px;">01 / INTRODUCTION</div>
+            <h2 class="title-section" style="margin-top: 20px;">The Expedition Perspective</h2>
+            
+            <p class="font-editorial" style="font-size: 18px; line-height: 1.6; color: #444;">{{trip.destination}} is more than a location—it's a collection of moments waiting to be discovered. This tailored itinerary has been crafted to immerse you in the authentic essence of the region, balancing landmark experiences with hidden sanctuaries.</p>
+
+            <div class="info-strip">
+                <div class="info-cell">
+                    <div class="label-cap">Days</div>
+                    <div style="font-size: 20px; font-weight: 700;">{{trip.days}}</div>
+                </div>
+                <div class="info-cell">
+                    <div class="label-cap">Nights</div>
+                    <div style="font-size: 20px; font-weight: 700;">{{trip.nights}}</div>
+                </div>
+                <div class="info-cell">
+                    <div class="label-cap">Travellers</div>
+                    <div style="font-size: 20px; font-weight: 700;">{{trip.pax}} Adults</div>
+                </div>
+                <div class="info-cell" style="flex: 2;">
+                    <div class="label-cap">Accommodation</div>
+                    <div style="font-size: 20px; font-weight: 700;">{{#if trip.hotelCategory}}{{trip.hotelCategory}} Star Luxury{{else}}Handpicked Stays{{/if}}</div>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px; display: flex; gap: 40px; align-items: center;">
+                <div style="flex: 1; padding: 40px; background: #f8fafc; border-radius: 0;">
+                    <div class="label-cap">Total Investment</div>
+                    <div class="font-serif" style="font-size: 42px; font-weight: 900;">₹{{pricing.totalCost}}</div>
+                    <div style="font-size: 10px; margin-top: 5px; opacity: 0.6;">*Land Services per explorer</div>
+                </div>
+                <div style="flex: 1;">
+                   <h4 class="font-serif" style="font-size: 20px; margin-bottom: 15px;">Travel Timeline</h4>
+                   <div style="font-size: 14px; line-height: 1.8; color: #666;">
+                        Generated on: {{formatDate today}}<br>
+                        Reference: D-{{trip.id}}<br>
+                        Status: Seasonal Proposal
+                   </div>
+                </div>
+            </div>
+        </div>
+        <div class="catalogue-footer">
+            <div>The Collection</div>
+            <div class="page-num">02</div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3 : HIGHLIGHTS (Dedicated Page) ================= -->
+    <div class="pdf-page">
+        <div class="highlights-page">
+            <h2 class="title-section" style="color: white; margin-bottom: 50px;">Curated<br>Experiences</h2>
+            <div style="border-top: 1px solid rgba(255,255,255,0.3); margin-bottom: 20px;"></div>
+                     {{#each itinerary}}
+
+            <div class="highlight-item">
+                <div class="highlight-num">0{{add @index 1}}</div>
+                <div class="font-serif" style="font-size: 28px; font-weight: 400; letter-spacing: 1px;"><p>{{Title}}</p></div>
+            </div>
+            {{/each}}
+        </div>
+        <div class="catalogue-footer" style="color: white; opacity: 0.8;">
+            <div>Featured Highlights</div>
+            <div class="page-num" style="border-color: white;">03</div>
+        </div>
+    </div>
+
+    <!-- ================= PAGE 4 : INCLUSIONS ================= -->
+    <div class="pdf-page">
+        <div style="padding: 40mm 20mm 20mm;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 80px;">
+                <div>
+                     <h2 class="title-section">Inside the<br>Collection</h2>
+                     <div class="label-cap" style="margin-bottom: 40px;">What's Included</div>
+                     {{#each inclusions}}
+                     <div style="margin-bottom: 15px; font-size: 14px; font-family: 'Montserrat'; font-weight: 500; display: flex; gap: 15px;">
+                        <span style="font-weight: 900;">+</span> {{this}}
+                     </div>
+                     {{/each}}
+                </div>
+                <div style="padding: 40px; background: #fafafa;">
+                     <h2 class="title-section" style="color: #999;">Beyond the<br>Scope</h2>
+                     <div class="label-cap" style="margin-bottom: 40px;">Not Included</div>
+                     {{#each exclusions}}
+                     <div style="margin-bottom: 15px; font-size: 13px; color: #999; display: flex; gap: 15px;">
+                        <span style="font-weight: 900;">-</span> {{this}}
+                     </div>
+                     {{/each}}
+                </div>
+            </div>
+        </div>
+        <div class="catalogue-footer">
+            <div>The Explorer's Scope</div>
+            <div class="page-num">04</div>
+        </div>
+    </div>
+
+    <!-- ================= ITINERARY ================= -->
+    {{#each itinerary}}
+    <div class="pdf-page">
+        <div class="day-feature">
+            {{#if ImageUrl}}
+            <div style="overflow: hidden;">
+                <img src="{{ImageUrl}}" class="day-image">
+            </div>
+            {{/if}}
+            <div style="padding: 30mm 15mm; display: flex; flex-direction: column; justify-content: center;">
+                <div class="font-serif" style="font-size: 64px; opacity: 0.1; margin-bottom: 10px;">Day 0{{Day}}</div>
+                <h2 class="title-section" style="font-size: 32px;">{{Title}}</h2>
+                <div style="width: 40px; height: 1px; background: #000; margin-bottom: 30px;"></div>
+                <p class="font-editorial" style="font-size: 18px; line-height: 1.8; color: #333;">
+                    {{Description}}
+                </p>
+            </div>
+        </div>
+        <div class="catalogue-footer">
+            <div>{{../trip.destination}} · Day {{Day}}</div>
+            <div class="page-num">0{{add Day 4}}</div>
+        </div>
+    </div>
+    {{/each}}
+
+    <!-- ================= ACCOMMODATION ================= -->
+    <div class="pdf-page">
+         <div style="padding: 40mm 20mm 20mm;">
+            <h2 class="title-section">Refined Stays</h2>
+            <div class="label-cap" style="margin-bottom: 50px;">Boutique & Luxury Selection</div>
+
+            <div style="display: grid; grid-template-columns: 1fr; gap: 40px;">
+                {{#each hotels}}
+                <div style="display: flex; gap: 40px; border-bottom: 1px solid #eee; padding-bottom: 40px;">
+                    <div style="flex: 1;">
+                        <div class="label-cap" style="color: #000;">{{City}} · {{Category}} Star</div>
+                        <h3 class="font-serif" style="font-size: 28px; margin: 10px 0;">{{Name}}</h3>
+                        <div style="font-size: 14px; color: #666; font-style: italic;">{{RoomType}} · {{#each Meals}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</div>
+                    </div>
+                    <div style="width: 200px; text-align: right;">
+                         <div class="label-cap">Duration</div>
+                         <div style="font-size: 14px; font-weight: 700;">{{formatDate CheckInDate}}</div>
+                         <div style="font-size: 12px; margin: 5px 0; opacity: 0.4;">to</div>
+                         <div style="font-size: 14px; font-weight: 700;">{{formatDate CheckOutDate}}</div>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+         </div>
+    </div>
+
+    <!-- ================= BOOKING ================= -->
+    <div class="pdf-page">
+        <div style="padding: 40mm 20mm 20mm;">
+            <h2 class="title-section">Reservation Details</h2>
+            <div class="label-cap" style="margin-bottom: 60px;">Finalizing Your Journey</div>
+
+            <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 60px;">
+                <div>
+                    <h4 class="label-cap" style="color: #000; margin-bottom: 30px;">Direct Bank Settlement</h4>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px;">
+                        <div>
+                            <div class="label-cap">Account Name</div>
+                            <div style="font-size: 15px; font-weight: 700;">{{user.CompanyName}}</div>
+                        </div>
+                        <div>
+                            <div class="label-cap">Bank Name</div>
+                            <div style="font-size: 15px; font-weight: 700;">{{user.BankName}}</div>
+                        </div>
+                        <div>
+                            <div class="label-cap">Account No.</div>
+                            <div style="font-size: 18px; font-weight: 900;">{{user.AccountNumber}}</div>
+                        </div>
+                        <div>
+                            <div class="label-cap">IFSC Code</div>
+                            <div style="font-size: 18px; font-weight: 900;">{{user.IfscCode}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center;">
+                    <h4 class="label-cap" style="color: #000; margin-bottom: 30px;">Digital Payment</h4>
+                    <div style="display: inline-block; padding: 20px; border: 1px solid #000;">
+                         {{#if user.qrCode}}
+                         <img src="{{user.qrCode}}" style="width: 150px;">
+                         {{else}}
+                         <div style="width: 150px; height: 150px; display: flex; align-items: center; justify-content: center; font-size: 10px;">QR PENDING</div>
+                         {{/if}}
+                    </div>
+                    <div class="font-serif" style="margin-top: 20px; font-size: 14px; font-weight: 700;">UPI: {{#if company.upi}}{{company.upi}}{{else}}pay@journeyrouters{{/if}}</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= TERMS ================= -->
+    <div class="pdf-page">
+        <div style="padding: 40mm 20mm 20mm;">
+            <h2 class="title-section">The Fine Print</h2>
+            <div class="label-cap" style="margin-bottom: 30px;">Policies & Procedures</div>
+            <div style="font-size: 13px; line-height: 1.8; color: #444; white-space: pre-line; background: #fafafa; padding: 40px; height: 620px; overflow: hidden; font-family: 'Cormorant Garamond'; font-size: 16px;">
+                {{cancellation}}
+            </div>
+        </div>
+        <div class="catalogue-footer" style="justify-content: center;">
+             <div style="font-family: 'Playfair Display'; font-weight: 900; font-size: 18px;">{{user.CompanyName}}</div>
+        </div>
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,647 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Journey Routers - Trip PDF</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap" rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: "Poppins", sans-serif;
+            background: #0a0b10;
+            color: #ffffff;
+            -webkit-print-color-adjust: exact;
+        }
+
+        .pdf-page {
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            background: #0a0b10;
+        }
+
+        /* Typography */
+        .text-gold { color: #c5a35c; }
+        .text-white { color: #ffffff; }
+        .text-dim { color: rgba(255, 255, 255, 0.6); }
+        
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        /* Layout Utilities */
+        .flex { display: flex; }
+        .flex-col { flex-direction: column; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .items-center { align-items: center; }
+        .justify-between { justify-content: space-between; }
+
+        /* Components */
+        .header-section {
+            padding: 60px 50px 40px;
+        }
+
+        .label-small {
+            font-size: 10px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .title-large {
+            font-size: 48px;
+            margin: 0;
+            font-weight: 400;
+        }
+
+        .ref-badge {
+            display: inline-flex;
+            border: 1px solid rgba(197, 163, 92, 0.3);
+            background: rgba(197, 163, 92, 0.05);
+            padding: 6px 16px;
+            margin-top: 25px;
+            font-size: 12px;
+            letter-spacing: 1px;
+        }
+
+        .details-grid {
+            padding: 20px 50px;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            border-top: 1px solid rgba(197, 163, 92, 0.2);
+            border-bottom: 1px solid rgba(197, 163, 92, 0.2);
+        }
+
+        .detail-item {
+            padding: 25px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .detail-item:nth-child(odd) {
+            padding-right: 20px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .detail-item:nth-child(even) {
+            padding-left: 20px;
+        }
+
+        .detail-item:last-child, .detail-item:nth-last-child(2) {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            color: rgba(197, 163, 92, 0.7);
+            letter-spacing: 1.5px;
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .detail-value {
+            font-size: 20px;
+            font-weight: 500;
+        }
+
+        .pricing-card {
+            margin: 40px 50px;
+            background: linear-gradient(135deg, rgba(197, 163, 92, 0.1) 0%, rgba(10, 11, 16, 0.4) 100%);
+            border: 1px solid rgba(197, 163, 92, 0.3);
+            padding: 40px;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .price-section {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .price-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 15px;
+            color: #c5a35c;
+        }
+
+        .price-value {
+            font-size: 54px;
+            font-weight: 600;
+            color: #c5a35c;
+            line-height: 1;
+        }
+
+        .price-sub {
+            font-size: 11px;
+            margin-top: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .highlights-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            font-size: 13px;
+            color: rgba(255, 255, 255, 0.8);
+            line-height: 1.8;
+        }
+
+        .highlights-list li::before {
+            content: "•";
+            color: #c5a35c;
+            margin-right: 10px;
+            font-size: 18px;
+            vertical-align: middle;
+        }
+
+        /* Inclusion/Exclusion */
+        .split-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            height: calc(100% - 250px);
+        }
+
+        .col-left {
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 40px 50px;
+        }
+
+        .col-right {
+           padding: 40px 50px;
+        }
+
+        .section-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 40px;
+        }
+
+        .icon-circle {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+
+        .icon-check {
+            background: rgba(34, 197, 94, 0.1);
+            color: #22c55e;
+            border: 1px solid rgba(34, 197, 94, 0.2);
+        }
+
+        .icon-cross {
+            background: rgba(239, 68, 68, 0.1);
+            color: #ef4444;
+            border: 1px solid rgba(239, 68, 68, 0.2);
+        }
+
+        .list-item {
+            margin-bottom: 30px;
+        }
+
+        .item-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 4px;
+        }
+
+        .item-desc {
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .footer-note {
+            position: absolute;
+            bottom: 50px;
+            left: 50px;
+            right: 50px;
+            background: rgba(197, 163, 92, 0.05);
+            border: 1px solid rgba(197, 163, 92, 0.2);
+            padding: 15px 25px;
+            font-size: 11px;
+            color: rgba(255, 255, 255, 0.6);
+            line-height: 1.6;
+            display: flex;
+            gap: 15px;
+        }
+
+        .page-footer-info {
+            position: absolute;
+            bottom: 30px;
+            left: 50px;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+        }
+
+        .bg-light-beam {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 70% 0%, rgba(197, 163, 92, 0.15) 0%, transparent 40%);
+            pointer-events: none;
+        }
+
+        /* Rest of the styles ... kept or updated as needed */
+        .itinerary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20mm;
+            break-inside: avoid;
+            left: 10mm;
+        }
+        /* ... simplifying for now ... */
+    </style>
+</head>
+
+<body>
+    <!-- ================= PAGE 1 : COVER ================= -->
+    <div class="pdf-page" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center;">
+        <div class="bg-light-beam"></div>
+        
+        <div style="margin-bottom: 60px;">
+            <div class="label-small text-gold" style="font-size: 14px; letter-spacing: 4px;">Premium Travel Experience</div>
+            <h1 class="font-serif" style="font-size: 64px; margin: 20px 0; font-weight: 400;">{{user.CompanyName}}</h1>
+            <div style="width: 100px; height: 1px; background: #c5a35c; margin: 0 auto;"></div>
+        </div>
+
+        <div style="margin-top: 40px;">
+            <div class="label-small text-dim">Specially Curated For</div>
+            <div class="font-serif" style="font-size: 32px; margin: 10px 0;">{{customer.name}}</div>
+            <div class="text-gold" style="font-size: 18px; letter-spacing: 2px; text-transform: uppercase;">{{trip.destination}}</div>
+        </div>
+
+        <div style="position: absolute; bottom: 80px; left: 0; right: 0;">
+            <div style="display: flex; justify-content: center; gap: 40px; font-size: 12px; color: rgba(255,255,255,0.6);">
+                <div>{{user.Phone}}</div>
+                <div style="width: 1px; height: 15px; background: rgba(255,255,255,0.2);"></div>
+                <div>{{user.CompanyAddress}}</div>
+                <div style="width: 1px; height: 15px; background: rgba(255,255,255,0.2);"></div>
+                <div>GST: {{user.CompanyGSTNumber}}</div>
+            </div>
+        </div>
+
+        <div style="position: absolute; bottom: 30px; left: 0; right: 0; font-size: 10px; color: rgba(255,255,255,0.3); letter-spacing: 1px;">
+            © {{user.CompanyName}} · JOURNEY ROUTERS
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2 : PACKAGE DETAILS ================= -->
+    <div class="pdf-page">
+        <div class="bg-light-beam"></div>
+        
+        <header class="header-section">
+            <div class="label-small text-gold">Your Journey Awaits</div>
+            <h1 class="title-large font-serif">Package Details</h1>
+            
+            <div class="ref-badge">
+                <span class="text-dim">TRIP REFERENCE</span> &nbsp; 
+                <span class="text-gold" style="font-weight: 600;">D-{{trip.id}}</span>
+            </div>
+        </header>
+
+        <div class="details-grid">
+            <div class="detail-item">
+                <div class="detail-label">Package Name</div>
+                <div class="detail-value">{{#if trip.packageName}}{{trip.packageName}}{{else}}{{trip.days}}D / {{trip.nights}}N Trip{{/if}}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Destination</div>
+                <div class="detail-value">{{trip.destination}}{{#if trip.country}}, {{trip.country}}{{/if}}</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Duration</div>
+                <div class="detail-value">{{trip.days}} Days · {{trip.nights}} Nights</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Travellers</div>
+                <div class="detail-value">{{trip.pax}} Adults</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Accommodation</div>
+                <div class="detail-value">{{#if trip.hotelCategory}}{{trip.hotelCategory}}{{else}}Standard{{/if}} Property</div>
+            </div>
+            <div class="detail-item">
+                <div class="detail-label">Meal Plan</div>
+                <div class="detail-value">{{#if trip.mealPlan}}{{trip.mealPlan}}{{else}}As per Itinerary{{/if}}</div>
+            </div>
+        </div>
+
+        <div class="pricing-card">
+            <div class="price-section">
+                <div class="price-label">Total Package Price</div>
+                <div class="price-value">
+                    <span style="font-size: 32px; vertical-align: top; margin-top: 8px; display: inline-block;">₹</span>{{pricing.totalCost}}
+                </div>
+                <div class="price-sub">Per Person · Land Package Only</div>
+            </div>
+            
+            <ul class="highlights-list">
+                {{#each highlights}}
+                <li>{{this}}</li>
+                {{/each}}
+                {{#unless highlights}}
+                <li>Accommodation included ({{trip.hotelCategory}})</li>
+                <li>Sightseeing on sharing basis</li>
+                <li>Visa & airport transfers included</li>
+                <li>Marina Cruise & Desert Safari dinners</li>
+                <li>Flights & TCS excluded</li>
+                {{/unless}}
+            </ul>
+        </div>
+
+        <div class="page-footer-info">
+            Created: {{#if today}}{{today}}{{else}}Recently{{/if}} · Quote valid for 6 hours from creation
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3 : INCLUSION / EXCLUSION ================= -->
+    <div class="pdf-page">
+        <div class="bg-light-beam"></div>
+
+        <header class="header-section">
+            <div class="label-small text-gold">Package Inclusions</div>
+            <h1 class="title-large font-serif">What's Included</h1>
+        </header>
+
+        <div class="split-content">
+            <div class="col-left">
+                <div class="section-header">
+                    <div class="icon-circle icon-check">✓</div>
+                    <div class="text-white font-serif" style="font-size: 24px;">Inclusions</div>
+                </div>
+
+                {{#each inclusions_detailed}}
+                <div class="list-item">
+                    <div class="icon-circle icon-check" style="width: 20px; height: 20px; font-size: 10px; display: inline-flex; margin-right: 15px;">✓</div>
+                    <div style="display: inline-block; vertical-align: top;">
+                        <div class="item-title">{{this.title}}</div>
+                        <div class="item-desc">{{this.description}}</div>
+                    </div>
+                </div>
+                {{/each}}
+                {{#unless inclusions_detailed}}
+                {{#each inclusions}}
+                <div class="list-item" style="margin-bottom: 15px;">
+                     <span class="icon-circle icon-check" style="width: 20px; height: 20px; font-size: 10px; display: inline-flex; margin-right: 15px;">✓</span>
+                     <div style="display: inline-block; vertical-align: top;">
+                        <div class="item-title" style="font-size: 14px;">{{this}}</div>
+                     </div>
+                </div>
+                {{/each}}
+                {{/unless}}
+            </div>
+
+            <div class="col-right">
+                <div class="section-header">
+                    <div class="icon-circle icon-cross">✕</div>
+                    <div class="text-white font-serif" style="font-size: 24px;">Exclusions</div>
+                </div>
+
+                {{#each exclusions_detailed}}
+                <div class="list-item">
+                    <div class="icon-circle icon-cross" style="width: 20px; height: 20px; font-size: 10px; display: inline-flex; margin-right: 15px;">✕</div>
+                    <div style="display: inline-block; vertical-align: top;">
+                        <div class="item-title">{{this.title}}</div>
+                        <div class="item-desc">{{this.description}}</div>
+                    </div>
+                </div>
+                {{/each}}
+                {{#unless exclusions_detailed}}
+                {{#each exclusions}}
+                <div class="list-item" style="margin-bottom: 15px;">
+                     <span class="icon-circle icon-cross" style="width: 20px; height: 20px; font-size: 10px; display: inline-flex; margin-right: 15px;">✕</span>
+                     <div style="display: inline-block; vertical-align: top;">
+                        <div class="item-title" style="font-size: 14px;">{{this}}</div>
+                     </div>
+                </div>
+                {{/each}}
+                {{/unless}}
+            </div>
+        </div>
+
+        <div class="footer-note">
+            <div style="background: #c5a35c; color: #000; width: 18px; height: 18px; border-radius: 2px; display: flex; align-items: center; justify-content: center; font-weight: bold; flex-shrink: 0;">i</div>
+            <div>All tours are on a sharing basis. Airport transfers are private by Coaster with fixed timings. Anything not explicitly mentioned in Inclusions is considered excluded from this package.</div>
+        </div>
+    </div>
+
+
+
+    <!-- ================= PAGE 5 : DAY WISE ITINERARY ================= -->
+    <div class="pdf-page">
+        <div class="bg-light-beam"></div>
+        
+        <header class="header-section">
+            <div class="label-small text-gold">The Journey Ahead</div>
+            <h1 class="title-large font-serif">Day Wise Itinerary</h1>
+        </header>
+
+        <div style="padding: 0 50px;">
+            {{#each itinerary}}
+            <div style="display: flex; gap: 30px; margin-bottom: 25px; position: relative;">
+                {{#unless @last}}
+                <div style="position: absolute; left: 34px; top: 35px; bottom: -25px; width: 1px; background: rgba(197, 163, 92, 0.2);"></div>
+                {{/unless}}
+                
+                <div style="width: 70px; height: 70px; background: rgba(197, 163, 92, 0.1); border: 1px solid rgba(197, 163, 92, 0.3); border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center; flex-shrink: 0; z-index: 1;">
+                    <div style="font-size: 10px; color: #c5a35c; text-transform: uppercase;">Day</div>
+                    <div class="font-serif" style="font-size: 24px; line-height: 1;">{{Day}}</div>
+                </div>
+
+                <div style="padding-top: 15px;">
+                    <div class="font-serif" style="font-size: 20px; color: #ffffff;">{{Title}}</div>
+                </div>
+            </div>
+            {{/each}}
+        </div>
+    </div>
+
+    <!-- ================= DETAIL ITINERARY ================= -->
+    {{#each itinerary}}
+    {{#if (eq (mod @index 2) 0)}}
+    <div class="pdf-page">
+        <div class="bg-light-beam"></div>
+        
+        <header class="header-section">
+            <div class="label-small text-gold">Detail View</div>
+            <h1 class="title-large font-serif">Detailed Itinerary</h1>
+        </header>
+
+        <div style="padding: 0 50px;">
+    {{/if}}
+
+            <div style="display: flex; gap: 40px; margin-bottom: 50px; background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 30px; border-radius: 4px;">
+                {{#if ImageUrl}}
+                <div style="width: 69mm; height: 60mm; flex-shrink: 0; overflow: hidden; border-radius: 4px;">
+                    <img src="{{ImageUrl}}" style="width: 100%; height: 100%; object-fit: cover;" />
+                </div>
+                {{/if}}
+
+                <div style="flex: 1;">
+                    <div style="display: flex; align-items: center; gap: 15px; margin-bottom: 15px;">
+                        <span class="text-gold font-serif" style="font-size: 24px;">Day {{Day}}</span>
+                        <div style="flex: 1; height: 1px; background: rgba(197, 163, 92, 0.2);"></div>
+                    </div>
+                    <h2 class="font-serif" style="font-size: 22px; margin: 0 0 15px 0; font-weight: 500;">{{Title}}</h2>
+                    <p style="font-size: 13px; color: rgba(255,255,255,0.6); line-height: 1.6; margin: 0;">
+                        {{Description}}
+                    </p>
+                </div>
+            </div>
+
+    {{#if (or (eq (mod (add @index 1) 2) 0) @last)}}
+        </div>
+        
+        <div style="position: absolute; bottom: 40px; left: 0; right: 0; display: flex; justify-content: center; gap: 10px;">
+             <div style="width: 4px; height: 4px; border-radius: 50%; background: #c5a35c;"></div>
+             <div style="width: 4px; height: 4px; border-radius: 50%; background: rgba(197, 163, 92, 0.3);"></div>
+             <div style="width: 4px; height: 4px; border-radius: 50%; background: rgba(197, 163, 92, 0.3);"></div>
+        </div>
+    </div>
+    {{/if}}
+    {{/each}}
+    <!-- ================= END DETAIL ITINERARY ================= -->
+
+    <!-- ================= HOTELS ================= -->
+    <div class="pdf-page">
+        <div class="bg-light-beam"></div>
+        
+        <header class="header-section">
+            <div class="label-small text-gold">Where You'll Stay</div>
+            <h1 class="title-large font-serif">Accommodation</h1>
+        </header>
+
+        <div style="padding: 0 50px; display: grid; grid-template-columns: 1fr; gap: 30px;">
+            {{#if hotels}}
+            {{#each hotels}}
+            <div style="background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.05); padding: 30px; border-radius: 4px; display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                    <div class="text-gold" style="font-size: 10px; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px;">Stay in {{City}}</div>
+                    <h3 class="font-serif" style="font-size: 22px; margin: 0 0 10px 0;">{{Name}}</h3>
+                    <div style="font-size: 13px; color: rgba(255,255,255,0.6); margin-bottom: 5px;">Room: {{RoomType}}</div>
+                    <div style="font-size: 13px; color: rgba(255,255,255,0.6);">Meals: {{#each Meals}}{{this}}{{#unless @last}}, {{/unless}}{{/each}}</div>
+                </div>
+                
+                <div style="text-align: right;">
+                    <div style="margin-bottom: 15px;">
+                        {{#if (eq Category "5")}} ⭐⭐⭐⭐⭐ {{/if}}
+                        {{#if (eq Category "4")}} ⭐⭐⭐⭐ {{/if}}
+                        {{#if (eq Category "3")}} ⭐⭐⭐ {{/if}}
+                        <span style="font-size: 10px; display: block; margin-top: 5px; color: #c5a35c;">{{Category}} STAR</span>
+                    </div>
+                    <div style="background: rgba(197, 163, 92, 0.1); padding: 8px 15px; border-radius: 2px; border: 1px solid rgba(197, 163, 92, 0.2);">
+                        <div style="font-size: 9px; text-transform: uppercase; color: #c5a35c;">Check-in</div>
+                        <div style="font-size: 12px;">{{CheckInDate}}</div>
+                    </div>
+                </div>
+            </div>
+            {{/each}}
+            {{/if}}
+        </div>
+    </div>
+
+    <!-- ================= END HOTELS ================= -->
+
+    <!-- ================= PAYMENT ================= -->
+    <div class="pdf-page">
+        <div class="bg-light-beam"></div>
+        
+        <header class="header-section">
+            <div class="label-small text-gold">Transaction Guide</div>
+            <h1 class="title-large font-serif">Payment Details</h1>
+        </header>
+
+        <div style="padding: 0 50px; display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+            <div>
+                <h3 class="font-serif" style="font-size: 20px; color: #c5a35c; margin-bottom: 25px;">Bank Transfer</h3>
+                
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+                    <div>
+                        <div style="font-size: 9px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 5px;">Account Name</div>
+                        <div style="font-size: 14px;">{{user.CompanyName}}</div>
+                    </div>
+                    <div>
+                        <div style="font-size: 9px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 5px;">Bank & Branch</div>
+                        <div style="font-size: 14px;">{{user.BankName}} · {{user.BranchName}}</div>
+                    </div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <div>
+                            <div style="font-size: 9px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 5px;">Account Number</div>
+                            <div style="font-size: 14px; color: #c5a35c; font-weight: 600;">{{user.AccountNumber}}</div>
+                        </div>
+                        <div>
+                            <div style="font-size: 9px; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 5px;">IFSC Code</div>
+                            <div style="font-size: 14px; color: #c5a35c; font-weight: 600;">{{user.IfscCode}}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 40px; padding: 20px; background: rgba(197, 163, 92, 0.05); border: 1px solid rgba(197, 163, 92, 0.1); border-radius: 4px; font-size: 12px; line-height: 1.6; color: rgba(255,255,255,0.6);">
+                    Please share payment proof (screenshot/UTR) with your travel consultant after completing the payment.
+                </div>
+            </div>
+
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; background: rgba(255,255,255,0.02); border: 1px dashed rgba(197, 163, 92, 0.3); border-radius: 8px; padding: 40px;">
+                <h3 class="font-serif" style="font-size: 18px; margin-bottom: 30px;">Scan to Pay</h3>
+                
+                <div style="width: 200px; height: 200px; background: #ffffff; padding: 15px; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    {{#if user.qrCode}}
+                    <img src="{{user.qrCode}}" alt="Payment QR Code" style="width: 100%; height: 100%;" />
+                    {{else}}
+                    <div style="color: #000; font-size: 10px; text-align: center;">QR Code<br>Coming Soon</div>
+                    {{/if}}
+                </div>
+
+                <div style="margin-top: 30px; text-align: center;">
+                    <div style="font-size: 12px; color: rgba(255,255,255,0.6); margin-bottom: 10px;">UPI ID: <strong>{{#if company.upi}}{{company.upi}}{{else}}pay@journeyrouters{{/if}}</strong></div>
+                    <div style="display: inline-block; padding: 10px 30px; background: #c5a35c; color: #000; font-size: 12px; font-weight: 600; text-transform: uppercase; border-radius: 2px; letter-spacing: 1px;">Pay Now</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ================= CANCELLATION ================= -->
+    <div class="pdf-page">
+        <div class="bg-light-beam"></div>
+        
+        <header class="header-section">
+            <div class="label-small text-gold">Terms & Conditions</div>
+            <h1 class="title-large font-serif">Cancellation Policy</h1>
+        </header>
+
+        <div style="padding: 0 50px; font-size: 13px; color: rgba(255,255,255,0.7); line-height: 1.8; white-space: pre-line;">
+            {{cancellation}}
+        </div>
+
+        <div style="position: absolute; bottom: 80px; left: 50px; right: 50px; display: flex; justify-content: space-between; align-items: center; padding-top: 30px; border-top: 1px solid rgba(255,255,255,0.05);">
+            <div class="label-small text-gold">Journey Routers</div>
+            <div style="font-size: 10px; color: rgba(255,255,255,0.3);">End of Document</div>
+        </div>
+    </div>
+
+
+</body>
+
+</html>

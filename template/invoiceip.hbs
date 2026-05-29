@@ -1,0 +1,839 @@
+<html lang="en">
+
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@700;800;900&display=swap" />
+    <title>Invoice | Premium Template</title>
+    <style>
+      :root {
+        --primary: #0f172a;
+        --accent: #2563eb;
+        --secondary: #64748b;
+        --bg-soft: #f8fafc;
+        --border-soft: #e2e8f0;
+        --white: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Inter", sans-serif;
+        font-size: 13px;
+        line-height: 1.5;
+        color: #1e293b;
+        background: #edf2f7;
+        padding: 40px 0;
+        -webkit-print-color-adjust: exact;
+      }
+
+      .invoice-container {
+        max-width: 800px;
+        margin: 0 auto;
+        background: #ffffff;
+        border-radius: 16px;
+        box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        position: relative;
+        overflow: hidden;
+        padding-bottom: 20px;
+      }
+
+      /* Premium Hero Header */
+      .hero-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 11px 40px;
+        border: 2px solid #e2e8f0;
+        border-radius: 15px;
+        margin: 2rem;
+        background: aliceblue;
+        /* background: #ffffff; */
+      }
+
+      .logo-brand {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+      }
+
+      .logo-brand img {
+        height: 48px;
+        object-fit: contain;
+      }
+
+      .header-badge-box {
+        background-color: #f0f7ff;
+        border-radius: 12px;
+        padding: 10px 24px;
+        text-align: right;
+      }
+
+      .header-badge-title {
+        font-family: 'Outfit', 'Inter', sans-serif;
+        font-size: 18px;
+        font-weight: 800;
+        color: #1e3a8a;
+        letter-spacing: -0.5px;
+      }
+
+      .header-badge-sub {
+        font-size: 10px;
+        color: #3b82f6;
+        font-weight: 700;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-top: 2px;
+      }
+
+      /* Info Cards Section */
+      .info-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+        margin: 0 40px 45px;
+      }
+
+      .info-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 18px 20px;
+      }
+
+      .info-card-header {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 800;
+        color: #2563eb;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        border-bottom: 1px solid #e2e8f0;
+        padding-bottom: 8px;
+      }
+
+      .info-card-header svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.5;
+      }
+
+      .info-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .info-table td {
+        padding: 4px 0;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .info-label {
+        color: #64748b;
+        width: 100px;
+      }
+
+      .info-value {
+        color: #0f172a;
+      }
+
+      /* Table/Payment Schedule section */
+      .section-container {
+        margin: 0 40px 40px;
+      }
+
+      .section-title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        font-size: 11px;
+        font-weight: 800;
+        color: #2563eb;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+      }
+
+      .section-title svg {
+        width: 14px;
+        height: 14px;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 2.5;
+      }
+
+      .schedule-table {
+        width: 100%;
+        border-collapse: collapse;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+      }
+
+      .schedule-table th {
+        background: #f8fafc;
+        color: #64748b;
+        font-size: 11px;
+        font-weight: 800;
+        text-transform: uppercase;
+        padding: 10px 16px;
+        text-align: left;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .schedule-table td {
+        padding: 12px 16px;
+        font-size: 12.5px;
+        font-weight: 700;
+        color: #1e293b;
+        border-bottom: 1px solid #f1f5f9;
+      }
+
+      .schedule-table tr:last-child td {
+        border-bottom: none;
+      }
+
+      .status-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        padding: 3px 10px;
+        border-radius: 99px;
+        font-size: 9px;
+        font-weight: 800;
+        text-transform: uppercase;
+      }
+
+      .status-pill::before {
+        content: "●";
+        font-size: 6px;
+      }
+
+      .status-pill-paid {
+        background: #e6f4ea;
+        color: #137333;
+      }
+
+      .status-pill-pending,
+      .status-pill-due {
+        background: #fef7e0;
+        color: #b06000;
+      }
+
+      .status-pill-partial {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+
+      /* Total Calculation and Grand Total Card */
+      .calculation-card {
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        overflow: hidden;
+        background: #ffffff;
+        margin: 0 40px 40px;
+      }
+
+      .tax-bar {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        background: #f0f7ff;
+        padding: 12px 0;
+        border-bottom: 1px solid #e2e8f0;
+      }
+
+      .tax-item {
+        text-align: center;
+        border-right: 1px solid #dbeafe;
+      }
+
+      .tax-item:last-child {
+        border-right: none;
+      }
+
+      .tax-label {
+        font-size: 9px;
+        font-weight: 800;
+        color: #3b82f6;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 2px;
+      }
+
+      .tax-value {
+        font-size: 13.5px;
+        font-weight: 800;
+        color: #1e3a8a;
+      }
+
+      .total-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 16px 24px;
+        background: #ffffff;
+      }
+
+      .total-row-label {
+        font-size: 12px;
+        font-weight: 900;
+        color: #0f172a;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      .total-row-value {
+        font-family: 'Outfit', sans-serif;
+        font-size: 24px;
+        font-weight: 900;
+        color: #0f172a;
+      }
+
+      /* Travel Consultant card */
+      .consultant-card {
+        background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 12px 20px;
+        margin: 0 40px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .consultant-left {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .consultant-name-box {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .consultant-name {
+        font-size: 13px;
+        font-weight: 800;
+        color: #0f172a;
+      }
+
+      .consultant-badge {
+        background: #e8f0fe;
+        color: #1a73e8;
+        font-size: 8px;
+        font-weight: 800;
+        padding: 1px 6px;
+        border-radius: 99px;
+        display: inline-block;
+        margin-top: 1px;
+        text-transform: uppercase;
+        width: fit-content;
+      }
+
+      .consultant-details {
+        display: flex;
+        gap: 20px;
+      }
+
+      .consultant-detail-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #475569;
+      }
+
+      .consultant-detail-item svg {
+        width: 12px;
+        height: 12px;
+        stroke: #2563eb;
+        fill: none;
+        stroke-width: 2.5;
+      }
+
+      /* Payment Details Card */
+      .payment-details-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 1fr;
+        gap: 20px;
+        margin: 0 40px 40px;
+      }
+
+      .payment-details-left {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 18px 20px;
+      }
+
+      .payment-details-right {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 15px 20px;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .payment-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      .payment-table td {
+        padding: 5px 0;
+        font-size: 12px;
+        font-weight: 700;
+      }
+
+      .payment-label {
+        color: #64748b;
+        width: 100px;
+      }
+
+      .payment-value {
+        color: #0f172a;
+      }
+
+      .qr-title {
+        font-size: 10px;
+        font-weight: 800;
+        color: #64748b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        margin-bottom: 8px;
+      }
+
+      .qr-code-box {
+        width: 120px;
+        height: 120px;
+        border: 2px dashed #2563eb;
+        border-radius: 8px;
+        padding: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #ffffff;
+      }
+
+      .qr-code-box img {
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+
+      /* Travel Deliverables card */
+      .deliverables-container {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        border-radius: 12px;
+        padding: 12px 20px;
+        margin: 0 40px 40px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .deliverables-title {
+        font-size: 12px;
+        font-weight: 800;
+        color: #166534;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      .deliverables-title svg {
+        width: 14px;
+        height: 14px;
+        stroke: #166534;
+        fill: none;
+        stroke-width: 2.5;
+      }
+
+      .deliverables-list {
+        display: flex;
+        gap: 15px;
+      }
+
+      .deliverable-item {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        font-weight: 700;
+        color: #14532d;
+      }
+
+      .deliverable-item svg {
+        width: 12px;
+        height: 12px;
+        stroke: #22c55e;
+        fill: none;
+        stroke-width: 3;
+      }
+
+      /* Branding Footer */
+      .bottom-branding {
+        background: #f8fafc;
+        padding: 16px 40px;
+        border-top: 1px solid #e2e8f0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        font-size: 11px;
+        font-weight: 800;
+        color: #64748b;
+        text-transform: uppercase;
+      }
+
+      /* Page Break Controlled Logic */
+      .keep-together {
+        break-inside: avoid;
+        page-break-inside: avoid;
+      }
+
+      /* Cancellation Policy Card */
+      .cancellation-container {
+        background: #fef2f2;
+        border: 1px solid #fee2e2;
+        border-radius: 12px;
+        padding: 40px;
+        margin: 40px;
+        page-break-inside: avoid;
+        break-inside: avoid;
+      }
+
+      .cancellation-title {
+        font-size: 17px;
+        font-weight: 800;
+        color: #991b1b;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 20px;
+        border-bottom: 1px solid #fee2e2;
+        padding-bottom: 10px;
+      }
+
+      .cancellation-title svg {
+        width: 20px;
+        height: 20px;
+        stroke: #991b1b;
+        fill: none;
+        stroke-width: 2.5;
+      }
+
+      .cancellation-content {
+        font-size: 14.5px;
+        line-height: 1.9;
+        color: #7f1d1d;
+        white-space: pre-line;
+      }
+
+      @media print {
+        body {
+          background: white;
+          padding: 0;
+        }
+        .invoice-container {
+          box-shadow: none;
+          width: 100%;
+          border-radius: 0;
+          border: none;
+        }
+        .cancellation-container {
+          page-break-before: always;
+          break-before: page;
+          margin-top: 40px;
+        }
+        @page {
+          margin: 0;
+          size: A4;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="invoice-container">
+      <!-- Premium Hero Header -->
+      <header class="hero-section">
+        <div class="logo-brand">
+          <img
+            src="{{#if assets.logoUrl}}{{assets.logoUrl}}{{else if assets.logo}}{{assets.logo}}{{else}}{{user.organization.details.logourl}}{{/if}}"
+            alt="Logo"
+            onerror="this.style.display='none'; document.getElementById('text-logo').style.display='block';"
+          />
+          <div
+            id="text-logo"
+            style="display: none; color: var(--primary); font-family: 'Outfit'; font-weight: 900; font-size: 26px; text-transform: uppercase;"
+          >
+            {{#if company.name}}{{company.name}}{{else}}JOURNEY ROUTERS{{/if}}
+          </div>
+        </div>
+        <div class="header-badge-box">
+          <div class="header-badge-title">Booking Confirmed!</div>
+          <div class="header-badge-sub">Thank You For Booking With Us</div>
+        </div>
+      </header>
+
+      <!-- Info Grid -->
+      <section class="info-grid">
+        <!-- Client Information Card -->
+        <div class="info-card keep-together">
+          <div class="info-card-header">
+            <svg viewBox="0 0 24 24"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+            Client Information
+          </div>
+          <table class="info-table">
+            <tr>
+              <td class="info-label">Name:</td>
+              <td class="info-value">{{customer.name}}</td>
+            </tr>
+            <tr>
+              <td class="info-label">Booking Date:</td>
+              <td class="info-value">{{formatDate invoice.date}}</td>
+            </tr>
+            <tr>
+              <td class="info-label">Booking ID:</td>
+              <td class="info-value">{{#if invoice.bookingId}}{{invoice.bookingId}}{{else}}{{invoice.invoiceNumber}}{{/if}}</td>
+            </tr>
+            <tr>
+              <td class="info-label">Invoice Date:</td>
+              <td class="info-value">{{formatDate invoice.date}}</td>
+            </tr>
+            <tr>
+              <td class="info-label">Destination:</td>
+              <td class="info-value" style="color: var(--accent);">{{uppercase invoice.destination}}</td>
+            </tr>
+          </table>
+        </div>
+
+        <!-- Company Information Card -->
+        <div class="info-card keep-together">
+          <div class="info-card-header">
+            <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            Company Information
+          </div>
+          <table class="info-table">
+            <tr>
+              <td class="info-label">GST Number:</td>
+              <td class="info-value">{{company.gst}}</td>
+            </tr>
+            <tr>
+              <td class="info-label" style="vertical-align: top;">Registered Address:</td>
+              <td class="info-value" style="line-height: 1.4;">{{company.address}}</td>
+            </tr>
+            <tr>
+              <td class="info-label">Phone:</td>
+              <td class="info-value">{{company.phone}}</td>
+            </tr>
+            <tr>
+              <td class="info-label">Email:</td>
+              <td class="info-value" style="color: var(--accent);">{{company.email}}</td>
+            </tr>
+          </table>
+        </div>
+      </section>
+
+      <!-- Payment Schedule Section -->
+      <section class="section-container keep-together">
+        <div class="section-title">
+          <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          Payment Schedule
+        </div>
+        <table class="schedule-table">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Installment</th>
+              <th>Method</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each payments}}
+              <tr>
+                <td>{{formatDate installmentDate}}</td>
+                <td style="color: var(--primary);">₹{{installmentAmount}}</td>
+                <td>
+                  {{#if (eq (downcase status) 'paid')}}
+                    {{#if (eq sequence 1)}}UPI{{else}}Bank Transfer{{/if}}
+                  {{else if (eq (downcase status) 'received')}}
+                    {{#if (eq sequence 1)}}UPI{{else}}Bank Transfer{{/if}}
+                  {{else}}
+                    Pending
+                  {{/if}}
+                </td>
+                <td>
+                  {{#if (eq (downcase status) 'paid')}}
+                    <span class="status-pill status-pill-paid">Received</span>
+                  {{else if (eq (downcase status) 'received')}}
+                    <span class="status-pill status-pill-paid">Received</span>
+                  {{else}}
+                    <span class="status-pill status-pill-pending">Due</span>
+                  {{/if}}
+                </td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </section>
+
+      <!-- Tax and Total Calculation Card -->
+      <section class="calculation-card keep-together">
+        <div class="tax-bar">
+          <div class="tax-item">
+            <div class="tax-label">GST</div>
+            <div class="tax-value">₹{{#if invoice.pricing.gstAmount}}{{invoice.pricing.gstAmount}}{{else}}0{{/if}}</div>
+          </div>
+          <div class="tax-item">
+            <div class="tax-label">TCS</div>
+            <div class="tax-value">₹{{#if invoice.pricing.tcsAmount}}{{invoice.pricing.tcsAmount}}{{else}}0{{/if}}</div>
+          </div>
+        
+        </div>
+        <div class="total-row">
+          <div class="total-row-label">Grand Total</div>
+          <div class="total-row-value">₹{{sum invoice.pricing.totalAmount invoice.pricing.gstAmount invoice.pricing.tcsAmount}}/-</div>
+        </div>
+      </section>
+
+      <!-- Your Travel Consultant -->
+      <section class="consultant-card keep-together">
+        <div class="consultant-left">
+          <svg viewBox="0 0 24 24" style="width: 24px; height: 24px; stroke: #2563eb; fill: none; stroke-width: 2;"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+          <div class="consultant-name-box">
+            <span class="consultant-name">
+              {{#if agent.name}}
+                {{agent.name}}
+              {{else if invoice.meta.createdBy}}
+                {{invoice.meta.createdBy}}
+              {{else}}
+                Rohan Mehta
+              {{/if}}
+            </span>
+            <span class="consultant-badge">Verified Agent</span>
+          </div>
+        </div>
+        <div class="consultant-details">
+          <div class="consultant-detail-item">
+            <svg viewBox="0 0 24 24"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>
+            {{#if agent.phone}}{{agent.phone}}{{else if company.phone}}{{company.phone}}{{else}}+91 90003-88077{{/if}}
+          </div>
+          <div class="consultant-detail-item">
+            <svg viewBox="0 0 24 24"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            {{#if agent.email}}{{agent.email}}{{else if company.email}}{{company.email}}{{else}}rohan@journeyrouters.com{{/if}}
+          </div>
+          <div class="consultant-detail-item">
+            <svg viewBox="0 0 24 24" style="stroke: #25d366;"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+            WhatsApp Support 24/7
+          </div>
+        </div>
+      </section>
+
+      <!-- Payment Details -->
+      <section class="payment-details-grid keep-together">
+        <div class="payment-details-left">
+          <div class="info-card-header" style="color: #2563eb; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; margin-bottom: 12px;">
+            <svg viewBox="0 0 24 24"><rect x="2" y="5" width="20" height="14" rx="2" ry="2"></rect><line x1="2" y1="10" x2="22" y2="10"></line></svg>
+            Payment Details
+          </div>
+          <table class="payment-table">
+            <tr>
+              <td class="payment-label">Beneficiary:</td>
+              <td class="payment-value" style="font-weight: 800; text-transform: uppercase;">{{company.name}}</td>
+            </tr>
+            <tr>
+              <td class="payment-label">Account No:</td>
+              <td class="payment-value" style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; color: var(--accent);">{{bank.number}}</td>
+            </tr>
+            <tr>
+              <td class="payment-label">Account Type:</td>
+              <td class="payment-value">{{#if bank.type}}{{bank.type}}{{else}}Current Account{{/if}}</td>
+            </tr>
+            <tr>
+              <td class="payment-label">Bank & Branch:</td>
+              <td class="payment-value">{{bank.name}} {{#if bank.branch}}· {{bank.branch}}{{/if}}</td>
+            </tr>
+            <tr>
+              <td class="payment-label">IFSC Code:</td>
+              <td class="payment-value" style="font-family: 'Outfit', sans-serif; font-size: 12px; font-weight: 800; color: var(--accent);">{{bank.ifsc}}</td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="payment-details-right">
+          <div class="qr-title">Scan & Pay / UPI QR Code</div>
+          <div class="qr-code-box">
+            {{#if assets.qr}}
+              <img src="{{assets.qr}}" alt="UPI QR Code" />
+            {{else if user.organization.financials.qrurl}}
+              <img src="{{user.organization.financials.qrurl}}" alt="UPI QR Code" />
+            {{else if user.qrCode}}
+              <img src="{{user.qrCode}}" alt="UPI QR Code" />
+            {{else}}
+              <div style="font-size: 9px; color: #94a3b8; font-weight: 800;">QR CODE NOT SET</div>
+            {{/if}}
+          </div>
+        </div>
+      </section>
+
+      <!-- Cancellation Policy -->
+      {{#if user.organization.cancellation}}
+        <section class="cancellation-container keep-together">
+          <div class="cancellation-title">
+            <svg viewBox="0 0 24 24"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+            Cancellation Policy
+          </div>
+          <div class="cancellation-content">
+            {{{user.organization.cancellation}}}
+          </div>
+        </section>
+      {{else}}
+        <section class="cancellation-container keep-together">
+          <div class="cancellation-title">
+            <svg viewBox="0 0 24 24">
+              <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+              <line x1="12" y1="9" x2="12" y2="13"></line>
+              <line x1="12" y1="17" x2="12.01" y2="17"></line>
+            </svg>
+            Cancellation Policy
+          </div>
+          <div class="cancellation-content">
+            No cancellation or refund is applicable on the payments made.
+          </div>
+        </section>
+      {{/if}}
+
+      <!-- Bottom Branding -->
+      <footer class="bottom-branding keep-together">
+        <div>{{company.address}}</div>
+        <div style="display: flex; gap: 20px;">
+          <span>{{company.phone}}</span>
+          <span>{{company.email}}</span>
+        </div>
+      </footer>
+    </div>
+  </body>
+
+</html>

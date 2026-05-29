@@ -1,0 +1,814 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Journey Routers - Trip PDF</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400..700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+    <style>
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        body {
+            margin: 0;
+             {{!-- font-family: "Dancing Script", cursive; --}}
+
+            font-family: "Poppins", sans-serif;
+            font-optical-sizing: auto;
+        }
+
+        .pdf-page {
+            margin: 0 auto;
+            width: 210mm;
+            height: 297mm;
+            position: relative;
+            overflow: hidden;
+            page-break-after: always;
+            background: #000;
+            color: #fff;
+        }
+
+        .package-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 28px;
+            margin-bottom: 50px;
+        }
+
+        .package-table th {
+            background: #f5f5f5;
+            padding: 20px 25px;
+            border: 4px solid #4a4a4a;
+            font-weight: 500;
+            text-align: left;
+            width: 47%;
+        }
+
+        .package-table td {
+            padding: 20px 25px;
+            border: 4px solid #4a4a4a;
+            background: #fff;
+        }
+
+        .itinerary-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 20mm;
+            break-inside: avoid;
+            left: 10mm;
+        }
+
+        .itinerary-group {
+            display: flex;
+            padding: 2rem;
+            flex-direction: column;
+            gap: 20mm;
+        }
+
+        .pdf-footer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            font-size: 14px;
+            color: white;
+        }
+
+        .footer {
+            position: absolute;
+            bottom: 18mm;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .divider {
+            width: 2px;
+            height: 40px;
+            background: #fff;
+        }
+
+        .page-header {
+            width: 210mm;
+            height: 65mm;
+            padding-bottom: 20mm;
+            background-repeat: no-repeat;
+            background-position: top center;
+            background-size: 100% auto;
+        }
+
+        /* Payment */
+        .payment-layout {
+            display: flex;
+            gap: 2rem;
+            margin: 2rem;
+        }
+
+        .payment-left {
+            flex: 1;
+        }
+
+        .payment-table {
+            width: 100%;
+            color: black;
+            border-collapse: collapse;
+            font-size: 16px;
+        }
+
+        .payment-table th {
+            background: #f5f5f5;
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            text-align: left;
+            width: 40%;
+        }
+
+        .payment-table td {
+            padding: 12px 16px;
+            border: 1px solid #ddd;
+            background: #fff;
+        }
+
+        .qr-box {
+            width: 220px;
+            height: 220px;
+            border-radius: 16px;
+            border: 2px dashed #4a90e2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+            margin-bottom: 1rem;
+            margin-top: 1rem;
+        }
+
+        .qr-box span {
+            text-align: center;
+            font-size: 0.95rem;
+            color: #555;
+        }
+
+        .paynow-btn {
+            display: inline-block;
+            margin-top: 1rem;
+            padding: 0.8rem 2.5rem;
+            background: #4a90e2;
+            color: #fff;
+            border-radius: 999px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            text-align: center;
+        }
+
+        .paynow-btn:hover {
+            background: #2f6bb0;
+        }
+
+        .payment-note {
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            color: #444;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- ================= PAGE 1 : COVER ================= -->
+
+
+    <div style="    
+      width: 210mm;
+      margin:0 auto;    
+      height: 297mm;
+      background-image:url(https://d2w6ooepk5o1m0.cloudfront.net/Winterfell_Holidays/profile/wh.jpeg);
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/Header.png'); --}}
+        background-size: cover;
+        background-position: center;
+        position: relative;" class="pdf-page">
+        <div style="text-align: center">
+            <div style="
+              background-color: #000;
+              padding: 2rem;
+              margin: 10rem auto 3rem;
+              font-size: 4.5rem;
+              width: min-content;
+            ">
+                {{user.CompanyName}}
+            </div>
+
+
+
+            <div style="color: #000; margin-top: 0.5rem;font-family:Dancing Script;font-weight: bold;font-size:23px">
+                {{user.CompanyAddress}}
+            </div>
+
+            <div style="color: #000; margin-top: 0.5rem;font-family:Dancing Script;font-weight: bold;font-size:23px">
+                GST: {{user.CompanyGSTNumber}}
+            </div>
+
+            <div style="color: #000; margin-top: 0.5rem;font-family:Dancing Script;font-weight: bold;font-size:23px">
+                {{user.Phone}}
+            </div>
+        </div>
+         <div style="
+          display: flex;
+          position: absolute;
+        bottom:0;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 282mm;
+          gap: 18px;
+        ">
+        <div style="background: black;
+    padding: 0.7rem 5rem;
+    font-size: 1.3rem;">
+
+                   {{user.CompanyName}}
+        </div>
+
+        </div>
+    </div>
+
+    <!-- ================= PAGE 2 : PACKAGE DETAILS ================= -->
+    <div class="pdf-page" style="
+          background-image:url(https://d2w6ooepk5o1m0.cloudfront.net/Winterfell_Holidays/profile/wh.jpeg);
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
+        background-size: cover;
+        background-position: top;
+      ">
+
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Package-Details
+        </div>
+
+        <div style="font-size: 1.5rem">
+
+            <table class="package-table" style="color: #000;">
+                <tr>
+                    <th>Destination</th>
+                    <td>{{trip.destination}}</td>
+                </tr>
+                <tr>
+                    <th>Name</th>
+                    <td>{{customer.name}}</td>
+                </tr>
+                <tr>
+                    <th>No of Pax</th>
+                    <td>{{trip.pax}} Adults</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{{formatDate trip.travelDate}}</td>
+                </tr>
+                <tr>
+                    <th>Duration</th>
+                    <td>{{trip.days}} Days {{trip.nights}} Nights</td>
+                </tr>
+            </table>
+
+        </div>
+
+        <div style="
+          position: absolute;
+          top: 166mm;
+          left: 79mm;
+          text-align: center;
+          color: #fff;
+          z-index: 9;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          font-weight: 500;
+        ">
+            <div style="width:     width: 349px;
+    height: 381px;
+    position: relative;
+    top: -7.5rem;
+    left: -4rem;;">
+
+                <img style="width: 100%; height:100%;object-fit:cover; " src="https://d2w6ooepk5o1m0.cloudfront.net/Winterfell_Holidays/profile/whprice.png"
+                    alt="Budget" />
+            </div>
+
+            <div style="position: absolute;
+    top: 3rem;
+    left: -19px;">
+                {{!-- <div style="font-size: 28px">
+                    {{trip.days}} Days, {{trip.nights}} Nights
+                </div>
+                <div style="font-size: 26px">at just</div> --}}
+                <div style="font-size: 39px">
+                    {{pricing.currency}} {{pricing.totalCost}} /-
+                </div>
+                <div style="font-size: 25px; font-weight: normal">
+                    {{pricing.priceType}}
+                </div>
+            </div>
+
+        </div>
+
+
+ <div style="
+          display: flex;
+          position: absolute;
+        bottom:0;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 282mm;
+          gap: 18px;
+        ">
+        <div style="background: black;
+    padding: 0.7rem 5rem;
+    font-size: 1.3rem;">
+
+                   {{user.CompanyName}}
+        </div>
+
+        </div>
+    </div>
+
+    <!-- ================= PAGE 3 : INCLUSION / EXCLUSION ================= -->
+    <div class="pdf-page" style="
+          background-image:url(https://d2w6ooepk5o1m0.cloudfront.net/Winterfell_Holidays/profile/wh.jpeg);
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
+        background-size: cover;
+        background-position: top;
+      ">
+
+
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Inclusions
+        </div>
+
+
+
+        <div style="padding: 2rem 4rem;">
+            {{#each inclusions}}
+            <div style="font-size: 25px; color:black;display: flex; align-items: center">
+                - {{this}}
+            </div>
+            {{/each}}
+
+        </div>
+
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Exclusions
+        </div>
+
+
+        <div style="padding: 2rem 4rem;">
+            {{#each exclusions}}
+            <div style="font-size: 25px;color:black; display: flex; align-items: center">
+                - {{this}}
+            </div>
+            {{/each}}
+       
+        </div>
+
+ <div style="
+          display: flex;
+          position: absolute;
+        bottom:0;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 282mm;
+          gap: 18px;
+        ">
+        <div style="background: black;
+    padding: 0.7rem 5rem;
+    font-size: 1.3rem;">
+
+                   {{user.CompanyName}}
+        </div>
+
+        </div>
+    </div>
+
+
+
+    <!-- ================= PAGE 5 : DAY WISE ITINERARY ================= -->
+    <div class="pdf-page" style="
+          background-image:url(https://d2w6ooepk5o1m0.cloudfront.net/Winterfell_Holidays/profile/wh.jpeg);
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
+        background-size: cover;
+        background-position: top;
+      ">
+        <div
+            style="font-size: 32px;font-weight: normal;background: black;padding: 0.8rem;color: white;text-align: center; ">
+            Day Wise Itinerary
+        </div>
+
+
+
+        <div style="
+          padding: 2rem;
+          font-size: 16px;
+          display: flex;
+          flex-direction: column;
+          color:black
+        ">
+            {{#each itinerary}}
+            <div style="display: flex; gap: 20px; font-size: 26px;font-family:Dancing Script;font-weight: bold;">
+                <p style="text-wrap: nowrap;">DAY {{Date}}</p>
+                <p>-</p>
+                <p>{{Title}}</p>
+            </div>
+            {{/each}}
+        </div>
+
+        <!-- Footer -->
+        <div style="
+          display: flex;
+          position: absolute;
+        bottom:0;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 282mm;
+          gap: 18px;
+        ">
+        <div style="background: black;
+    padding: 0.7rem 5rem;
+    font-size: 1.3rem;">
+
+                   {{user.CompanyName}}
+        </div>
+
+        </div>
+    </div>
+
+    <!-- ================= DETAIL ITINERARY ================= -->
+
+    {{!-- Start looping itinerary --}} {{#each itinerary}} {{!-- Open a new page
+    every 3 items --}} {{#if (eq (mod @index 2) 0)}}
+    <div class="pdf-page" style="
+          background-image:url('{{../assetsBaseUrl}}/header.png');
+        background-size: cover;
+        background-position: top;
+      ">
+        <!-- Header -->
+
+
+        <div
+            style="font-size: 32px;font-weight: normal;background: black;padding: 0.8rem;color: white;text-align: center; ">
+            Detailed Itinerary
+        </div>
+
+
+        <div class="itinerary-group">
+            {{/if}}
+
+            <!-- Itinerary item -->
+            <div class="itinerary-item">
+                {{#if ImageUrl}}
+                <img src="{{ImageUrl}}" style="
+              width: 50mm;
+              height: 50mm;
+              border-radius: 49% 51% 61% 39% / 44% 52% 48% 56% ;
+              object-fit: cover;
+              flex-shrink: 0;
+              position: relative;
+              left: 11mm;
+            " />
+                {{/if}}
+
+                <div style="
+              display: flex;
+              flex-direction: column;
+              gap: 6mm;
+              width: 150mm;
+            ">
+                    <div style="color: #1a1a18; font-weight: bold; font-size: 26px; font-family:Dancing Script">
+                        DAY {{add @index 1}} - {{Title}}
+                    </div>
+                    <p style="font-size: 18px;color: #1a1a18; line-height: 1.4; margin: 0">
+                        {{Description}}
+                    </p>
+                </div>
+            </div>
+
+            {{!-- Close page after 3rd item OR last item --}} {{#if (or (eq (mod
+            (add @index 1) 2) 0) @last)}}
+        </div>
+
+        <svg style="display: flex;margin:0 auto" width="600" height="40" viewBox="0 0 600 40"
+            xmlns="http://www.w3.org/2000/svg">
+
+            <!-- Left line -->
+            <line x1="0" y1="20" x2="260" y2="20" stroke="#1F1F1F" stroke-width="1" />
+
+            <!-- Right line -->
+            <line x1="340" y1="20" x2="600" y2="20" stroke="#1F1F1F" stroke-width="1" />
+
+            <!-- Center diamond -->
+            <rect x="292" y="12" width="16" height="16" fill="#1F1F1F" transform="rotate(45 300 20)" />
+
+            <!-- Small side dots -->
+            <circle cx="280" cy="20" r="2.5" fill="#1F1F1F" />
+            <circle cx="320" cy="20" r="2.5" fill="#1F1F1F" />
+
+        </svg>
+        
+    </div>
+    {{/if}} {{/each}}
+    <!-- ================= END DETAIL ITINERARY ================= -->
+
+    <!-- ================= HOTELS ================= -->
+
+    <div class="pdf-page" style="
+          background-image:url(https://d2w6ooepk5o1m0.cloudfront.net/Winterfell_Holidays/profile/wh.jpeg);
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
+        background-size: cover;
+        background-position: top;
+      ">
+
+
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Accommodation
+        </div>
+
+        <!-- CONTENT AREA -->
+        <div style="
+      padding: 20mm 17mm;
+      display: flex;
+      flex-direction: column;
+      gap: 12mm;
+    ">
+            {{#if hotels}}
+            {{#each hotels}}
+
+            <div style="display: flex; flex-direction: column; gap: 4mm;">
+                <span style="color: black; font-size: 1.5rem;">
+                    Stay at {{City}}
+                </span>
+
+                <span style="font-size: 1.5rem;color:black">Hotel - {{Name}}</span>
+                <span style="font-size: 1.5rem;color:black">Room - {{RoomType}}</span>
+                <span style="font-size: 1.5rem;color:black">
+                    Category - {{Category}} Star
+                </span>
+
+                <span style="font-size: 1.5rem; color: rgb(42, 43, 43);">
+                    Check-in - {{formatDate CheckInDate}}
+                </span>
+                <span style="font-size: 1.5rem; color: rgb(31, 31, 31);">
+                    Check-out - {{formatDate CheckOutDate}}
+                </span>
+                <span style="font-size: 1.5rem;color:black">
+                    Meals - {{#each Meals}} {{this}},{{/each}}
+                </span>
+
+
+            </div>
+            <svg width="600" height="40" viewBox="0 0 600 40" xmlns="http://www.w3.org/2000/svg">
+
+                <!-- Left line -->
+                <line x1="0" y1="20" x2="260" y2="20" stroke="#1F1F1F" stroke-width="1" />
+
+                <!-- Right line -->
+                <line x1="340" y1="20" x2="600" y2="20" stroke="#1F1F1F" stroke-width="1" />
+
+                <!-- Center diamond -->
+                <rect x="292" y="12" width="16" height="16" fill="#1F1F1F" transform="rotate(45 300 20)" />
+
+                <!-- Small side dots -->
+                <circle cx="280" cy="20" r="2.5" fill="#1F1F1F" />
+                <circle cx="320" cy="20" r="2.5" fill="#1F1F1F" />
+
+            </svg>
+
+            {{/each}}
+            {{/if}}
+        </div>
+        <!-- Footer -->
+ <div style="
+          display: flex;
+          position: absolute;
+        bottom:0;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 282mm;
+          gap: 18px;
+        ">
+        <div style="background: black;
+    padding: 0.7rem 5rem;
+    font-size: 1.3rem;">
+
+                   {{user.CompanyName}}
+        </div>
+
+        </div>
+    </div>
+
+    <!-- ================= END HOTELS ================= -->
+
+    <!-- ================= PAYMENT ================= -->
+    <div class="pdf-page" style="
+        width: 210mm;
+        height: 297mm;
+        object-fit: cover;
+        background-size: cover;
+        background-position: center;
+          background-image:url(https://d2w6ooepk5o1m0.cloudfront.net/Winterfell_Holidays/profile/wh.jpeg);
+
+        {{!-- background-image: url(https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/payment.png;); --}}
+      ">
+        <div style="
+    font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Payment-Details
+        </div>
+
+        <div class="payment-layout">
+            <div class="payment-left">
+                <h3 style="margin-top: 0; color: #333">Bank Transfer Details</h3>
+                <table class="payment-table">
+                    <tr>
+                        <th>Account Name</th>
+                        <td>{{user.AccountNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th>Bank Name</th>
+                        <td>{{user.BankName}}</td>
+                    </tr>
+                    <tr>
+                        <th>Branch</th>
+                        <td>{{user.BranchName}}</td>
+                    </tr>
+                    <tr>
+                        <th>Account Number</th>
+                        <td>{{user.AccountNumber}}</td>
+                    </tr>
+                    <tr>
+                        <th>IFSC Code</th>
+                        <td>{{user.IfscCode}}</td>
+                    </tr>
+
+                </table>
+
+                <div class="payment-note">
+                    Please share payment proof (screenshot/UTR) with your travel
+                    consultant after completing the payment.
+                </div>
+            </div>
+
+            <div class="payment-right">
+                <h3 style="margin-top: 0; color: #333">UPI / QR Payment</h3>
+
+                <div class="qr-box">
+                    <span>
+                        QR Code Placeholder<br />
+                        {{#if user.qrCode}}
+                        <img src="{{user.qrCode}}" alt="Payment QR Code" style="width: 100%; height: 100%;" />
+                        {{else}}
+                        (QR Code will be displayed here)
+                        {{/if}}
+                    </span>
+                </div>
+
+                {{#if company.upi}}
+                <div>UPI ID: <strong>{{company.upi}}</strong></div>
+                {{/if}}
+
+                <a class="paynow-btn">Pay Now</a>
+            </div>
+        </div>
+         <div style="
+          display: flex;
+          position: absolute;
+        bottom:0;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 282mm;
+          gap: 18px;
+        ">
+        <div style="background: black;
+    padding: 0.7rem 5rem;
+    font-size: 1.3rem;">
+
+                   {{user.CompanyName}}
+        </div>
+
+        </div>
+        <!-- Footer -->
+
+    </div>
+
+    <!-- ================= CANCELLATION ================= -->
+    <div class="pdf-page" style="
+          background-image:url(https://d2w6ooepk5o1m0.cloudfront.net/Winterfell_Holidays/profile/wh.jpeg);
+
+        {{!-- background-image:url('{{assetsBaseUrl}}/destination/{{uppercase trip.destination}}/PackageDetails.png');  --}}
+        {{!-- background-image: url('https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/PackageDetails.png'); --}}
+        background-size: cover;
+        background-position: top;
+      ">
+        <div style="
+            font-size: 32px;
+    font-weight: normal;
+    background: black;
+    padding: 0.8rem;
+    color: white;
+    text-align: center;
+        ">
+            Cancellation Policy
+        </div>
+        <div style="padding: 2rem 4rem; color: black; font-size: 18px; line-height: 1.6; white-space: pre-line;">
+            {{cancellation}}
+        </div>
+        <!-- Footer -->
+ <div style="
+          display: flex;
+          position: absolute;
+        bottom:0;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #ffffff;
+          width: 210mm;
+          margin-top: 282mm;
+          gap: 18px;
+        ">
+        <div style="background: black;
+    padding: 0.7rem 5rem;
+    font-size: 1.3rem;">
+
+                   {{user.CompanyName}}
+        </div>
+
+        </div>
+    </div>
+
+
+</body>
+
+</html>

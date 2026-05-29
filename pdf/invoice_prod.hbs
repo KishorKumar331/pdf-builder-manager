@@ -1,0 +1,677 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" />
+  <title>Invoice</title>
+  <style>
+    :root {
+      --brand-primary: #1d4ed8;
+      /* Professional Blue */
+      --brand-light: #eff6ff;
+      --text-main: #111827;
+      --text-muted: #6b7280;
+      --border-color: #e5e7eb;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      font-size: 14px;
+      line-height: 1.6;
+      color: var(--text-muted);
+      background: #f9fafb;
+      padding: 20px;
+    }
+
+    .invoice-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      padding: 40px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+      border-radius: 8px;
+      border-top: 6px solid var(--brand-primary);
+    }
+
+    /* Header Section */
+    .header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 40px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    .invoice-title {
+      font-size: 32px;
+      font-weight: 800;
+      color: var(--brand-primary);
+      margin-bottom: 8px;
+      letter-spacing: -0.5px;
+    }
+
+    .invoice-number {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--text-muted);
+    }
+
+    .logo {
+      text-align: right;
+    }
+
+    .logo img {
+      max-height: 60px;
+      width: auto;
+    }
+
+    .logo-text {
+      font-size: 24px;
+      font-weight: 800;
+      color: var(--text-main);
+    }
+
+    /* Project Details */
+    .project-details {
+      margin-bottom: 40px;
+    }
+
+    .project-name {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .dates {
+      display: flex;
+      gap: 40px;
+      background: #f8fafc;
+      padding: 15px 20px;
+      border-radius: 6px;
+      border: 1px solid #f1f5f9;
+    }
+
+    .date-item {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .date-label {
+      font-size: 11px;
+      color: #94a3b8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 600;
+    }
+
+    .date-value {
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    /* Addresses */
+    .addresses {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 40px;
+      margin-bottom: 40px;
+    }
+
+    .address-section {
+      /* cleaner without background */
+    }
+
+    .address-title {
+      font-size: 12px;
+      color: var(--brand-primary);
+      margin-bottom: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      border-bottom: 2px solid var(--brand-light);
+      padding-bottom: 4px;
+      display: inline-block;
+    }
+
+    .address-content {
+      color: var(--text-muted);
+      margin-top: 8px;
+    }
+
+    .address-name {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 6px;
+    }
+
+    .address-line,
+    .contact-item {
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    /* Items Table */
+    .items-section {
+      margin-bottom: 40px;
+    }
+
+    .section-title {
+      font-size: 16px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .items-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+
+    .items-table th {
+      text-align: left;
+      padding: 14px 16px;
+      background: var(--brand-light);
+      color: var(--brand-primary);
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+      border-bottom: 2px solid #bfdbfe;
+    }
+
+    .items-table td {
+      padding: 14px 16px;
+      border-bottom: 1px solid #f1f5f9;
+      font-size: 14px;
+      color: var(--text-main);
+    }
+
+    /* Zebra Striping */
+    .items-table tbody tr:nth-child(even) {
+      background: #f8fafc;
+    }
+
+    .items-table .description {
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .items-table .text-right {
+      text-align: right;
+    }
+
+    /* Total Section */
+    .total-section {
+      display: flex;
+      justify-content: flex-end;
+      margin-bottom: 40px;
+    }
+
+    .total-box {
+      min-width: 250px;
+      padding: 20px;
+      background: var(--brand-light);
+      border-radius: 8px;
+      border: 1px solid #bfdbfe;
+      text-align: right;
+    }
+
+    .total-label {
+      font-size: 12px;
+      color: var(--brand-primary);
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    .total-amount {
+      font-size: 28px;
+      font-weight: 800;
+      color: var(--brand-primary);
+    }
+
+    /* Note Section */
+    .note-section {
+      margin-bottom: 40px;
+    }
+
+    .note-box {
+      padding: 20px;
+      background: #f8fafc;
+      border-radius: 8px;
+      border-left: 4px solid #cbd5e1;
+    }
+
+    .note-title {
+      font-size: 12px;
+      color: #64748b;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      font-weight: 700;
+    }
+
+    .note-content {
+      font-size: 13px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Payment Method */
+    .payment-section {
+      margin: 40px 0;
+    }
+
+    .payment-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 16px;
+    }
+
+    .payment-details {
+      padding: 20px;
+      background: white;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+    }
+
+    .payment-method {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--text-main);
+      margin-bottom: 12px;
+      padding-bottom: 12px;
+      border-bottom: 1px solid #f1f5f9;
+    }
+
+    .payment-item {
+      margin-bottom: 8px;
+      font-size: 13px;
+      color: var(--text-main);
+    }
+
+    .payment-label {
+      display: inline-block;
+      min-width: 140px;
+      color: #94a3b8;
+      font-weight: 500;
+    }
+
+    /* Signature Section */
+    .signature-section {
+      display: flex;
+      justify-content: flex-end;
+      padding-top: 40px;
+      margin-top: 40px;
+      border-top: 1px solid var(--border-color);
+    }
+
+    .signature-box {
+      text-align: center;
+      width: 250px;
+    }
+
+    .signature-line {
+      width: 100%;
+      height: 1px;
+      background: #94a3b8;
+      margin-bottom: 12px;
+    }
+
+    .signature-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text-main);
+    }
+
+    .gst-note {
+      font-size: 11px;
+      color: #94a3b8;
+      font-style: italic;
+      margin-top: 4px;
+    }
+
+    /* Terms Footer */
+    .terms-footer {
+      margin-top: 60px;
+      padding-top: 20px;
+      border-top: 1px dashed var(--border-color);
+      font-size: 11px;
+      color: #94a3b8;
+    }
+
+    .terms-footer strong {
+      color: #64748b;
+      display: block;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .terms-footer ol {
+      padding-left: 16px;
+      line-height: 1.6;
+    }
+
+    /* Status Badges */
+    .status-badge {
+      padding: 4px 10px;
+      border-radius: 12px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .status-pending {
+      background: #fef9c3;
+      color: #ca8a04;
+    }
+
+    .status-paid {
+      background: #dcfce7;
+      color: #166534;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .invoice-container {
+        padding: 20px;
+        border-top-width: 4px;
+      }
+
+      .header {
+        flex-direction: column;
+        gap: 20px;
+      }
+
+      .logo {
+        text-align: left;
+      }
+
+      .addresses {
+        grid-template-columns: 1fr;
+        gap: 30px;
+      }
+
+      .dates {
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .signature-section {
+        justify-content: center;
+      }
+
+      .items-table {
+        font-size: 12px;
+      }
+
+      .items-table th,
+      .items-table td {
+        padding: 10px;
+      }
+    }
+
+    /* PDF Print Optimization */
+    @media print {
+      @page {
+        margin: 10mm;
+      }
+
+      body {
+        background: white;
+        padding: 0;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+
+      .invoice-container {
+        box-shadow: none;
+        padding: 30px;
+        max-width: 100%;
+        border-top: none;
+        /* Often cleaner in print to not have thick top border */
+        border-left: 2px solid var(--border-color);
+        border-right: 2px solid var(--border-color);
+        border-radius: 0;
+        min-height: calc(100vh - 20mm);
+      }
+
+      .items-table {
+        page-break-inside: auto;
+      }
+
+      .items-table tr {
+        page-break-inside: avoid;
+        page-break-after: auto;
+      }
+
+      .items-table thead {
+        display: table-header-group;
+      }
+
+      .project-details,
+      .addresses,
+      .total-section,
+      .note-section,
+      .payment-section,
+      .signature-section,
+      .terms-footer {
+        page-break-inside: avoid;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="invoice-container">
+    <!-- Header -->
+    <header class="header">
+      <div>
+        <h1 class="invoice-title">Invoice</h1>
+        <div class="invoice-number">{{invoice.invoiceNumber}}</div>
+      </div>
+      <div class="logo">
+        {{#if assets.logoUrl}}
+        <img src="{{assets.logoUrl}}" alt="Company Logo" />
+        {{else}}
+        <div class="logo-text">{{company.name}}</div>
+        {{/if}}
+      </div>
+    </header>
+
+    <!-- Project Details -->
+    <section class="project-details">
+      <div class="project-name">{{invoice.destination}} - {{invoice.tripId}}</div>
+      <div class="dates">
+        <div class="date-item">
+          <div class="date-label">Invoice Date</div>
+          <div class="date-value">{{invoice.invoiceDate}}</div>
+        </div>
+        <div class="date-item">
+          <div class="date-label">Travel Date</div>
+          <div class="date-value">{{invoice.travelDate}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Addresses -->
+    <section class="addresses">
+      <div class="address-section">
+        <div class="address-title">From</div>
+        <div class="address-content">
+          <div class="address-name">{{company.name}}</div>
+          <div class="address-line">{{company.address}}</div>
+          <div class="contact-item">{{company.email}}</div>
+          <div class="contact-item">{{company.phone}}</div>
+          <div class="contact-item"><strong>GST:</strong> {{company.gst}}</div>
+        </div>
+      </div>
+
+      <div class="address-section">
+        <div class="address-title">Billed To</div>
+        <div class="address-content">
+          <div class="address-name">{{customer.name}}</div>
+          <div class="address-line">{{customer.address.street}}</div>
+          <div class="address-line">{{customer.address.city}}, {{customer.address.state}}
+            {{customer.address.zipCode}}</div>
+          <div class="address-line">{{customer.address.country}}</div>
+          <div class="contact-item">{{customer.email}}</div>
+          <div class="contact-item">{{customer.contact}}</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payment Schedule -->
+    <section class="items-section">
+      <h2 class="section-title">Payment Schedule</h2>
+      <table class="items-table">
+        <thead>
+          <tr>
+            <th>Installment</th>
+            <th class="text-right">Due Date</th>
+            <th class="text-right">Amount</th>
+            <th class="text-right">Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {{#each payments}}
+          <tr>
+            <td class="description">{{sequence}}</td>
+            <td class="text-right">{{installmentDate}}</td>
+            <td class="text-right">₹{{installmentAmount}}</td>
+            <td class="text-right"><span class="status-badge status-{{downcase status}}">{{status}}</span>
+            </td>
+          </tr>
+          {{/each}}
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Total -->
+    <section class="total-section">
+      <div class="total-box">
+        <div class="total-label">Total Amount Due</div>
+        <div class="total-amount">₹{{invoice.pricing.totalAmount}}</div>
+      </div>
+    </section>
+
+    <!-- Note -->
+    {{#if invoice.notes}}
+    <section class="note-section">
+      <div class="note-box">
+        <div class="note-title">Note</div>
+        <div class="note-content">{{invoice.notes}}</div>
+      </div>
+    </section>
+    {{/if}}
+
+    <!-- Cancellation Policy -->
+    {{#if cancellation}}
+    <section class="note-section">
+      <div class="note-box">
+        <div class="note-title">Cancellation Policy</div>
+        <div class="note-content">{{cancellation}}</div>
+      </div>
+    </section>
+    {{/if}}
+
+    <!-- Deliverables -->
+    {{#if deliverables}}
+    <section class="items-section">
+      <h2 class="section-title">Deliverables Check</h2>
+      <div
+        style="background: white; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color); border-left: 4px solid #10b981;">
+        {{#each deliverables}}
+        <div style="margin-bottom: 8px; line-height: 1.6; font-size: 13px; color: var(--text-main);">
+          {{#if provided}}<span style="color:#10b981">✓</span>{{else}}<span style="color:#fbbf24">○</span>{{/if}}
+          <strong>{{item}}</strong>
+          <span style="color:#94a3b8; font-size:12px; margin-left: 10px;">(Required: {{#if
+            required}}Yes{{else}}No{{/if}} | Provided: {{#if provided}}Yes{{else}}No{{/if}})</span>
+        </div>
+        {{/each}}
+      </div>
+    </section>
+    {{/if}}
+
+    <!-- Payment Method -->
+    <section class="payment-section">
+      <h2 class="payment-title">Payment Information</h2>
+      <div class="payment-details">
+        <div class="payment-method">Bank Transfer Details</div>
+        <div class="payment-item">
+          <span class="payment-label">Account Name:</span>
+          <strong>{{bank.name}}</strong>
+        </div>
+        <div class="payment-item">
+          <span class="payment-label">Account Number:</span>
+          <strong>{{bank.number}}</strong>
+        </div>
+        <div class="payment-item">
+          <span class="payment-label">Bank & Branch:</span>
+          {{bank.branch}}
+        </div>
+        <div class="payment-item">
+          <span class="payment-label">IFSC Code:</span>
+          <strong>{{bank.ifsc}}</strong>
+        </div>
+      </div>
+
+      <!-- QR Code Section -->
+      {{#if assets.qr}}
+      <div
+        style="margin-top: 24px; display: flex; align-items: center; gap: 20px; background: #f8fafc; padding: 20px; border-radius: 8px; border: 1px solid var(--border-color);">
+        <div
+          style="background: white; padding: 10px; border-radius: 8px; border: 1px solid #e2e8f0; display: inline-block;">
+          <img src="{{assets.qr}}" alt="Payment QR Code" style="width: 100px; height: 100px;" />
+        </div>
+        <div>
+          <div
+            style="font-size: 12px; color: #64748b; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 700; margin-bottom: 4px;">
+            Scan to Pay
+          </div>
+          <div style="font-size: 13px; color: var(--text-muted); line-height: 1.5;">
+            Use any UPI app to scan the QR code and complete your payment instantly.
+          </div>
+        </div>
+      </div>
+      {{/if}}
+    </section>
+
+    <!-- Signature -->
+    <section class="signature-section">
+      <div class="signature-box">
+        <div class="signature-line"></div>
+        <div class="signature-name">For {{company.name}}</div>
+        <div class="gst-note">Authorised Signatory</div>
+      </div>
+    </section>
+
+    <!-- Terms and Conditions Footer -->
+    {{#if terms}}
+    <footer class="terms-footer" style="white-space: pre-line;">
+      <strong>Terms & Conditions</strong>
+      {{terms}}
+    </footer>
+    {{/if}}
+  </div>
+</body>
+
+</html>
