@@ -8,8 +8,6 @@
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&display=swap" rel="stylesheet" />
   <style>
     @page { size: A4; margin: 0; }
-
-
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
@@ -19,77 +17,24 @@
       print-color-adjust: exact;
     }
 
-    @page innerPage {
-      size: A4;
-      margin-top: 110px;
-      margin-bottom: 70px;
-      margin-left: 0;
-      margin-right: 0;
-      background-color: #ffffff;
-
-      @top-center {
-        content: element(runningHeader);
-      }
-      @bottom-center {
-        content: element(runningFooter);
-      }
-    }
-
-    .pdf-page {
+    .pdf-page, .pdf-page-dynamic {
       width: 210mm;
-      min-height: 297mm;
       position: relative;
       background: #fff;
       page-break-after: always;
       overflow: hidden;
       box-sizing: border-box;
     }
-
-    .pdf-page-dynamic {
-      page: innerPage;
-      width: 210mm;
-      position: relative;
-      background: #fff;
-      page-break-after: always;
-      overflow: visible;
-      box-sizing: border-box;
-      min-height: auto;
-      height: auto;
-      display: block;
+    
+    .pdf-page {
+      height: 297mm;
     }
 
-    /* Premium On-Screen Preview Layout */
-    @media screen {
-        body {
-            background: #f1f5f9 !important;
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            overflow-y: auto !important;
-            padding: 30px 0 !important;
-        }
-
-        /* Center and style the pagedjs pages */
-        .pagedjs_pages {
-            display: flex !important;
-            flex-direction: column !important;
-            align-items: center !important;
-            width: 100% !important;
-            gap: 30px !important;
-        }
-
-        .pagedjs_page {
-            background: #ffffff !important;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
-            border: 1px solid #e2e8f0 !important;
-            margin: 0 !important;
-        }
-
-        /* Ensure first page (cover) is dark background */
-        .pagedjs_page:first-child,
-        .pagedjs_page:first-child .pagedjs_sheet {
-            background-color: #141f36 !important;
-        }
+    .pdf-page-dynamic {
+      min-height: 297mm;
+      height: auto;
+      display: flex;
+      flex-direction: column;
     }
 
     /* Colors */
@@ -193,9 +138,6 @@
 
     /* Page Header for inner pages */
     .inner-header {
-      position: running(runningHeader);
-      width: 100%;
-      box-sizing: border-box;
       padding: 30px 40px;
       display: flex;
       justify-content: space-between;
@@ -246,7 +188,7 @@
       flex: 1;
       border: 1px solid #eaeaea;
       background: #fff;
-      page-break-inside: auto !important;
+      page-break-inside: avoid;
     }
     .day-left {
       width: 80px;
@@ -404,16 +346,89 @@
       letter-spacing: 1px;
     }
     .pdf-footer-dynamic {
-      position: running(runningFooter);
-      width: 100%;
+      margin-top: auto;
+    }
+
+    /* Itinerary Overview timeline */
+    .overview-timeline {
+      position: relative;
+      margin: 10px 0 20px 0;
+      padding-left: 30px;
+    }
+    .overview-timeline::before {
+      content: '';
+      position: absolute;
+      left: 9px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: #eaeaea;
+    }
+    .overview-timeline-item {
+      position: relative;
+      margin-bottom: 25px;
+      page-break-inside: avoid;
+    }
+    .overview-timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -30px;
+      top: 4px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      background: #fff;
+      border: 4px solid #c5a059;
       box-sizing: border-box;
+      z-index: 10;
+    }
+    .overview-day-badge {
+      font-size: 11px;
+      font-weight: 700;
+      color: #141f36;
+      background: #f4f6f9;
+      padding: 2px 6px;
+      border-radius: 4px;
+      display: inline-block;
+    }
+    .overview-date {
+      font-size: 11px;
+      color: #888;
+      margin-left: 10px;
+    }
+    .overview-title {
+      font-family: 'Playfair Display', serif;
+      color: #141f36;
+      margin: 5px 0;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.4;
+    }
+    .overview-activities {
+      font-size: 12px;
+      color: #666;
+      margin-top: 3px;
+    }
+    .overview-activities strong {
+      color: #c5a059;
     }
   </style>
-  <script src="https://unpkg.com/pagedjs/dist/paged.polyfill.js"></script>
 </head>
 <body>
 
   <!-- PAGE 1: COVER -->
+   <div style="padding: 0;" class="pdf-page bg-navy cover-page">
+   
+      {{#if user.organization.details.logourl}}
+        <img src="https://d2w6ooepk5o1m0.cloudfront.net/winterfell_holidays/profile/WH_Header.png" alt="Logo"  style="    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}"/>
+      {{/if}}
+    
+
+
+  </div>
   <div class="pdf-page bg-navy cover-page">
     <div class="cover-logo-text uppercase">
       {{#if user.organization.details.logourl}}
@@ -480,29 +495,50 @@
       </div>
     </div>
 
+    <!-- DAYWISE ITINERARY OVERVIEW -->
+    <div style="margin: 0 40px 40px 40px;">
+      <div style="font-size: 11px; letter-spacing: 2px; color: #c5a059; margin-bottom: 25px; border-bottom: 1px solid #eaeaea; padding-bottom: 10px;" class="uppercase font-serif">Itinerary Overview</div>
+      <div class="overview-timeline">
+        {{#each itinerary}}
+        <div class="overview-timeline-item">
+          <div style="display: flex; align-items: center; margin-bottom: 5px;">
+            <span class="overview-day-badge">DAY {{#if Day}}{{Day}}{{else}}{{#if day}}{{day}}{{else}}{{inc @index}}{{/if}}{{/if}}</span>
+            {{#if Date}}
+              <span class="overview-date">{{formatDate Date}}</span>
+            {{/if}}
+          </div>
+          <div class="overview-title">{{Title}}</div>
+        
+        </div>
+        {{/each}}
+      </div>
+    </div>
+
     <div class="pdf-footer pdf-footer-dynamic">
       <span class="uppercase font-serif" style="font-size: 13px;">{{company.name}}</span>
       <span>{{user.organization.details.website}} &nbsp;|&nbsp; {{user.Phone}}</span>
     </div>
   </div>
 
-  <!-- PAGES: ITINERARY (Flowing) -->
+  <!-- PAGES: ITINERARY (One Day Per Page) -->
+  {{#each itinerary}}
   <div class="pdf-page-dynamic">
     <div class="inner-header">
-      {{#if user.organization.details.logourl}}
-        <img src="{{user.organization.details.logourl}}" class="inner-logo" />
+      {{#if @root.user.organization.details.logourl}}
+        <img src="{{@root.user.organization.details.logourl}}" class="inner-logo" />
       {{else}}
-        <div class="text-navy font-serif italic" style="font-size:24px;">{{company.name}}</div>
+        <div class="text-navy font-serif italic" style="font-size:24px;">{{@root.company.name}}</div>
       {{/if}}
-      <div style="font-size:11px; color:#c5a059; letter-spacing:1px;" class="uppercase">TRIP ID: {{trip.tripId}}</div>
+      <div style="font-size:11px; color:#c5a059; letter-spacing:1px;" class="uppercase">TRIP ID: {{@root.trip.tripId}}</div>
     </div>
 
+    {{#if @first}}
     <div class="section-title font-serif" style="margin-top: 40px;">
       Your <span class="text-gold italic">Journey</span>
     </div>
+    {{/if}}
 
-    {{#each itinerary}}
-    <div class="day-container" style="margin-top: 40px;">
+    <div class="day-container" style="margin-top: {{#if @first}}10px{{else}}40px{{/if}};">
       <div class="day-left">
         <div class="day-left-label">DAY</div>
         <div class="day-left-num">{{#if Day}}0{{Day}}{{else}}0{{inc @index}}{{/if}}</div>
@@ -514,7 +550,7 @@
         </div>
         <div class="day-body">
           {{#if ImageUrl}}
-            <img src="{{optimizeUnsplash ImageUrl 600 60}}" class="day-image" />
+            <img src="{{ImageUrl}}" class="day-image" />
           {{/if}}
           <div class="day-desc">
             {{#splitLines Description}}
@@ -524,13 +560,13 @@
         </div>
       </div>
     </div>
-    {{/each}}
     
     <div class="pdf-footer pdf-footer-dynamic">
-      <span class="uppercase font-serif" style="font-size: 13px;">{{company.name}}</span>
-      <span>{{user.organization.details.website}} &nbsp;|&nbsp; {{user.Phone}}</span>
+      <span class="uppercase font-serif" style="font-size: 13px;">{{@root.company.name}}</span>
+      <span>{{@root.user.organization.details.website}} &nbsp;|&nbsp; {{@root.user.Phone}}</span>
     </div>
   </div>
+  {{/each}}
 
   <!-- PAGE 3: ACCOMMODATION & DETAILS -->
   <div class="pdf-page-dynamic">

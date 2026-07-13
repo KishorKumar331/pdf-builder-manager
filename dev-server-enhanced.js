@@ -917,7 +917,7 @@ if (isInvoice) {
   templateFile = path.join(__dirname, "template", "invoiceip.hbs");
   cssPath = path.join(__dirname, "template", "invoice.css");
 } else {
-  templateFile = path.join(__dirname, "template", "airlinepdf.hbs");
+  templateFile = path.join(__dirname, "template", "pdf.hbs");
   cssPath = path.join(__dirname, "template", "PreviewPdf.css");
 }
 

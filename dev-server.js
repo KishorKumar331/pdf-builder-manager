@@ -87,6 +87,47 @@ const dummyData = {
       Title: "Dhow Cruise & Departurse",
       Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
       ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
+    },
+    {
+      Day: 6,
+      Date: 6,
+      Title: "Dhow Cruise & Departurse",
+      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
+      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
+    },
+    {
+      Day: 6,
+      Date: 6,
+      Title: "Dhow Cruise & Departurse",
+      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
+      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
+    }, {
+      Day: 6,
+      Date: 6,
+      Title: "Dhow Cruise & Departurse",
+      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
+      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
+    },
+    {
+      Day: 6,
+      Date: 6,
+      Title: "Dhow Cruise & Departurse",
+      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
+      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
+    },
+    {
+      Day: 6,
+      Date: 6,
+      Title: "Dhow Cruise & Departurse",
+      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
+      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
+    },
+    {
+      Day: 6,
+      Date: 6,
+      Title: "Dhow Cruise & Departurse",
+      Description: "Morning Dhow Cruise on Dubai Creek. Transfer to airport for departure.",
+      ImageUrl: "https://journeyrouters-webassets.s3.ap-south-1.amazonaws.com/2025/uploads/destination/DUBAI/day5.jpg"
     }
   ],
   hotels: [
