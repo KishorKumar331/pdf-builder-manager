@@ -260,35 +260,35 @@ const companydatas = {
   sk: "METADATA"
 }
 const pdfDummyData = {
-  "LeadId": "L-20260526-000003",
-  "TripId": "K2J3FZG",
-  "Client-Name": "krishna",
-  "Client-Contact": "78787876567",
-  "Client-Email": "krishna@gmail.com",
-  "TravelDate": "2026-09-30",
-  "TravelDateKey": 20260930,
-  "AssignDate": "2026-05-29T07:19:21.388Z",
-  "NoOfPax": 4,
+  "LeadId": "L-20260709-000001",
+  "TripId": "LHYGXW6",
+  "Client-Name": "Priyank Jain",
+  "Client-Contact": "9999999999",
+  "Client-Email": "abc@gmail.com",
+  "TravelDate": "2026-07-17",
+  "TravelDateKey": 20260717,
+  "AssignDate": "2026-07-13T06:18:21.868Z",
+  "NoOfPax": 2,
   "Child": "0",
   "Infant": "0",
-  "Budget": 299999,
-  "DepartureCity": "mumbai",
-  "DestinationName": "Maldives",
+  "Budget": "",
+  "DepartureCity": "India",
+  "DestinationName": "Vietnam",
   "IsMultiDestination": false,
   "Destinations": [
-    "Maldives"
+    "Vietnam"
   ],
-  "Days": 4,
-  "Nights": 3,
+  "Days": 6,
+  "Nights": 5,
   "PriceType": "Total",
   "Currency": "INR",
   "Costs": {
-    "TotalCost": 450000,
-    "LandPackageCost": 100000,
+    "TotalCost": 98000,
+    "LandPackageCost": 92000,
     "FlightCost": 0,
     "TotalTax": 0,
     "GSTAmount": 0,
-    "VisaCost": 350000,
+    "VisaCost": 6000,
     "TCSAmount": 0
   },
   "GST": {
@@ -307,323 +307,189 @@ const pdfDummyData = {
   },
   "Hotels": [
     {
-      "CheckInDateKey": 20260526,
-      "CheckOutDateKey": 20260527,
-      "RoomType": "suit",
-      "Category": 0,
-      "CheckInDate": "2026-05-26",
-      "Comments": "",
-      "Nights": 1,
-      "City": "mumbai",
-      "Meals": [
-        "Dinner"
-      ],
-      "Name": "Vilas Das Hotel",
-      "CheckOutDate": "2026-05-27",
-      "propertyName": "adaaran_club_rannalhi",
-      "transferType": "SpeedBoat",
-      "mealPlan": 1,
-      "noOfRoom": "suit",
-      "roomCategory": [
-        {
-          "roomtype": "standard_room",
-          "nights": [
-            "1N"
-          ],
-          "checkInDate": "2026-05-29",
-          "checkOutDate": "2026-05-30",
-          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/standard_room.png",
-          "RoomId": "standard_room"
-        },
-        {
-          "roomtype": "water_bungalow",
-          "nights": [
-            "1N"
-          ],
-          "checkInDate": "2026-05-29",
-          "checkOutDate": "2026-05-30",
-          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/water_bungalow.png",
-          "RoomId": "water_bungalow"
-        },
-        {
-          "roomtype": "standard_room",
-          "nights": [
-            "1N"
-          ],
-          "checkInDate": "2026-05-29",
-          "checkOutDate": "2026-05-30",
-          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/standard_room.png",
-          "RoomId": "standard_room"
-        },
-        {
-          "roomtype": "water_bungalow",
-          "nights": [
-            "1N"
-          ],
-          "checkInDate": "2026-05-29",
-          "checkOutDate": "2026-05-30",
-          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/water_bungalow.png",
-          "RoomId": "water_bungalow"
-        }
-      ],
-      "HotelImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_club_rannalhi/standard_room.png",
-      "PropertyId": "adaaran_club_rannalhi"
-    },
-    {
-      "Nights": 1,
-      "Name": "hotel island",
-      "City": "dubai",
-      "RoomType": "delux",
-      "Category": "5",
-      "Meals": [
-        "Breakfast",
-        "Lunch",
-        "Dinner"
-      ],
-      "CheckInDate": "2026-05-29",
-      "CheckOutDate": "2026-05-30",
-      "Comments": "",
-      "HotelImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_prestige_vadoo/honeymoon_villa.png",
-      "PropertyId": "adaaran_prestige_vadoo",
-      "RoomImage": "",
-      "RoomId": "",
-      "propertyName": "adaaran_prestige_vadoo",
-      "transferType": "Seaplane",
-      "mealPlan": "HalfBoard",
-      "noOfRoom": "01",
-      "roomCategory": [
-        {
-          "roomtype": "sunrise_water_villa",
-          "nights": [
-            "1N"
-          ],
-          "checkInDate": "2026-05-29",
-          "checkOutDate": "2026-05-30",
-          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_prestige_vadoo/sunrise_water_villa.png",
-          "RoomId": "sunrise_water_villa"
-        },
-        {
-          "roomtype": "sunrise_water_villa",
-          "nights": [
-            "1N"
-          ],
-          "checkInDate": "2026-05-29",
-          "checkOutDate": "2026-05-30",
-          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_prestige_vadoo/sunrise_water_villa.png",
-          "RoomId": "sunrise_water_villa"
-        }
-      ]
-    },
-    {
-      "Nights": 1,
-      "Name": "3red hotel",
-      "City": "mumbai",
-      "RoomType": "delux",
+      "CheckInDateKey": 20260717,
+      "CheckOutDateKey": 20260719,
+      "RoomType": "KING BED ROOM ",
       "Category": "4",
-      "Meals": [
-        "Breakfast",
-        "Lunch",
-        "Dinner"
-      ],
-      "CheckInDate": "2026-05-29",
-      "CheckOutDate": "2026-05-30",
+      "CheckInDate": "2026-07-17",
       "Comments": "",
-      "HotelImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_select_hudhuranfushi/beach_villa.png",
-      "PropertyId": "adaaran_select_hudhuranfushi",
-      "RoomImage": "",
-      "RoomId": "",
-      "propertyName": "adaaran_select_hudhuranfushi",
-      "transferType": "DomesticFlight",
-      "mealPlan": "HalfBoard",
-      "noOfRoom": "01",
-      "roomCategory": [
-        {
-          "roomtype": "family_beach_villa",
-          "nights": [
-            "1N"
-          ],
-          "checkInDate": "2026-05-29",
-          "checkOutDate": "2026-05-30",
-          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/adaaran_select_hudhuranfushi/family_beach_villa.png",
-          "RoomId": "family_beach_villa"
-        }
-      ]
+      "Nights": 2,
+      "City": "Hanoi",
+      "Meals": [
+        "Breakfast"
+      ],
+      "Name": "TRU BY HILTON",
+      "CheckOutDate": "2026-07-19"
     },
     {
-      "Nights": 1,
-      "Name": "4th hotel",
-      "City": "mumbai",
-      "RoomType": "test",
-      "Category": "5star",
-      "Meals": [
-        "Breakfast",
-        "Lunch",
-        "Dinner"
-      ],
-      "CheckInDate": "2026-05-29",
-      "CheckOutDate": "2026-05-30",
-      "Comments": "",
-      "HotelImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/atmosphere_kanifushi/kanifushi_grand_pool_villa.png",
-      "PropertyId": "atmosphere_kanifushi",
-      "RoomImage": "",
-      "RoomId": "",
-      "propertyName": "atmosphere_kanifushi",
-      "transferType": "DomesticFlight",
-      "mealPlan": "FullBoard",
-      "noOfRoom": "01",
+      "CheckInDateKey": 20260719,
+      "Category": "4",
+      "CheckInDate": "2026-07-19",
       "roomCategory": [
         {
-          "roomtype": "sunset_beach_villa",
+          "checkOutDate": null,
+          "checkInDate": null,
           "nights": [
-            "1N"
+            ""
           ],
-          "checkInDate": "2026-05-29",
-          "checkOutDate": "2026-05-30",
-          "RoomImage": "https://iphotels-cache-dev.s3.ap-south-1.amazonaws.com/images/atmosphere_kanifushi/sunset_beach_villa.png",
-          "RoomId": "sunset_beach_villa"
+          "roomtype": ""
         }
-      ]
+      ],
+      "Comments": "",
+      "Nights": 3,
+      "City": "Da Nang",
+      "RoomId": "",
+      "Name": "GRAND GOLD HOTEL",
+      "PropertyId": "",
+      "CheckOutDateKey": 20260722,
+      "RoomType": "GRAND SUITE SEA VIEW ",
+      "HotelImage": "",
+      "propertyName": "",
+      "RoomImage": "",
+      "transferType": "",
+      "noOfRoom": "01",
+      "Meals": [
+        "Breakfast"
+      ],
+      "CheckOutDate": "2026-07-22",
+      "mealPlan": ""
     }
   ],
   "Inclusions": [
     {
-      "item": "Daily Breakfast"
-    },
-    {
-      "item": "Airport Transfers"
-    },
-    {
-      "item": "Entrance Fees"
-    },
-    {
-      "item": "All GST & Taxes"
-    },
-    {
-      "item": "Sightseeing"
-    },
-    {
-      "item": "Tour Guide"
-    },
-    {
       "item": "Accommodation"
     },
     {
-      "item": "Entrance Fees"
+      "item": "Daily Breakfast"
     },
     {
-      "item": "Tour Guide"
+      "item": "Visa"
     },
     {
-      "item": "Travel Insurance"
+      "item": "All Tours On Group Basis"
     },
     {
-      "item": "Entrance Fees"
+      "item": "Pickup & Drop Off At The Airport On Private Basis"
+    },
+    {
+      "item": "Halong Bay Day Cruise (5*) With Lunch"
+    },
+    {
+      "item": "Coconut Village, Marble Mountains & Hoi An Tour With Lunch"
+    },
+    {
+      "item": "Bana Hills Tour & Golden Bridge With Lunch"
+    },
+    {
+      "item": "All Entrance Fees And Sightseeing As Mentioned In The Program"
+    },
+    {
+      "item": "Local English-speaking Guides"
     }
   ],
   "Exclusions": [
     {
-      "item": "Emergency Costs"
-    },
-    {
-      "item": "Early Check-in"
-    },
-    {
-      "item": "Tips & Gratuities"
-    },
-    {
-      "item": "Extra Meals"
-    },
-    {
-      "item": "Visa Fees"
-    },
-    {
-      "item": "Emergency Costs"
-    },
-    {
       "item": "International Flights"
     },
     {
-      "item": "Emergency Costs"
+      "item": "Tours Which Are Not Included In The Package"
     },
     {
-      "item": "Optional Tours"
+      "item": "Meals Not Mentioned In The Program"
     },
     {
-      "item": "Extra Meals"
+      "item": "Early Check-in And Late Check-out. Hotel/Room Upgrade"
     },
     {
-      "item": "Visa Fees"
+      "item": "Drinks, Personal Expenses, And Any Services Not Mentioned In The Itinerary"
     },
     {
-      "item": "International Flights"
+      "item": "Tips For Guide And Driver Extra"
     }
   ],
   "Itinearies": [
     {
       "Activities": "",
-      "Description": "Perched high above emerald rice paddies and lush jungles, the Bali Swing offers an exclusive, breathtaking panorama. Feel the exhilarating rush of wind as you soar gracefully, suspended between sky and earth. This isn't just a swing; it's a moment of profound freedom, a luxurious embrace of Bali's unparalleled natural beauty. Capture iconic photographs and memories, enveloped in an atmosphere of serene adventure and sophisticated wonder. An unforgettable ascent into paradise awaits your discerning spirit.\n\nIndulge in an exquisite, private candlelit dinner at Sadara, where the gentle ocean breeze caresses your senses under a canopy of stars. Savour a gourmet feast, impeccably served, as the rhythmic lull of the waves provides a symphony for your intimate evening. This bespoke experience, set against Bali's stunning coastline, promises unparalleled romance and cherished memories, crafted exclusively for you.",
+      "Description": "Step into Vietnam's captivating embrace, where ancient traditions blend seamlessly with modern luxury. Your bespoke journey unveils emerald rice paddies, sapphire coastlines, and the mystical allure of heritage sites. Savor exquisite culinary delights, private sampan cruises through hidden grottoes, and the tranquil serenity of boutique resorts. Every moment is curated for discerning travelers, promising an unforgettable tapestry of vibrant culture, breathtaking beauty, and unparalleled sophistication.",
       "OtherActivityImages": [
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/sadara_candle_light_dinner1772221869648f1064e.jpg"
+        "https://d38jn0rpth8ttn.cloudfront.net/vietnam/arrival_vietnam17722226697308b81b0.jpg"
       ],
-      "Title": "Soar Above Bali's Jungle: An Elevated Escape, Bali Sadara: Infinite Love, Candlelit Ocean Whispers",
-      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
-      "Activity": "Bali Swing, Sadara Candle Light Dinner",
-      "Date": "2026-09-30",
-      "DateKey": 20260930
+      "Title": "Vietnam's Emerald Embrace: A Journey of Timeless Splendor",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/vietnam/arrival_vietnam17722226697308b81b0.jpg",
+      "Activity": "Arrival Vietnam",
+      "Date": "2026-07-17",
+      "DateKey": 20260717
     },
     {
-      "Description": "Perched high above emerald rice paddies and lush jungles, the Bali Swing offers an exclusive, breathtaking panorama. Feel the exhilarating rush of wind as you soar gracefully, suspended between sky and earth. This isn't just a swing; it's a moment of profound freedom, a luxurious embrace of Bali's unparalleled natural beauty. Capture iconic photographs and memories, enveloped in an atmosphere of serene adventure and sophisticated wonder. An unforgettable ascent into paradise awaits your discerning spirit.",
+      "Description": "8.15-8.50: Get Picked Up At The Hotel In Hanoi Old Quarter/ Opera House To Depart For Halong Bay Our Journey Follows Hanoi Haiphong- Tuan Chau Highway (about A 3 Hour Drive) \n12:00: Arrive At Tuan Chau Harbor, Get On 5 STARS LUXURY CRUISE With Our Crew\u0019s Warmly Welcome Enjoy Welcome Drink Then Start The Excursion To Discover The Beauty Of The World Heritage Site \n12:30: Enjoy Buffet Lunch With More Than 30 Dishes On The Boat .While Having Lunch, The Boat Will Passing By The Beautiful Scenery On Both Sides With Thousands Of Limestone Such As Fighting Chicken And Incense Burner Islets \u0013 2 Symbols Of Halong Bay \n14.00: Arrive At Bo Hon Island, And You Will Visit Sung Sot Cave \u0013 The Most Beautiful Cave With A Lot Of Stalagmites And Stalactites \n14.45: Do Kayaking Or Bamboo Boat Through Luon Cave To Discover The Beautiful Lagoon. \n15.15: Visit TiTop Island With Its Sandy Beach. You Can Go Swimming Here Or Trek Up To The Top Of The Island For Sightseeing All Of Halong Bay \n16.00: Back To The Boat For The Sunset Party (with Wine, Tea, Fruits, And Biscuits) Meanwhile The Boat Is Cruising Back To The Harbour \n17.45: Arrive Back At The Harbour. Get On The Bus And Return To Hanoi \n20:30: Get Dropped Off At The Hotel. Tour Ends.",
       "OtherActivityImages": [
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg"
+        "https://d38jn0rpth8ttn.cloudfront.net/vietnam/halong_bay1772222703181f38d5a.jpg"
       ],
-      "Title": "Soar Above Bali's Jungle: An Elevated Escape",
-      "Activity": "Bali Swing",
-      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
+      "Title": "HALONG BAY FULL DAY TOUR WITH LUNCH (GROUP BASIS)",
+      "Activity": "Halong Bay",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/vietnam/halong_bay1772222703181f38d5a.jpg",
       "day": 2,
-      "Date": "2026-10-01",
-      "DateKey": 20261001
+      "Date": "2026-07-18",
+      "DateKey": 20260718
     },
     {
-      "Description": "Indulge in an exclusive journey through Bali's lush, emerald coffee plantations. Awaken your senses to the rich, earthy aromas as you discover the intricate craftsmanship behind the island's renowned beans. Experience unparalleled serenity amidst verdant landscapes, sipping freshly brewed artisanal coffee. This private immersion offers a sophisticated blend of natural beauty and premium indulgence, revealing the unique legacy of Balinese coffee culture in a truly captivating atmosphere, tailored for discerning connoisseurs.\n\nIndulge in an exquisite, private candlelit dinner at Sadara, where the gentle ocean breeze caresses your senses under a canopy of stars. Savour a gourmet feast, impeccably served, as the rhythmic lull of the waves provides a symphony for your intimate evening. This bespoke experience, set against Bali's stunning coastline, promises unparalleled romance and cherished memories, crafted exclusively for you.\n\nPerched high above emerald rice paddies and lush jungles, the Bali Swing offers an exclusive, breathtaking panorama. Feel the exhilarating rush of wind as you soar gracefully, suspended between sky and earth. This isn't just a swing; it's a moment of profound freedom, a luxurious embrace of Bali's unparalleled natural beauty. Capture iconic photographs and memories, enveloped in an atmosphere of serene adventure and sophisticated wonder. An unforgettable ascent into paradise awaits your discerning spirit.\n\nStep into Ubud's ancient Monkey Forest, a sanctuary where emerald canopies filter the sun, revealing playful, revered inhabitants. Experience a unique immersion into Bali's spiritual heart, far from the ordinary. Wander through lush, moss-covered temples and towering banyan trees, listening to the jungle's symphony. This exclusive encounter offers an unparalleled connection with nature's wild elegance, a truly bespoke journey for the discerning traveler.",
+      "Description": "Check Out From Your Hotel In Hanoi. \nTransfer To Noi Bai Airport For Your Flight To Da Nang. \nArrive In Da Nang And Transfer To Your Hotel. \nExplore The City At Your Leisure Or Relax On The Beach.",
       "OtherActivityImages": [
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/coffee_plantation1772220377243bf0700.jpg",
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/sadara_candle_light_dinner1772221869648f1064e.jpg",
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/monkey_forest1772221852093efcfda.jpg"
+        "https://d38jn0rpth8ttn.cloudfront.net/vietnam/cab_transfer17722226788964191d9.jpg"
       ],
-      "Title": "Sip Bali's Essence: A Luxury Coffee Plantation Escape, Bali Sadara: Infinite Love, Candlelit Ocean Whispers, Soar Above Bali's Jungle: An Elevated Escape, Enchanting Ubud: Sacred Monkeys, Timeless Jungle Beauty",
-      "Activity": "Coffee Plantation, Sadara Candle Light Dinner, Bali Swing, Monkey Forest",
-      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/bali/coffee_plantation1772220377243bf0700.jpg",
+      "Title": "FLIGHT TRANSFER TO DA NANG + TRANSFER TO DA NANG ACCOMMODATION (PRIVATE BASIS)",
+      "Activity": "Cab Transfer",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/vietnam/cab_transfer17722226788964191d9.jpg",
       "day": 3,
-      "Date": "2026-10-02",
-      "DateKey": 20261002
+      "Date": "2026-07-19",
+      "DateKey": 20260719
     },
     {
-      "Description": "Indulge in an exquisite, private candlelit dinner at Sadara, where the gentle ocean breeze caresses your senses under a canopy of stars. Savour a gourmet feast, impeccably served, as the rhythmic lull of the waves provides a symphony for your intimate evening. This bespoke experience, set against Bali's stunning coastline, promises unparalleled romance and cherished memories, crafted exclusively for you.\n\nPerched high above emerald rice paddies and lush jungles, the Bali Swing offers an exclusive, breathtaking panorama. Feel the exhilarating rush of wind as you soar gracefully, suspended between sky and earth. This isn't just a swing; it's a moment of profound freedom, a luxurious embrace of Bali's unparalleled natural beauty. Capture iconic photographs and memories, enveloped in an atmosphere of serene adventure and sophisticated wonder. An unforgettable ascent into paradise awaits your discerning spirit.\n\nEmbark on an extraordinary photographic journey at Toya Devasya, where Bali's dramatic volcanic landscape meets serene hot springs. Witness mist-kissed mornings unfold into golden hour splendor, providing a breathtaking canvas for your love story. Our exclusive session captures your cherished moments amidst this primeval beauty, offering an intimate, sophisticated experience. Feel the earth's ancient warmth as professional artistry immortalizes your bond, creating timeless memories framed by nature's grandeur and unparalleled tranquility.\n\nStep into an unparalleled world at Bali's premier wildlife sanctuary. Meander through lush, meticulously designed landscapes, discovering a curated collection of exotic animals thriving in pristine, spacious habitats. Experience intimate, personalized encounters and exclusive behind-the-scenes access, transforming your visit into a journey of discovery. Embrace the serene, harmonious atmosphere, a perfect fusion of wild grandeur and refined comfort, ensuring unforgettable memories of Bali’s captivating natural heritage.",
+      "Description": "12.00 PM From Da Nang 7:30 PM At Da Nang\nAbout 1:00 Pm : The Van And Tour Guide Will Pick You Up At Your Hotel (Da Nang Area)\nStart Your Adventure With Cam Thanh Coconut For Being A Fisherman At Cam Thanh\nCoconut Village, You Will Experience Learning Traditional Fishing Techniques\nAnd How To Row Unique Vietnamese Bamboo Basket Boats While Exploring The\nTranquil Coconut Palm Waterways Of The Past War. On This Tour, We Provide Authentic\nSocial And Cultural Insight Into The Local Way Of Life In Vietnam. Furthermore, You\nWill Take Part In Some Hands-on Activities Which Are Fun, Safe, And Interesting And\nAre Suitable For Everybody.\nAbout 2.30 Pm: Visit To The Next Destination To Hoi An Old Town.\nGo To The Phuc Kien Chinese Assembly Hall, A Colorful MØlange Of Bright Gates,\nDragon Statues, And Elaborate Rooftops. Get An Introduction To Ancestor\nWorship While Visiting The Family Altar And Watching Local Devotees Making\nOfferings.\nYou Will See Remarkably Well-preserved Old Houses, Phung Hung Ancient House Or\nTan Ky Ancient House That Have Withstood 200 Years Of Weather And War.\nLearn About The Prosperous Merchants Who Used To Live In These Homes, Trading\nWith Buyers From All Around The World. Visit Museum Of Folk Culture In Hoi An A\nDisplay Of Artifacts Depicts Ancient Local Daily Life. You Will Enjoy Art Shows At Hoi\nAn Traditional Performing Arts House.\nMake A Stop At The Japanese Bridge. The Bridge Spans A Small Waterway\nAnd Was Constructed More Than 400 Years Ago To Connect The Japanese Community\nWith The Chinese Who Lived On The Other Side Of The Water. Admire The Carvings And Paintings Inside The Bridge, Learning About Their Symbolism And Cultural Significance.\nAdditionally, Visit Some Of Hoi An\u0019s Well-known Handicraft Shops And Artwork\nGalleries. Discover Smaller Laneways And Local Neighborhoods, Gaining A\nBetter Appreciation Of Hoi An\u0019s Endless Charm.\nDinner With Hoi An Specialty Food.\n6.00 Pm: Enjoy Your Time With The Boat Ride On Hoai River And Release The Flower\nLanterns To Pray For The Best Of Luck To You And Your Family. You Will\nImmerse Yourself In The Fanciful Space Of The Lantern Street. Free Your Time With The Night Market And Enjoy The Shimmering Space Of Hoi An.",
       "OtherActivityImages": [
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/sadara_candle_light_dinner1772221869648f1064e.jpg",
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_swing1772221580667a480b5.jpg",
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/toya_devasya_couple_photo177222191534430f89d.jpg",
-        "https://d38jn0rpth8ttn.cloudfront.net/bali/bali_zoo17722215905504c698d.jpg"
+        "https://d38jn0rpth8ttn.cloudfront.net/vietnam/coconut_basket_boat_ride1772222684670a8c504.jpg"
       ],
-      "Title": "Bali Sadara: Infinite Love, Candlelit Ocean Whispers, Soar Above Bali's Jungle: An Elevated Escape, Toya Devasya: Bali's Fiery Heart, Your Love Illuminated., Exclusive Wildlife Immersion: Bali's Pristine Sanctuary",
-      "Activity": "Sadara Candle Light Dinner, Bali Swing, Toya Devasya Couple Photo, Bali Zoo",
-      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/bali/sadara_candle_light_dinner1772221869648f1064e.jpg",
+      "Title": "COCONUT VILLAGE \u0013 BOAT RIDE \u0013 HOI AN ANCIENT TOWN - RELEASE FLOWER LANTERN WITH DINNER (GROUP BASIS)",
+      "Activity": "Coconut Basket Boat Ride",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/vietnam/coconut_basket_boat_ride1772222684670a8c504.jpg",
       "day": 4,
-      "Date": "2026-10-03",
-      "DateKey": 20261003
+      "Date": "2026-07-20",
+      "DateKey": 20260720
+    },
+    {
+      "Description": "07:30 Am - 08:00 Am: Our Minivan And A Tour Guide Pick You Up At The\nHotel Lobby. Reach Ba Na Hills Via Cable Car Spend Your Time On The Most Modern Cable Car In Southeast Asia, Visit Dream Stream Cable Car Station And See The Panorama Of Quang Nam - Danang City On High.\nAfter Finishing The First Cable Car, You Will Visit The Golden Bridge - Which\nHas The Most Exotic Structure And Also The World’s Most Prominent\nPedestrian Bridges Highlighted By The British Guard Newspaper, Le Jardin\nD’amour(consists Of 9 Gardens), And Linh Ung Pagoda.\nContinue The 2nd Cable Car To Visit The French Village - Enjoy Street Music,\nWatch Art\u0019s Statue, Campanile, Nine Floor Goddess Shrine, Tombstone Temple,\nWatch Carnival Performance Show, Square Du Dome ...Challenge The Most\nPopular Adventure Ride - Slide Of Tube Car (free Ride)&\nLunch At A Restaurant (Buffet).\nTake The Lava Train From Sun Kingdom To Many New Attractions For CheckIn Such As Helios Waterfall, Time Gate, And The Moon Kingdom &Join In\nFantasy Park By Walking In Fairy Forest, Discovering Dinosaur Park, Playing\n5D Wild West, Enjoying 4D Death Race Ride, Watch 3D Mega 360 Degrees,\nRide On Journey Into The Underground, Enter Jurassic Park, Challenge Free\nFall Tower And Participate In An Adventure In Horror House And Over 90 Free\nGames.\n15:00: Return To The Cable Car For Leaving Ba Na Hills\n16:45 \u0013 17:45: Our Minivan Brings You Back To Your Hotel. Tour Ends.\nTRIP INCLUDES:\n- Transportation & English-speaking Tour Guide.\n- Cable Cars, Entrance Fees In The Fantasy Park.\n- Golden Bridge, Funicular, Le Jardin D\u0019amour.\n- Lunch With Buffet.\n- A Bottle Of Water\nTRIP EXCLUDES:\n- Wax Statue Museum\n- Debay Wine Cellar\n- Coins Games\n- Personal Expenses And Services Not Mentioned Above",
+      "OtherActivityImages": [
+        "https://d38jn0rpth8ttn.cloudfront.net/vietnam/bana_hills1772222677344d7cca8.jpg"
+      ],
+      "Title": "BA NA HILLS \u0013 GOLDEN BRIDGE FULL DAY TOUR WITH LUNCH (GROUP BASIS)",
+      "Activity": "Bana Hills",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/vietnam/bana_hills1772222677344d7cca8.jpg",
+      "day": 5,
+      "Date": "2026-07-21",
+      "DateKey": 20260721
+    },
+    {
+      "Description": "As your Vietnamese journey concludes, savour the final, exquisite moments amidst jade waters and ancient whispers. Our meticulously curated departure ensures a seamless, luxurious transition, reflecting the country's profound elegance. Feel the warmth of saffron sunsets over historic landscapes, taste gourmet delights, and embrace the silk-clad serenity. This isn't merely a departure; it's a lingering memory, a promise of Vietnam's timeless beauty awaiting your return, leaving you with an unforgettable echo of paradise.",
+      "OtherActivityImages": [
+        "https://d38jn0rpth8ttn.cloudfront.net/vietnam/departure177222270065533488e.jpg"
+      ],
+      "Title": "Vietnam: Emerald Grandeur, A Luxuriant Farewell Beckons.",
+      "Activity": "Departure",
+      "ImageUrl": "https://d38jn0rpth8ttn.cloudfront.net/vietnam/departure177222270065533488e.jpg",
+      "day": 6,
+      "Date": "2026-07-22",
+      "DateKey": 20260722
     }
   ],
-  "CreatedAt": "2026-05-29T07:05:48.741Z",
+  "CreatedAt": "2026-07-13T06:18:21.750Z",
   "LastUpdateStatus": {
     "UpdatedBy": "Draft",
-    "UpdatedTime": "2026-05-29T07:05:48.741Z"
+    "UpdatedTime": "2026-07-13T06:18:21.750Z"
   },
-  "TravelEndDate": "2026-10-03",
-  "TravelEndDateKey": 20261003,
+  "TravelEndDate": "2026-07-22",
+  "TravelEndDateKey": 20260722,
   "OutboundFlight": {},
-  "AssignDateKey": 20260529,
+  "AssignDateKey": 20260713,
   "company": "WH",
   "adminemailid": "info@winterfellholidays.com"
 }
