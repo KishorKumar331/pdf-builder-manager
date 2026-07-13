@@ -138,14 +138,14 @@
 
     /* Page Header for inner pages */
     .inner-header {
-      padding: 30px 40px;
+      padding:4px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       border-bottom: 1px solid #eaeaea;
     }
     .inner-logo {
-      height: 40px;
+      height: 90px;
     }
 
     /* Stats Row */
@@ -183,7 +183,6 @@
 
     /* Itinerary Day */
     .day-container {
-      margin: 0 40px 30px 40px;
       display: flex;
       flex: 1;
       border: 1px solid #eaeaea;
@@ -532,13 +531,7 @@
       <div style="font-size:11px; color:#c5a059; letter-spacing:1px;" class="uppercase">TRIP ID: {{@root.trip.tripId}}</div>
     </div>
 
-    {{#if @first}}
-    <div class="section-title font-serif" style="margin-top: 40px;">
-      Your <span class="text-gold italic">Journey</span>
-    </div>
-    {{/if}}
-
-    <div class="day-container" style="margin-top: {{#if @first}}10px{{else}}40px{{/if}};">
+    <div class="day-container" style="margin-top: {{#if @first}}0px{{else}}0px{{/if}};">
       <div class="day-left">
         <div class="day-left-label">DAY</div>
         <div class="day-left-num">{{#if Day}}0{{Day}}{{else}}0{{inc @index}}{{/if}}</div>
@@ -552,7 +545,7 @@
           {{#if ImageUrl}}
             <img src="{{ImageUrl}}" class="day-image" />
           {{/if}}
-          <div class="day-desc">
+          <div class="day-desc splitsection">
             {{#splitLines Description}}
               <p style="margin: 0 0 12px 0;">{{this}}</p>
             {{/splitLines}}
@@ -757,5 +750,176 @@
     </div>
   </div>
 
+  <div id="debug-log" style="background: #141f36; color: #fff; font-family: monospace; padding: 20px; font-size: 13px; line-height: 1.5; border-top: 5px solid #c5a059; border-bottom: 5px solid #c5a059; margin-top: 40px; overflow: visible;">
+    <h3 style="color: #c5a059; margin-top: 0; font-family: 'Montserrat', sans-serif;">🔧 Pagination Debug Console</h3>
+  </div>
+  <style>
+    @media print {
+      #debug-log {
+        display: none !important;
+      }
+    }
+  </style>
+  <script>
+    function logDebug(msg) {
+      console.log(msg);
+      const logDiv = document.getElementById('debug-log');
+      if (logDiv) {
+        const p = document.createElement('div');
+        p.style.margin = '0 0 5px 0';
+        p.style.borderBottom = '1px solid rgba(255,255,255,0.05)';
+        p.style.paddingBottom = '3px';
+        p.innerText = msg;
+        logDiv.appendChild(p);
+      }
+    }
+
+    function initPagination() {
+      logDebug("🚀 PDF Pagination: Initializing image load checks...");
+      // Wait for all images to complete loading, with a maximum fallback timeout of 1000ms
+      const images = Array.from(document.images);
+      const promises = images.map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          const timeoutId = setTimeout(() => {
+            logDebug(`⌛ Image load timed out (using current layout size): ${img.src}`);
+            resolve();
+          }, 1000);
+          img.onload = () => {
+            clearTimeout(timeoutId);
+            logDebug(`🖼️ Image loaded: ${img.src.split('/').pop()}`);
+            resolve();
+          };
+          img.onerror = () => {
+            clearTimeout(timeoutId);
+            logDebug(`⚠️ Image failed to load: ${img.src.split('/').pop()}`);
+            resolve();
+          };
+        });
+      });
+
+      Promise.all(promises).then(() => {
+        logDebug("🏁 All images resolved/timed out. Starting pagination execution...");
+        paginatePDF();
+      });
+    }
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      initPagination();
+    } else {
+      window.addEventListener('load', initPagination);
+    }
+
+    function paginatePDF() {
+      // Create a temporary element to measure 297mm in pixels accurately
+      const temp = document.createElement('div');
+      temp.style.height = '297mm';
+      temp.style.position = 'absolute';
+      temp.style.visibility = 'hidden';
+      document.body.appendChild(temp);
+      const a4HeightPx = temp.offsetHeight;
+      document.body.removeChild(temp);
+      logDebug(`📏 Measured A4 height in browser pixels: ${a4HeightPx}px`);
+
+      // Use a dynamic array list to process newly added pages recursively
+      let pages = Array.from(document.querySelectorAll('.pdf-page-dynamic'));
+      let i = 0;
+
+      while (i < pages.length) {
+        const page = pages[i];
+        const splitSection = page.querySelector('.splitsection');
+        if (!splitSection) {
+          i++;
+          continue;
+        }
+
+        const footer = page.querySelector('.pdf-footer');
+        const footerHeight = footer ? footer.offsetHeight : 60;
+        const maxContentHeight = a4HeightPx - footerHeight - 20; // 20px safety margin above footer
+
+        // Check page bounding rect and splitSection bounding rect relative to page top
+        const pageRect = page.getBoundingClientRect();
+        const splitRect = splitSection.getBoundingClientRect();
+        const splitRelativeBottom = splitRect.bottom - pageRect.top;
+        logDebug(`📄 Page ${i + 1} - splitRelativeBottom: ${Math.round(splitRelativeBottom)}px (Limit: ${maxContentHeight}px)`);
+
+        if (splitRelativeBottom <= maxContentHeight) {
+          i++;
+          continue;
+        }
+
+        // We have overflow! Let's paginate its children.
+        const children = Array.from(splitSection.children);
+        if (children.length === 0) {
+          i++;
+          continue;
+        }
+
+        logDebug(`⚡ Page ${i + 1} overflows! Splitting ${children.length} paragraphs...`);
+
+        // Clear the split section contents
+        splitSection.innerHTML = '';
+
+        let currentPage = page;
+        let currentSplitSection = splitSection;
+
+        for (let child of children) {
+          currentSplitSection.appendChild(child);
+
+          // Measure child bottom position relative to the current page top
+          const childRect = child.getBoundingClientRect();
+          const currentPageRect = currentPage.getBoundingClientRect();
+          const childRelativeBottom = childRect.bottom - currentPageRect.top;
+
+          // If the child overflows the current page bottom (and it's not the only child on this page)
+          if (currentSplitSection.children.length > 1 && childRelativeBottom > maxContentHeight) {
+            logDebug(`✂️ Paragraph overflows at ${Math.round(childRelativeBottom)}px (Limit: ${maxContentHeight}px). Creating new page.`);
+            
+            // Remove the child from the current page
+            currentSplitSection.removeChild(child);
+
+            // Clone the current page to preserve header/footer and layouts
+            const newPage = currentPage.cloneNode(true);
+            
+            // Empty the split section of the cloned page
+            const newSplitSection = newPage.querySelector('.splitsection');
+            if (newSplitSection) {
+              newSplitSection.innerHTML = '';
+            }
+
+            // Remove day-image on subsequent pages to prevent image repetition and save space
+            const newImage = newPage.querySelector('.day-image');
+            if (newImage) {
+              newImage.remove();
+            }
+
+            // Insert the new page in the DOM after the current page
+            currentPage.parentNode.insertBefore(newPage, currentPage.nextSibling);
+
+            // Insert the new page into our pages array so it gets checked on subsequent iterations
+            pages.splice(i + 1, 0, newPage);
+
+            // Update page references for subsequent children
+            currentPage = newPage;
+            currentSplitSection = newSplitSection;
+
+            // Append the child to the new page's split section
+            currentSplitSection.appendChild(child);
+          }
+        }
+
+        i++;
+      }
+
+      logDebug("✅ Pagination completed. Enforcing fixed A4 heights on all pages.");
+      // Lock height of all pages to exact A4 size for printing
+      const allPages = document.querySelectorAll('.pdf-page-dynamic');
+      allPages.forEach(p => {
+        p.style.height = a4HeightPx + 'px';
+        p.style.overflow = 'hidden';
+        p.style.boxSizing = 'border-box';
+      });
+    }
+  </script>
 </body>
 </html>

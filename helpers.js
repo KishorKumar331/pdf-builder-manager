@@ -48,10 +48,30 @@ Handlebars.registerHelper("titlecase", v => {
 });
 
 /* NEW: Split text into lines (for multi-line text) */
-Handlebars.registerHelper("splitLines", (v, options) => {
-  if (!v || typeof v !== "string") return "";
-  const lines = v.split("\n");
-  return lines.map(line => options.fn(line)).join("");
+Handlebars.registerHelper("splitLines", function (data, options) {
+  if (!data) return options && options.fn ? "" : [];
+
+  let lines = [];
+  if (typeof data === 'string') {
+    lines = data.split('\n').filter(line => line.trim() !== '');
+  } else if (Array.isArray(data)) {
+    lines = data.map(item => {
+      if (typeof item === 'object' && item !== null) {
+        return `${item.item} - Required: ${item.required ? 'Yes' : 'No'}, Provided: ${item.provided ? 'Yes' : 'No'}`;
+      }
+      return String(item);
+    });
+  } else {
+    lines = [String(data)];
+  }
+
+  // If called as a block helper (e.g. {{#splitLines}})
+  if (options && typeof options.fn === 'function') {
+    return lines.map(line => options.fn(line)).join("");
+  }
+
+  // If called as a subexpression (e.g. {{#each (splitLines ...)}})
+  return lines;
 });
 
 
